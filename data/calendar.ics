@@ -1802,15 +1802,15 @@ DTEND;TZID=UTC:20260825T000000
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evjk6aqejvub-20250729T145650
+UID:AHGFAMILY-evjk6aqejvub-20260721T020026
 DTSTAMP;TZID=UTC:20250729T145650
-LAST-MODIFIED;TZID=UTC:20250729T145650
+LAST-MODIFIED;TZID=UTC:20260721T020026
 SUMMARY:Parent meeting
 DESCRIPTION: Join us in welcoming new girls and gathering the paperwork 
  needed for the new year. Bring your girls so they can play games with 
  anyone new that comes 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us in welcoming new girls and gathering the paperwork needed for the new year.</p><p>Bring your girls so they can play games with anyone new that comes </p></BODY></HTML>
-DTSTART;TZID=UTC:20260831T103000
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us in welcoming new girls and gathering the paperwork needed for the new year.</p> <p>Bring your girls so they can play games with anyone new that comes </p></BODY></HTML>
+DTSTART;TZID=UTC:20260831T223000
 DTEND;TZID=UTC:20260901T000000
 COLOR:#B18BC0
 END:VEVENT
