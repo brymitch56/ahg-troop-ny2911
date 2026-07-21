@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Members — AHG Troop NY2911</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img src="assets/img/ahg-logo-horizontal-blue.jpg" alt="American Heritage Girls — Faith, Service, Fun">
+    <span class="troop-badge">Troop NY2911</span>
+  </a>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="calendar.html">Calendar</a>
+    <a href="members.html" class="active">Members</a>
+    <a href="giving.html" class="nav-give">Give &amp; Fundraisers</a>
+  </nav>
+</header>
+
+<main class="container">
+  <h1 class="page-title">Members Area</h1>
+  <hr class="rule">
+
+  <div class="gate" id="gate">
+    <img src="assets/img/ahg-logo-vertical.jpg" alt="" style="height:120px;margin-bottom:0.5rem;">
+    <h3 style="color:var(--ahg-blue);">Troop Families Only</h3>
+    <p>Enter the troop password to access our shared documents.</p>
+    <input type="password" id="pw" placeholder="Troop password" autocomplete="off">
+    <p class="error" id="pw-error">That password isn't right — please try again.</p>
+    <button class="btn btn-blue" id="pw-btn">Enter</button>
+  </div>
+
+  <div id="members-content" style="display:none;">
+    <div class="meeting-box">
+      <h3 style="color:var(--ahg-blue);margin-bottom:0.5rem;">Troop Document Library</h3>
+      <p>Forms, handbooks, rosters, and troop resources live in our SharePoint library. You'll sign in with your Microsoft account.</p>
+      <p style="margin-top:1rem;"><a class="btn btn-blue" id="sp-link" target="_blank" rel="noopener">Open SharePoint &rarr;</a></p>
+      <p id="sp-placeholder" class="placeholder-note" style="display:none;">The SharePoint link hasn't been configured yet — add it in <code>assets/config.js</code>.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
+</footer>
+
+<script>
+(function () {
+  const c = window.TROOP_CONFIG;
+  const gate = document.getElementById("gate");
+  const content = document.getElementById("members-content");
+
+  function unlock() {
+    gate.style.display = "none";
+    content.style.display = "block";
+    const link = document.getElementById("sp-link");
+    if (!c.sharepointUrl || c.sharepointUrl.startsWith("REPLACE")) {
+      link.style.display = "none";
+      document.getElementById("sp-placeholder").style.display = "block";
+    } else {
+      link.href = c.sharepointUrl;
+    }
+  }
+
+  if (sessionStorage.getItem("ny2911-auth") === c.passwordSha256) unlock();
+
+  async function tryPassword() {
+    const hash = await sha256(document.getElementById("pw").value);
+    if (hash === c.passwordSha256) {
+      sessionStorage.setItem("ny2911-auth", hash);
+      unlock();
+    } else {
+      document.getElementById("pw-error").style.display = "block";
+    }
+  }
+
+  document.getElementById("pw-btn").addEventListener("click", tryPassword);
+  document.getElementById("pw").addEventListener("keydown", e => { if (e.key === "Enter") tryPassword(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AHG Troop NY2911 — Rochester, NY | American Heritage Girls</title>
+<meta name="description" content="American Heritage Girls Troop NY2911 meets Mondays at Harvest Bible Fellowship in Rochester, NY. Faith, Service, Fun for girls ages 5–18.">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img src="assets/img/ahg-logo-horizontal-blue.jpg" alt="American Heritage Girls — Faith, Service, Fun">
+    <span class="troop-badge">Troop NY2911</span>
+  </a>
+  <nav class="nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="calendar.html">Calendar</a>
+    <a href="members.html">Members</a>
+    <a href="giving.html" class="nav-give">Give &amp; Fundraisers</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>American Heritage Girls Troop NY2911</h1>
+  <p class="tagline">Faith &nbsp;|&nbsp; Service &nbsp;|&nbsp; Fun</p>
+  <p style="max-width:620px;margin:0 auto 1.75rem;">Building women of integrity through service to God, family, community, and country — right here in Rochester, New York.</p>
+  <div class="btn-row">
+    <a class="btn btn-red" href="calendar.html">View Our Calendar</a>
+    <a class="btn btn-white" href="#visit">Come Visit Us</a>
+  </div>
+</section>
+
+<main class="container">
+  <h2 class="page-title">Welcome!</h2>
+  <hr class="rule">
+  <p>American Heritage Girls is a national Christ-centered character and leadership development program for girls ages 5 to 18. Girls earn badges, serve their communities, grow in their faith, and build friendships that last a lifetime. Troop NY2911 welcomes girls of all levels — Pathfinders, Tenderhearts, Explorers, Pioneers, and Patriots.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Faith</h3>
+      <p>Girls grow in their relationship with God through a Christ-centered program built on Biblical values.</p>
+    </div>
+    <div class="card">
+      <h3>Service</h3>
+      <p>From community service projects to national service stars, girls learn the joy of serving others.</p>
+    </div>
+    <div class="card">
+      <h3>Fun</h3>
+      <p>Badge work, camping, outdoor adventures, special events, and friendships across all age levels.</p>
+    </div>
+  </div>
+
+  <h2 class="page-title" id="visit" style="margin-top:2.5rem;">When &amp; Where We Meet</h2>
+  <hr class="rule">
+  <div class="meeting-box">
+    <p><strong>When:</strong> <span id="meet-day"></span></p>
+    <p><strong>Where:</strong> <span id="meet-loc"></span></p>
+    <p><strong>Address:</strong> <a id="meet-addr-link" target="_blank" rel="noopener"><span id="meet-addr"></span></a></p>
+    <p style="margin-top:0.75rem;">New families are always welcome to visit a meeting. Questions? Email us at <a id="contact-email" href="#"></a>.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
+  <p>Learn more about AHG at <a href="https://americanheritagegirls.org" target="_blank" rel="noopener">americanheritagegirls.org</a></p>
+</footer>
+
+<script>
+  const c = window.TROOP_CONFIG;
+  document.getElementById("meet-day").textContent = c.meetingDay;
+  document.getElementById("meet-loc").textContent = c.meetingLocation;
+  document.getElementById("meet-addr").textContent = c.meetingAddress;
+  document.getElementById("meet-addr-link").href =
+    "https://maps.google.com/?q=" + encodeURIComponent(c.meetingLocation + ", " + c.meetingAddress);
+  const em = document.getElementById("contact-email");
+  em.textContent = c.contactEmail;
+  em.href = "mailto:" + c.contactEmail;
+</script>
+</body>
+</html>

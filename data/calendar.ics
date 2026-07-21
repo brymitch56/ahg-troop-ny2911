@@ -1,0 +1,2312 @@
+BEGIN:VCALENDAR
+PRODID;X-RICAL-TZSOURCE=TZINFO:AHGFamily Calendar
+CALSCALE:GREGORIAN
+VERSION:2.0
+METHOD:REQUEST
+REFRESH-INTERVAL;VALUE=DURATION:PT1H
+X-WR-CALNAME:NY2911: Public Feed
+X-PUBLISHED-TTL:PT1H
+BEGIN:VTIMEZONE
+TZID:UTC
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:AHGFAMILY-evmooqauaxuw-20240709T162239
+DTSTAMP;TZID=UTC:20240709T162239
+LAST-MODIFIED;TZID=UTC:20240709T162239
+SUMMARY:Badgework meeting
+DESCRIPTION: For leaders who would like my help planning the years 
+ badgework out. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>For leaders who would like my help planning the years badgework out.</p></BODY></HTML>
+DTSTART;TZID=UTC:20240722T223000
+DTEND;TZID=UTC:20240723T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evuju3upi79e-20240709T162735
+DTSTAMP;TZID=UTC:20240709T162618
+LAST-MODIFIED;TZID=UTC:20240709T162735
+SUMMARY:Service hours planning meeting
+DESCRIPTION: We will finish planning the service hours meetings for this 
+ upcoming year. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will finish planning the service hours meetings for this upcoming year.</p></BODY></HTML>
+DTSTART;TZID=UTC:20240729T223000
+DTEND;TZID=UTC:20240730T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evbfci50vrwy-20240708T183750
+DTSTAMP;TZID=UTC:20240614T163515
+LAST-MODIFIED;TZID=UTC:20240708T183750
+SUMMARY:Parent Meeting/Open House
+DESCRIPTION: Join us for our information meeting to start up our year, 
+ meet new members and sign off on the years new paperwork. All girls are 
+ encouraged to come and play games while they welcome the new members in 
+ their levels this year. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our information meeting to start up our year, meet new members and sign off on the years new paperwork. </p><p>All girls are encouraged to come and play games while they welcome the new members in their levels this year.</p></BODY></HTML>
+DTSTART;TZID=UTC:20240826T223000
+DTEND;TZID=UTC:20240827T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evddigzcwaqh-20240708T184043
+DTSTAMP;TZID=UTC:20240708T184043
+LAST-MODIFIED;TZID=UTC:20240708T184043
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20240909T221500
+DTEND;TZID=UTC:20240910T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evpib6qdfbrh-20240708T190647
+DTSTAMP;TZID=UTC:20240708T190647
+LAST-MODIFIED;TZID=UTC:20240708T190647
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20240916T221500
+DTEND;TZID=UTC:20240917T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evhshyqfvw5f-20240930T165013
+DTSTAMP;TZID=UTC:20240708T190239
+LAST-MODIFIED;TZID=UTC:20240930T165013
+SUMMARY:National Day of Service
+DESCRIPTION: This is the AHG national day of service day. We will be 
+ meeting at the church in the parking lot and doing a trash walk on 
+ Calkins Rd. Be ready for the weather. If you have a wagon you could bring 
+ to help transport the trash bags as they collect full ones that would be 
+ helpful. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>This is the AHG national day of service day. We will be meeting at the church in the parking lot and doing a trash walk on Calkins Rd. Be ready for the weather. If you have a wagon you could bring to help transport the trash bags as they collect full ones that would be helpful.</p><p><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20240921T140000
+DTEND;TZID=UTC:20240921T160000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evuunjcycycc-20240708T190728
+DTSTAMP;TZID=UTC:20240708T190728
+LAST-MODIFIED;TZID=UTC:20240708T190728
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20240923T221500
+DTEND;TZID=UTC:20240924T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqjw036nsik-20240708T190731
+DTSTAMP;TZID=UTC:20240708T190731
+LAST-MODIFIED;TZID=UTC:20240708T190731
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20240930T221500
+DTEND;TZID=UTC:20241001T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evteqa7hfleq-20241001T162706
+DTSTAMP;TZID=UTC:20240708T185423
+LAST-MODIFIED;TZID=UTC:20241001T162706
+SUMMARY:October Campout
+DESCRIPTION: Join us for our first campout of the year. We will be on 
+ church property and have access to the bathrooms only. Come prepared for 
+ the cold nights with your sleeping bags and extra blankets. We will only 
+ have a snack Friday no dinner so make sure to eat before you arrive. Drop 
+ off at 6pm and pick up at 4 pm Saturday. Cost is $10 per person adult and 
+ Kid. You must be a registered adult member to participate. All 
+ tenderhearts require a parent to accompany them on overnights. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our first campout of the year.</p><p>We will be on church property and have access to the bathrooms only.</p><p>Come prepared for the cold nights with your sleeping bags and extra blankets.</p><p><br /></p><p>We will only have a snack Friday no dinner so make sure to eat before you arrive.</p><p>Drop off at 6pm and pick up at 4 pm Saturday. </p><p>Cost is $10 per person adult and Kid. </p><p>You must be a registered adult member to participate. All tenderhearts require a parent to accompany them on overnights.</p><p><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20241004T220000
+DTEND;TZID=UTC:20241005T200000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evy9zww84kxt-20240708T190739
+DTSTAMP;TZID=UTC:20240708T190739
+LAST-MODIFIED;TZID=UTC:20240708T190739
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20241007T221500
+DTEND;TZID=UTC:20241008T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evg5aakjagsa-20240708T190742
+DTSTAMP;TZID=UTC:20240708T190742
+LAST-MODIFIED;TZID=UTC:20240708T190742
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20241014T221500
+DTEND;TZID=UTC:20241015T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evvkqvtyapvn-20240918T125215
+DTSTAMP;TZID=UTC:20240806T134645
+LAST-MODIFIED;TZID=UTC:20240918T125215
+SUMMARY:Wild Wings field trip for Explorers
+DESCRIPTION: badgework trip for Explorers. Join us to work on finishing 
+ the badge we have been working on this year. The cost of this trip is for 
+ owl pellets we will get to take back and open with the troop on a meeting 
+ night. Cost is $5 per girl. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>badgework trip for Explorers.</p><p>Join us to work on finishing the badge we have been working on this year. </p><p>The cost of this trip is for owl pellets we will get to take back and open with the troop on a meeting night.</p><p>Cost is $5 per girl.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241019T140000
+DTEND;TZID=UTC:20241019T153000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evmaroh1iazo-20240708T190744
+DTSTAMP;TZID=UTC:20240708T190744
+LAST-MODIFIED;TZID=UTC:20240708T190744
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20241021T221500
+DTEND;TZID=UTC:20241022T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evuvhf7zaj4s-20240730T183950
+DTSTAMP;TZID=UTC:20240708T190926
+LAST-MODIFIED;TZID=UTC:20240730T183950
+SUMMARY:Service Hour Meeting
+DESCRIPTION: We will be putting together Homeless bags for the girls to 
+ take home and either hand out to the homeless they see around town or 
+ take to a shelter. Some of the supplies will be purchased by the troop 
+ ahead of time, but some we will be asking for donations for. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be putting together Homeless bags for the girls to take home and either hand out to the homeless they see around town or take to a shelter.</p><p>Some of the supplies will be purchased by the troop ahead of time, but some we will be asking for donations for.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241028T221500
+DTEND;TZID=UTC:20241029T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evyh2quaa1hs-20241028T131403
+DTSTAMP;TZID=UTC:20241021T170826
+LAST-MODIFIED;TZID=UTC:20241028T131403
+SUMMARY:PiPa Self defense class
+DESCRIPTION: This event is a required step for the Emergency Preparedness 
+ that is our 3rd badge we will be working on this year. This is 
+ requirement 2 on page 210 in your handbook. We will be meeting at the 
+ location in Victor for this class. It is scheduled to start before our 
+ meeting time so that you will have time to transport to and from and 
+ still make it to the meeting in Henrietta for your other family members. 
+ Because this class costs a larger amount than we normally spend on 
+ badgework, and this is just one step, we are asking that each girl pay 
+ for a part of the fee for the class. This will be $7 per girl. The troop 
+ is covering the rest of the cost from the dues for badgework. Please make 
+ payment to Debbie at sign in for this event. The release form from Gracie 
+ will need to be signed by parents before the girls can participate. Here 
+ is the link to the form. https://sparkpages.io/forms/?frm=_cJt Please 
+ make sure this is completed before dropping off on the 4th. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>This event is a required step for the Emergency Preparedness that is our 3rd badge we will be working on this year. This is requirement 2 on page 210 in your handbook. We will be meeting at the location in Victor for this class. It is scheduled to start before our meeting time so that you will have time to transport to and from and still make it to the meeting in Henrietta for your other family members. Because this class costs a larger amount than we normally spend on badgework, and this is just one step, we are asking that each girl pay for a part of the fee for the class. This will be $7 per girl. The troop is covering the rest of the cost from the dues for badgework. </p><p>Please make payment to Debbie at sign in for this event. </p><p>The release form from Gracie will need to be signed by parents before the girls can participate. Here is the link to the form. <a href="https://sparkpages.io/forms/?frm=_cJt">https://sparkpages.io/forms/?frm=_cJt</a> Please make sure this is completed before dropping off on the 4th.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241104T223000
+DTEND;TZID=UTC:20241104T233000
+LOCATION:8050 Victor Mendon Rd, Unit 500 Victor, NY, 14564
+GEO:42.998672;-77.481133
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evljlkpdje9z-20240708T190951
+DTSTAMP;TZID=UTC:20240708T190951
+LAST-MODIFIED;TZID=UTC:20240708T190951
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20241104T231500
+DTEND;TZID=UTC:20241105T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjlngmxikgc-20240708T190953
+DTSTAMP;TZID=UTC:20240708T190953
+LAST-MODIFIED;TZID=UTC:20240708T190953
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20241111T231500
+DTEND;TZID=UTC:20241112T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evcefxlia6cz-20241024T001904
+DTSTAMP;TZID=UTC:20240709T163024
+LAST-MODIFIED;TZID=UTC:20241024T001904
+SUMMARY:Mother Daughter Event
+DESCRIPTION: We will be painting Clay or Wooden figures. Place to be 
+ determined still. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be painting Clay or Wooden figures. Place to be determined still.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241115T230000
+DTEND;TZID=UTC:20241116T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14534
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evxfvvc7n6ac-20240708T190956
+DTSTAMP;TZID=UTC:20240708T190956
+LAST-MODIFIED;TZID=UTC:20240708T190956
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20241118T231500
+DTEND;TZID=UTC:20241119T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evug0lskyop0-20240730T184105
+DTSTAMP;TZID=UTC:20240708T190958
+LAST-MODIFIED;TZID=UTC:20240730T184105
+SUMMARY:Service Hour Meeting
+DESCRIPTION: We will be making cards for vets and or those in the 
+ hospital for Christmas. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be making cards for vets and or those in the hospital for Christmas.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241125T231500
+DTEND;TZID=UTC:20241126T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evzsuo8m4gut-20240708T191022
+DTSTAMP;TZID=UTC:20240708T191022
+LAST-MODIFIED;TZID=UTC:20240708T191022
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20241202T231500
+DTEND;TZID=UTC:20241203T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evyqagegfg8o-20240708T194649
+DTSTAMP;TZID=UTC:20240708T191031
+LAST-MODIFIED;TZID=UTC:20240708T194649
+SUMMARY:Caroling
+DESCRIPTION: Join us to carol for the church neighbors. We will meet at 
+ the church and walk down the street next to the church caroling to those 
+ who open their doors for us. We have a lot of fun with this meeting each 
+ year and always hear wonderful responses from the community afterwards. 
+ Help us spread the holiday cheer. Parents and other family members are 
+ welcome to join us if they would like. Just a heads up we will be 
+ splitting up from the Trail life boys as our troops are to big to carol 
+ together. So keep that in mind if you have kids in both groups. you will 
+ have to choose one to go with. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to carol for the church neighbors. We will meet at the church and walk down the street next to the church caroling to those who open their doors for us. We have a lot of fun with this meeting each year and always hear wonderful responses from the community afterwards. </p><p>Help us spread the holiday cheer.</p><p>Parents and other family members are welcome to join us if they would like. Just a heads up we will be splitting up from the Trail life boys as our troops are to big to carol together. So keep that in mind if you have kids in both groups. you will have to choose one to go with. </p></BODY></HTML>
+DTSTART;TZID=UTC:20241209T231500
+DTEND;TZID=UTC:20241210T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evmyajzrtb8z-20240708T191437
+DTSTAMP;TZID=UTC:20240708T191040
+LAST-MODIFIED;TZID=UTC:20240708T191437
+SUMMARY:Ceremony and Christmas Party
+DESCRIPTION: We will be having an awards ceremony and our Christmas party 
+ all in one. Joining awards will be handed out at this time as well as 
+ anything earned over the summer. Then we will have the girls play a game 
+ to exchange gifts. Please bring a $5 gift to exchange that would be good 
+ for your daughters level to exchange. Wrapped and without a tag. This 
+ gift takes place your your dues for December. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be having an awards ceremony and our Christmas party all in one. </p><p>Joining awards will be handed out at this time as well as anything earned over the summer.</p><p>Then we will have the girls play a game to exchange gifts.</p><p>Please bring a $5 gift to exchange that would be good for your daughters level to exchange. Wrapped and without a tag. This gift takes place your your dues for December.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241216T231500
+DTEND;TZID=UTC:20241217T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evtiajr7b0ys-20240708T190529
+DTSTAMP;TZID=UTC:20240708T190455
+LAST-MODIFIED;TZID=UTC:20240708T190529
+SUMMARY:NO MEETING
+DESCRIPTION: No meeting tonight. we are off for the holidays. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>No meeting tonight. we are off for the holidays.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241223T210000
+DTEND;TZID=UTC:20241223T220000
+LOCATION:1125 Calkiins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqanpjbfpgz-20240708T190622
+DTSTAMP;TZID=UTC:20240708T190622
+LAST-MODIFIED;TZID=UTC:20240708T190622
+SUMMARY:NO MEETING
+DESCRIPTION: No meeting tonight. we are off for the holidays. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>No meeting tonight. we are off for the holidays.</p></BODY></HTML>
+DTSTART;TZID=UTC:20241230T210000
+DTEND;TZID=UTC:20241230T220000
+LOCATION:1125 Calkiins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evtftu4iavlk-20240708T191511
+DTSTAMP;TZID=UTC:20240708T191511
+LAST-MODIFIED;TZID=UTC:20240708T191511
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250106T231500
+DTEND;TZID=UTC:20250107T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evb802df3doq-20240709T163139
+DTSTAMP;TZID=UTC:20240708T191516
+LAST-MODIFIED;TZID=UTC:20240709T163139
+SUMMARY:Bring a friend Event
+DESCRIPTION: This is the night to bring your friends and show them the 
+ fun things we do as a troop. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>This is the night to bring your friends and show them the fun things we do as a troop. </p></BODY></HTML>
+DTSTART;TZID=UTC:20250113T231500
+DTEND;TZID=UTC:20250114T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evh1yggybsjm-20240708T191521
+DTSTAMP;TZID=UTC:20240708T191521
+LAST-MODIFIED;TZID=UTC:20240708T191521
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250120T231500
+DTEND;TZID=UTC:20250121T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evk5r89wscwd-20240730T184222
+DTSTAMP;TZID=UTC:20240708T191525
+LAST-MODIFIED;TZID=UTC:20240730T184222
+SUMMARY:Service Hour Meeting
+DESCRIPTION: We will be making no sew fleece blankets for Ray of light, 
+ the closet for Foster care kids. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be making no sew fleece blankets for Ray of light, the closet for Foster care kids.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250127T231500
+DTEND;TZID=UTC:20250128T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evxcaavapfcx-20240708T191541
+DTSTAMP;TZID=UTC:20240708T191541
+LAST-MODIFIED;TZID=UTC:20240708T191541
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250203T231500
+DTEND;TZID=UTC:20250204T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evapwpecm9u1-20250130T171721
+DTSTAMP;TZID=UTC:20240709T163409
+LAST-MODIFIED;TZID=UTC:20250130T171721
+SUMMARY:Lock in
+DESCRIPTION: Join us for a fun filled night put on by the PiPa's 
+ Tenderhearts require a parent to accompany them on sleep overs. All 
+ adults need to be paid members so please let me know if you plan to come 
+ at least 2-3 weeks ahead of time if you need to sart the membership 
+ process for this event. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a fun filled night put on by the PiPa's</p><p>Tenderhearts require a parent to accompany them on sleep overs. All adults need to be paid members so please let me know if you plan to come at least 2-3 weeks ahead of time if you need to sart the membership process for this event.</p><p><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20250207T230000
+DTEND;TZID=UTC:20250208T160000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evpzt8mjdeln-20240708T191543
+DTSTAMP;TZID=UTC:20240708T191543
+LAST-MODIFIED;TZID=UTC:20240708T191543
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250210T231500
+DTEND;TZID=UTC:20250211T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evcchzaxgmjv-20240708T191546
+DTSTAMP;TZID=UTC:20240708T191546
+LAST-MODIFIED;TZID=UTC:20240708T191546
+SUMMARY:NO MEETING
+DESCRIPTION: No meeting tonight. we are off for the holidays. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>No meeting tonight. we are off for the holidays.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250217T210000
+DTEND;TZID=UTC:20250217T220000
+LOCATION:1125 Calkiins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evor5enew641-20240730T184328
+DTSTAMP;TZID=UTC:20240708T191550
+LAST-MODIFIED;TZID=UTC:20240730T184328
+SUMMARY:Service Hour Meeting
+DESCRIPTION: We will be making no sew fleece blankets for Ray of light, 
+ the closet for Foster care kids. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be making no sew fleece blankets for Ray of light, the closet for Foster care kids.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250224T231500
+DTEND;TZID=UTC:20250225T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evpnrhuwcg2r-20250224T185145
+DTSTAMP;TZID=UTC:20240709T164022
+LAST-MODIFIED;TZID=UTC:20250224T185145
+SUMMARY:Canceled  Cabin Campout
+DESCRIPTION: Join us for a fun weekend away this winter. There are 26 
+ bunks, but there is also lots of space for anyone who would like to join 
+ us on an air mattress or cot of your own. The cost per person, parents 
+ included is $25. This covers food and the cabin fee for the weekend. This 
+ amount will be due by the 24th so that I can buy the food we need before 
+ the campout. Bring your bible a thin air mattress or thick camping pad. 
+ (the bunk beds do not have mattresses) there is space for full size air 
+ mattresses on the floor if you don't have a thin one to fit on the beds. 
+ bedding (sleeping bag and blankets, pillow and air mattress or cot if you 
+ would prefer. Pjs and cloths for the weekend. Extra socks and outdoor 
+ cloths in case we have space to have some outdoor fun on sat. Extra 
+ cloths in case we get wet while outside. Bathroom supplies would just be 
+ toothbrushes and hair brushes as there is no shower. If your daughter has 
+ any medications required over the weekend, please let me know ahead of 
+ time and then leave them with me before you leave when dropping them off. 
+ Reminder that Tenderhearts require an adult member parent to accompany 
+ them on overnights. Drop off time is 6pm Friday night. and Pick up will 
+ be 10 am Sunday morning. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a fun weekend away this winter.</p><p>There are 26 bunks, but there is also lots of space for anyone who would like to join us on an air mattress or cot of your own.</p><p>The cost per person, parents included is $25. This covers food and the cabin fee for the weekend. This amount will be due by the 24th so that I can buy the food we need before the campout.</p><p>Bring your bible</p><p>a thin air mattress or thick camping pad. (the bunk beds do not have mattresses) there is space for full size air mattresses on the floor if you don't have a thin one to fit on the beds.</p><p>bedding (sleeping bag and blankets, pillow and air mattress or cot if you would prefer.</p><p>Pjs and cloths for the weekend. Extra socks and outdoor cloths in case we have space to have some outdoor fun on sat.</p><p>Extra cloths in case we get wet while outside.</p><p>Bathroom supplies would just be toothbrushes and hair brushes as there is no shower.</p><p>If your daughter has any medications required over the weekend, please let me know ahead of time and then leave them with me before you leave when dropping them off.</p><p>Reminder that Tenderhearts require an adult member parent to accompany them on overnights.</p><p>Drop off time is 6pm Friday night. and Pick up will be 10 am Sunday morning.</p><p><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20250228T230000
+DTEND;TZID=UTC:20250302T150000
+LOCATION:236 Oneida River Rd Pennellville, NY, 13132
+GEO:43.219524;-76.236588
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evvb1takesan-20240708T191557
+DTSTAMP;TZID=UTC:20240708T191557
+LAST-MODIFIED;TZID=UTC:20240708T191557
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250303T231500
+DTEND;TZID=UTC:20250304T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evokobprptau-20250216T153702
+DTSTAMP;TZID=UTC:20240708T191954
+LAST-MODIFIED;TZID=UTC:20250216T153702
+SUMMARY:Derby Build Day
+DESCRIPTION: ***** PLEASE NOTE: THIS IS NOT A DROP OFF EVENT! DUE TO 
+ LIMITED SUPERVISION AND THE DANGERS OF USING TOOLS, A PARENT/GUARDIAN IS 
+ REQUIRED TO ACCOMPANY EACH YOUTH PARTICIPANT ***** Join us anytime 
+ between 1-4 to work on your Derby car. Bring your car, at whatever stage 
+ of the build you're at, and work on it with us. If you don't have a car 
+ kit yet, they will be available to purchase for $5 each for the basic 
+ block or wedge. We will also have pre-shaped cars available this year for 
+ $8 each. We will have many tools available to help in your build. Come 
+ ask questions, get advice on how to make your car run faster and 
+ straighter, and get the help you need to complete your Derby car. Bring 
+ your design ideas and we will help you bring them to life. We will have 
+ leaders available to assist with your build, but we don't have enough 
+ leaders to work one-on-one with everyone. Parents, please plan to stay 
+ and help your daughter. Registered racers who's cars don't meet our 
+ official rules will be entered into the "Outlaw" class. They will still 
+ be allowed to race, but will not qualify for a trophy. Our official rules 
+ are attached below. NY2911 Timber Derby Official Rules Here is a 
+ printable sheet to help you draw out your design. Be advised, this 
+ template is not an exact size match and is only meant as a design aid. 
+ Derby car blank template.pdf 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>***** PLEASE NOTE: THIS IS NOT A DROP OFF EVENT! DUE TO LIMITED SUPERVISION AND THE DANGERS OF USING TOOLS, A PARENT/GUARDIAN IS REQUIRED TO ACCOMPANY EACH YOUTH PARTICIPANT *****<br /></p><p>Join us anytime between 1-4 to work on your Derby car. Bring your car, at whatever stage of the build you're at, and work on it with us. If you don't have a car kit yet, they will be available to purchase for $5 each for the basic block or wedge. We will also have pre-shaped cars available this year for $8 each. We will have many tools available to help in your build. Come ask questions, get advice on how to make your car run faster and straighter, and get the help you need to complete your Derby car. Bring your design ideas and we will help you bring them to life. We will have leaders available to assist with your build, but we don't have enough leaders to work one-on-one with everyone. Parents, please plan to stay and help your daughter.</p><p>Registered racers who's cars don't meet our official rules will be entered into the "Outlaw" class. They will still be allowed to race, but will not qualify for a trophy.</p><p>Our official rules are attached below.</p><p><a href="https://www.ahgfamily.org/getdoc/doceffjhmyiu">NY2911 Timber Derby Official Rules</a></p><p>Here is a printable sheet to help you draw out your design. Be advised, this template is not an <em>exact</em> size match and is only meant as a design aid.</p><p><a href="https://www.ahgfamily.org/getdoc/dockedflzlw3">Derby car blank template.pdf</a></p></BODY></HTML>
+DTSTART;TZID=UTC:20250308T180000
+DTEND;TZID=UTC:20250308T210000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eve3vvajapkz-20240708T191559
+DTSTAMP;TZID=UTC:20240708T191559
+LAST-MODIFIED;TZID=UTC:20240708T191559
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250310T221500
+DTEND;TZID=UTC:20250311T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evopwoj6fvjc-20240708T191601
+DTSTAMP;TZID=UTC:20240708T191601
+LAST-MODIFIED;TZID=UTC:20240708T191601
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250317T221500
+DTEND;TZID=UTC:20250318T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evl0muys3i3r-20250216T154148
+DTSTAMP;TZID=UTC:20240708T192251
+LAST-MODIFIED;TZID=UTC:20250216T154148
+SUMMARY:Timber Derby Race Day
+DESCRIPTION: Since we can't call it a Pinewood Derby due to copyright 
+ laws, we've decided to adopt the name of " Timber Derby ". No matter what 
+ you call it, it's a lot of fun! Design your car, cut it, sand it smooth, 
+ paint it, put the wheels on and then it's time to RACE! The race is open 
+ to all registered youth, but guests are welcome to come cheer on the 
+ racers. Be sure to read and understand our official rules. Though we 
+ don't want to disqualify anyone, we do need to stick to the rules to make 
+ the race fair for everyone. Anyone not meeting the rules will be put into 
+ an "Outlaw" class. They will still be allowed to race, but will not 
+ qualify for a trophy. The "Outlaw" class will only be restricted by the 
+ overall size and weight limits in the official rules. CHECK IN will start 
+ at 9:15 and run until 10:15. The RACE will start promptly at 10:30. Make 
+ sure you have checked your car in by 10:15 to be able to race. Late 
+ entries will not be allowed. All racers must check their cars in with 
+ race staff. Once a car has been weighed and fully checked in, it will be 
+ placed in the staging area until the race. Modifications to cars are only 
+ allowed before they are fully checked in. After they have been checked 
+ in, no modifications can be made. Mechanical failures during the race 
+ will be assessed on an individual basis, and repairs may be allowed. Time 
+ limits for repairs and post-repair inspections will be up to the race 
+ officials. Uniforms are REQUIRED for all registered youth who are racing. 
+ There will be a small concession stand available for purchasing 
+ refreshments. We need donations of small, individually wrapped items to 
+ be able to sell. The proceeds will go toward troop funds to help with our 
+ operating expenses. Please remember that we have individuals with nut and 
+ other allergies, so NO NUTS OR BEANS (including things like Humus). We 
+ can use things like chips, cookies, juice boxes, water bottles, fruit, 
+ etc. Home made items are fine, but please bring a label to identify the 
+ item with a list of ingredients. We will also have pizza available for 
+ purchase. Please see Bryan with any questions or concerns. We can't wait 
+ to see you there. Good Luck! NY2911 Timber Derby Official Rules 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Since we can't call it a Pinewood <span class="il">Derby</span> due to copyright laws, we've decided to adopt the name of "<span class="il">Timber</span> <span class="il">Derby</span>". No matter what you call it, it's a lot of fun! Design your car, cut it, sand it smooth, paint it, put the wheels on and then it's time to RACE! The race is open to all registered youth, but guests are welcome to come cheer on the racers. Be sure to read and understand our official rules. Though we don't want to disqualify anyone, we do need to stick to the rules to make the race fair for everyone.</p><p>Anyone not meeting the rules will be put into an "Outlaw" class. They will still be allowed to race, but will not qualify for a trophy. The "Outlaw" class will only be restricted by the overall size and weight limits in the official rules.</p><p>CHECK IN will start at 9:15 and run until 10:15. The RACE will start promptly at 10:30. Make sure you have checked your car in by 10:15 to be able to race. Late entries will not be allowed.</p><p>All racers must check their cars in with race staff. Once a car has been weighed and fully checked in, it will be placed in the staging area until the race. Modifications to cars are only allowed before they are fully checked in. After they have been checked in, no modifications can be made. Mechanical failures during the race will be assessed on an individual basis, and repairs may be allowed. Time limits for repairs and post-repair inspections will be up to the race officials.</p><p>Uniforms are REQUIRED for all registered youth who are racing.</p><p>There will be a small concession stand available for purchasing refreshments. We need donations of small, individually wrapped items to be able to sell. The proceeds will go toward troop funds to help with our operating expenses. Please remember that we have individuals with nut and other allergies, so NO NUTS OR BEANS (including things like Humus). We can use things like chips, cookies, juice boxes, water bottles, fruit, etc. Home made items are fine, but please bring a label to identify the item with a list of ingredients. We will also have pizza available for purchase.<br /></p><p>Please see Bryan with any questions or concerns. We can't wait to see you there. Good Luck!</p><p><a href="https://www.ahgfamily.org/getdoc/doceffjhmyiu">NY2911 Timber Derby Official Rules</a></p></BODY></HTML>
+DTSTART;TZID=UTC:20250322T131500
+DTEND;TZID=UTC:20250322T180000
+LOCATION:1125 Calkins Road Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evlmqootlt0a-20240708T191604
+DTSTAMP;TZID=UTC:20240708T191604
+LAST-MODIFIED;TZID=UTC:20240708T191604
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250324T221500
+DTEND;TZID=UTC:20250325T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evz9ia5dafab-20250406T195432
+DTSTAMP;TZID=UTC:20240708T191606
+LAST-MODIFIED;TZID=UTC:20250406T195432
+SUMMARY:regular Meeting
+DESCRIPTION:regular Meeting
+DTSTART;TZID=UTC:20250331T221500
+DTEND;TZID=UTC:20250401T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evxn3iaafdlw-20240708T192334
+DTSTAMP;TZID=UTC:20240708T192334
+LAST-MODIFIED;TZID=UTC:20240708T192334
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250407T221500
+DTEND;TZID=UTC:20250408T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evrj0jr4yaro-20250325T183711
+DTSTAMP;TZID=UTC:20240709T164326
+LAST-MODIFIED;TZID=UTC:20250325T183711
+SUMMARY:Father Daughter Game Night
+DESCRIPTION: Bring your favorite snack to share and a family game to play 
+ with other dads and troop members. We will be meeting downstairs for this 
+ event because the boys have their trash plate fundraiser going on at the 
+ same time upstairs. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Bring your favorite snack to share and a family game to play with other dads and troop members.</p><p>We will be meeting downstairs for this event because the boys have their trash plate fundraiser going on at the same time upstairs.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250412T220000
+DTEND;TZID=UTC:20250413T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evrxmn3l7ab2-20240708T192514
+DTSTAMP;TZID=UTC:20240708T192336
+LAST-MODIFIED;TZID=UTC:20240708T192514
+SUMMARY:Float planning Meeting
+DESCRIPTION: Come help us plan out our float for this years Memorial Day 
+ parade. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Come help us plan out our float for this years Memorial Day parade.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250414T221500
+DTEND;TZID=UTC:20250415T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evwa1gtuaata-20240708T192338
+DTSTAMP;TZID=UTC:20240708T192338
+LAST-MODIFIED;TZID=UTC:20240708T192338
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250421T221500
+DTEND;TZID=UTC:20250422T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evxlyoacp41y-20250421T133406
+DTSTAMP;TZID=UTC:20240708T192341
+LAST-MODIFIED;TZID=UTC:20250421T133406
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250428T221500
+DTEND;TZID=UTC:20250429T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evyegbca8dbx-20250427T155613
+DTSTAMP;TZID=UTC:20240708T193607
+LAST-MODIFIED;TZID=UTC:20250427T155613
+SUMMARY:Float build Day
+DESCRIPTION: Come help us make our vision come to life for this years 
+ float. Many hands make light work. So the more help we have the faster 
+ the work will get done. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Come help us make our vision come to life for this years float. Many hands make light work. So the more help we have the faster the work will get done.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250503T170000
+DTEND;TZID=UTC:20250503T200000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evki7anmz854-20240708T192744
+DTSTAMP;TZID=UTC:20240708T192744
+LAST-MODIFIED;TZID=UTC:20240708T192744
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20250505T221500
+DTEND;TZID=UTC:20250506T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evpi3wacp8km-20250427T160129
+DTSTAMP;TZID=UTC:20240708T193811
+LAST-MODIFIED;TZID=UTC:20250427T160129
+SUMMARY:National Archery Day
+DESCRIPTION: join us for some archery fun on national archery day. We 
+ will have the range open and Bryan will be ready to help you all have 
+ some fun shooting as long as the weather allows. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>join us for some archery fun on national archery day. We will have the range open and Bryan will be ready to help you all have some fun shooting as long as the weather allows.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250510T200000
+DTEND;TZID=UTC:20250510T220000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evvtqzj95mon-20240708T193127
+DTSTAMP;TZID=UTC:20240708T192753
+LAST-MODIFIED;TZID=UTC:20240708T193127
+SUMMARY:Practice for the Ceremony
+DESCRIPTION:Practice for the Ceremony
+DTSTART;TZID=UTC:20250512T221500
+DTEND;TZID=UTC:20250513T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsvpks0qumc-20250427T204830
+DTSTAMP;TZID=UTC:20240708T193035
+LAST-MODIFIED;TZID=UTC:20250427T204830
+SUMMARY:Memorial Day parade
+DESCRIPTION: Join us to walk in the Henrietta Memorial day parade along 
+ side our float. We start at the high school and end at the town park. End 
+ time depends on how long the walk takes us once we start. The parade 
+ starts at 1pm. roads get closed at Noon. Drop off at the high-school on 
+ lehigh Station. And pick up at the town park. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to walk in the Henrietta Memorial day parade along side our float.</p><p>We start at the high school and end at the town park.</p><p>End time depends on how long the walk takes us once we start. The parade starts at 1pm. roads get closed at Noon.</p><p>Drop off at the high-school on lehigh Station. And pick up at the town park.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250518T153000
+DTEND;TZID=UTC:20250518T190000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqb5moxcm4r-20240708T193431
+DTSTAMP;TZID=UTC:20240708T192758
+LAST-MODIFIED;TZID=UTC:20240708T193431
+SUMMARY:End of year ceremony
+DESCRIPTION: We will be handing out all the awards your girls have earned 
+ this year. Please invite your family and friends. We also ask that every 
+ family bring a snack to share for after the ceremony. So we have time to 
+ gather and enjoy the awards handed out and fellowship together to end out 
+ our year. this ceremony will start at 6pm due to the time it will take us 
+ to get through both troops awards. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be handing out all the awards your girls have earned this year. Please invite your family and friends. </p><p>We also ask that every family bring a snack to share for after the ceremony. So we have time to gather and enjoy the awards handed out and fellowship together to end out our year.</p><p>this ceremony will start at 6pm due to the time it will take us to get through both troops awards.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250519T214500
+DTEND;TZID=UTC:20250520T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evh6afcyb8dz-20250416T190720
+DTSTAMP;TZID=UTC:20240709T164646
+LAST-MODIFIED;TZID=UTC:20250416T190720
+SUMMARY:PiPa Lock in & CPR Class
+DESCRIPTION: A night of fun and games for the PiPa Level. ( this includes 
+ explorers that leveled up at the end of year ceremony) The cost will be 
+ $30. $25 is for the cpr class (the troop is covering $10 from this yrs 
+ dues total cost of $35 per person) and then the normal $5 breakfast food 
+ fee for the overnight. Friday night we will start off with a CPR course. 
+ the girls will be fully certified by the end. This is part of their 
+ Emergency Preparedness badge we have been working on here and there. This 
+ course is the reason for the increase in cost for the lock in. If you 
+ would like to come for the cpr class but not stay the night that is fine. 
+ Payment is due by the end of yr ceremony 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>A night of fun and games for the PiPa Level. ( this includes explorers that leveled up at the end of year ceremony)</p><p>The cost will be $30. $25 is for the cpr class (the troop is covering $10 from this yrs dues total cost of $35 per person) and then the normal $5 breakfast food fee for the overnight. </p><p>Friday night we will start off with a CPR course. the girls will be fully certified by the end. This is part of their Emergency Preparedness badge we have been working on here and there. This course is the reason for the increase in cost for the lock in.</p><p>If you would like to come for the cpr class but not stay the night that is fine.</p><p>Payment is due by the end of yr ceremony </p></BODY></HTML>
+DTSTART;TZID=UTC:20250530T220000
+DTEND;TZID=UTC:20250531T150000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evihluzoeyio-20250621T232023
+DTSTAMP;TZID=UTC:20240709T165019
+LAST-MODIFIED;TZID=UTC:20250621T232023
+SUMMARY:June Campout
+DESCRIPTION: Join us for our first campout of the summer. We will be 
+ working on the orienteering part of the geocaching and orienteering 
+ badge. Tenderhearts require an adult member parent to be with them on any 
+ overnights. If you need to register to be able to come please let me know 
+ sooner than later as the process can take a couple weeks to complete. We 
+ will meet at the campsite at 6pm Friday evening. There will only be a 
+ snack provided Friday night so please make sure to eat dinner before 
+ coming . Let me know of any food allergies or medications for kids I will 
+ need to be aware of for the weekend. All medications need to be turned 
+ into me at drop off. Close toed shoes are required for the weekend. bring 
+ your mess kits and weather appropriate cloths. as well as light weight 
+ long pants and long sleeve shirt for our hike/badgework time, as the area 
+ has tick activity and full coverage is the best way to prevent bites. 
+ pack Sleeping bags pillows and sleeping mats and extra blankets you may 
+ need Rain gear in case a towel in case you get wet for any reason We do 
+ have some troop tents for the explorer level and Pipa's to use, but 
+ tenderhearts tent with their parents so you should have your own tents. 
+ let me know if you need to use a troop tent though we can make sure you 
+ have what you need for the weekend. Cost is $25 per person. Payment will 
+ be due by the end of year ceremony for in person payment, or you can mail 
+ me a check after that due by the Monday before the campout 6/23 Pick up 
+ is at 10 am Sunday morning. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our first campout of the summer. We will be working on the orienteering part of the geocaching and orienteering badge. </p><p>Tenderhearts require an adult member parent to be with them on any overnights. If you need to register to be able to come please let me know sooner than later as the process can take a couple weeks to complete.</p><p>We will meet at the campsite at 6pm Friday evening. There will only be a snack provided Friday night so please make sure to <strong>eat dinner before coming</strong>.</p><p>Let me know of any food allergies or medications for kids I will need to be aware of for the weekend. All medications need to be turned into me at drop off.</p><p>Close toed shoes are required for the weekend. </p><p>bring your mess kits and weather appropriate cloths. as well as light weight long pants and long sleeve shirt for our hike/badgework time, as the area has tick activity and full coverage is the best way to prevent bites.</p><p>pack Sleeping bags pillows and sleeping mats and extra blankets you may need</p><p>Rain gear in case</p><p>a towel in case you get wet for any reason</p><p>We do have some troop tents for the explorer level and Pipa's to use, but tenderhearts tent with their parents so you should have your own tents. let me know if you need to use a troop tent though we can make sure you have what you need for the weekend.</p><p>Cost is $25 per person. Payment will be due by the end of year ceremony for in person payment, or you can mail me a check after that due by the Monday before the campout 6/23</p><p>Pick up is at 10 am Sunday morning.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250627T220000
+DTEND;TZID=UTC:20250629T140000
+LOCATION:999 Lake Rd Webster, NY, 14580
+GEO:43.257645;-77.459114
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evovl38ghaaj-20250718T175627
+DTSTAMP;TZID=UTC:20240709T165711
+LAST-MODIFIED;TZID=UTC:20250718T175627
+SUMMARY:Hike cancelled
+DESCRIPTION:Not enough people Signed up so the hike is cancelled
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY>Not enough people Signed up so the hike is cancelled</BODY></HTML>
+DTSTART;TZID=UTC:20250719T140000
+DTEND;TZID=UTC:20250719T170000
+LOCATION:Mendon ponds Hopkins PT. Lodge Roc, NY, 14623
+GEO:43.028927;-77.569916
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evkikgo8im7b-20250727T170115
+DTSTAMP;TZID=UTC:20250624T141224
+LAST-MODIFIED;TZID=UTC:20250727T170115
+SUMMARY:Planning meeting
+DESCRIPTION: Come help us finalize our plans for next year 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Come help us finalize our plans for next year</p></BODY></HTML>
+DTSTART;TZID=UTC:20250728T220000
+DTEND;TZID=UTC:20250729T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evu3xk0gx7ap-20250729T151612
+DTSTAMP;TZID=UTC:20250729T151612
+LAST-MODIFIED;TZID=UTC:20250729T151612
+SUMMARY:Trailer reorganizing
+DESCRIPTION: come help reorganize the camping trailer 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>come help reorganize the camping trailer</p></BODY></HTML>
+DTSTART;TZID=UTC:20250811T223000
+DTEND;TZID=UTC:20250812T000000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evmap1x6e9dx-20250727T235016
+DTSTAMP;TZID=UTC:20240709T165342
+LAST-MODIFIED;TZID=UTC:20250727T235016
+SUMMARY:Full troop Campout @ Letchworth State Park
+DESCRIPTION: Join us for a full troop campout @ Letchworth State Park. 
+ More information to come. We have changed up the summer plans because of 
+ my foot injury and are now looking forward to a full troop campout 
+ instead of a pipa only campout. Join us for some end of summer fun! Cost 
+ for the campsite is $5 per person, Cost of food for the weekend is $25 
+ per person so total cost per person is $30 for this campout. I will be at 
+ the church on the 28th of July for a meeting downstairs from 6pm-8pm if 
+ you would like to pay cash. Otherwise you can mail me a check. please 
+ text me for my address my phone number is 585-489-4870. Things to pack... 
+ Sleeping bag/ bedding/ air mattress/ pillow Extra blankets or sheets 
+ incase Cloths for 3 days rain gear sneakers Mess kit towel (incase 
+ anything gets wet/ you included) Flash light Toothbrush/ toothpaste/ hair 
+ brush Camping chair Bug spray Bible Follow the link below to the 
+ campsite. Enter after 5pm to avoid the vehicle entrance fee. 
+ https://maps.app.goo.gl/8nxTV6tdHrA5dNV56 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a full troop campout @ Letchworth State Park. More information to come.</p><p>We have changed up the summer plans because of my foot injury and are now looking forward to a full troop campout instead of a pipa only campout.</p><p>Join us for some end of summer fun!</p><p>Cost for the campsite is $5 per person, Cost of food for the weekend is $25 per person so total cost per person is $30 for this campout.</p><p>I will be at the church on the 28th of July for a meeting downstairs from 6pm-8pm if you would like to pay cash. Otherwise you can mail me a check. please text me for my address my phone number is 585-489-4870.</p><p>Things to pack...</p><ul><li>Sleeping bag/ bedding/ air mattress/ pillow</li><li>Extra blankets or sheets incase</li><li>Cloths for 3 days</li><li>rain gear</li><li>sneakers</li><li>Mess kit</li><li>towel (incase anything gets wet/ you included) </li><li>Flash light</li><li>Toothbrush/ toothpaste/ hair brush</li><li>Camping chair</li><li>Bug spray</li><li>Bible</li></ul><p><strong>Follow the link below to the campsite. Enter after 5pm to avoid the vehicle entrance fee.</strong><br /></p><p><span class="redactor-invisible-space"><a href="https://maps.app.goo.gl/8nxTV6tdHrA5dNV56">https://maps.app.goo.gl/8nxTV6tdHrA5dNV56</a></span><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20250815T220000
+DTEND;TZID=UTC:20250817T150000
+LOCATION:1 Letchworth State Park Castile, NY, 14427
+GEO:42.649929;-77.984741
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-everdfuaafnl-20250825T164822
+DTSTAMP;TZID=UTC:20240709T170404
+LAST-MODIFIED;TZID=UTC:20250825T164822
+SUMMARY:Parent Meeting
+DESCRIPTION: Welcome back and meet and greet for new members. This is an 
+ informational meeting for the parents and a meet and greet for the girls. 
+ Come recieve your paperwork for the new year and have your girls play 
+ games with the new arrivals. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Welcome back and meet and greet for new members. </p><p>This is an informational meeting for the parents and a meet and greet for the girls. Come recieve your paperwork for the new year and have your girls play games with the new arrivals.</p></BODY></HTML>
+DTSTART;TZID=UTC:20250825T221500
+DTEND;TZID=UTC:20250826T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evyjq6f6maua-20250826T202048
+DTSTAMP;TZID=UTC:20250624T142535
+LAST-MODIFIED;TZID=UTC:20250826T202048
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20250908T223000
+DTEND;TZID=UTC:20250909T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eva1djm0da6n-20250821T225050
+DTSTAMP;TZID=UTC:20250624T142615
+LAST-MODIFIED;TZID=UTC:20250821T225050
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20250915T223000
+DTEND;TZID=UTC:20250916T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evyn8rlkxpiy-20250916T001640
+DTSTAMP;TZID=UTC:20250904T162912
+LAST-MODIFIED;TZID=UTC:20250916T001640
+SUMMARY:Cancelled PI/PA volunteer at Cracker Box Palace
+DESCRIPTION: Unfortunately we are having to cancel this event. So please 
+ do not show up this sat. We will not be able to hold this event at this 
+ time. The pipa’s can show what we’ve got at crackerbox palace- a farm 
+ animal rescue in North Rose NY! Barn chores and some animal interaction! 
+ (who else wants to see the fluffy friends?!) DO. NOT. WEAR. NICE. CLOTHES 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Unfortunately we are having to cancel this event.</p><p>So please do not show up this sat. We will not be able to hold this event at this time. </p><p>The pipa’s can show what we’ve got at crackerbox palace- a farm animal rescue in North Rose NY! Barn chores and some animal interaction! (who else wants to see the fluffy friends?!)</p><p><br />DO. NOT. WEAR. NICE. CLOTHES</p></BODY></HTML>
+DTSTART;TZID=UTC:20250920T140000
+DTEND;TZID=UTC:20250920T160000
+LOCATION:6420 Shaker Road North Rose, NY
+GEO:43.23344;-76.971695
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evzjp0z9sllt-20250821T225123
+DTSTAMP;TZID=UTC:20250624T142618
+LAST-MODIFIED;TZID=UTC:20250821T225123
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20250922T223000
+DTEND;TZID=UTC:20250923T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evuwjnqjd4xm-20250821T225148
+DTSTAMP;TZID=UTC:20250624T142622
+LAST-MODIFIED;TZID=UTC:20250821T225148
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20250929T223000
+DTEND;TZID=UTC:20250930T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evzuyoezuab1-20251001T193148
+DTSTAMP;TZID=UTC:20250729T133554
+LAST-MODIFIED;TZID=UTC:20251001T193148
+SUMMARY:October Campout at Church
+DESCRIPTION: We will have our first campout of the year on church 
+ property Drop off will be 6pm Friday and Pick will be 1pm Sunday 
+ Tenderhearts require an adult member to be present for all overnights 
+ Things to Bring Bible Your sleep gear- sleeping bag- Extra blankets- 
+ pillow- air mattress or camp pad Flashlight Mess kit Cloths for the 
+ weather Sneakers Extra socks Coat 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will have our first campout of the year on church property</p><p>Drop off will be 6pm Friday and Pick will be 1pm Sunday</p><p>Tenderhearts require an adult member to be present for all overnights</p><p>Things to Bring </p><p>Bible</p><p>Your sleep gear- sleeping bag- Extra blankets- pillow- air mattress or camp pad</p><p>Flashlight</p><p>Mess kit</p><p>Cloths for the weather</p><p>Sneakers</p><p>Extra socks</p><p>Coat</p><p><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20251003T220000
+DTEND;TZID=UTC:20251005T150000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evvwpuludayx-20250821T225238
+DTSTAMP;TZID=UTC:20250714T163530
+LAST-MODIFIED;TZID=UTC:20250821T225238
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20251006T223000
+DTEND;TZID=UTC:20251007T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evbh7vfahlva-20251016T205000
+DTSTAMP;TZID=UTC:20251016T204729
+LAST-MODIFIED;TZID=UTC:20251016T205000
+SUMMARY:Start of our fundraiser
+DESCRIPTION: We will be selling High Mowing seeds. packets will be handed 
+ out at drop off. Here is the link to share for card payments. Please 
+ still write down all orders on the order form for final counts so we can 
+ order the correct amount of seeds. 
+ https://www.zeffy.com/en-US/ticketing/high-mowing-... 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be selling High Mowing seeds. packets will be handed out at drop off.</p><p>Here is the link to share for card payments. Please still write down all orders on the order form for final counts so we can order the correct amount of seeds.</p><p><span class="redactor-invisible-space"><a href="https://www.zeffy.com/en-US/ticketing/high-mowing-organic-seeds-fundraiser">https://www.zeffy.com/en-US/ticketing/high-mowing-...</a></span><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20251020T220000
+DTEND;TZID=UTC:20251020T223500
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evp8jj0lidhl-20250821T225314
+DTSTAMP;TZID=UTC:20250714T163651
+LAST-MODIFIED;TZID=UTC:20250821T225314
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20251110T233000
+DTEND;TZID=UTC:20251111T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evnahg0rdlwz-20251104T143915
+DTSTAMP;TZID=UTC:20250729T133928
+LAST-MODIFIED;TZID=UTC:20251104T143915
+SUMMARY:Mother Daughter Event
+DESCRIPTION: Join us for a fun time together as mom and daughter, We will 
+ be making flower arrangements together that you can take home. One 
+ arrangement per family. the cost for this due to the supplies is $10 per 
+ family. Payments can be made on Zeffy with this link 
+ https://www.zeffy.com/en-US/ticketing/ahg-mother-d... or with Amy at drop 
+ off. Please Bring a snack to share while we craft. No nuts, seeds or 
+ humus. Here is a link to sign up to help before or after the event 
+ https://www.signupgenius.com/go/10C0F4FAEAC2CAAFAC... Please let us know 
+ if you can make it ASAP so we can make sure to have the correct amount of 
+ supplies for you ahead of time. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a fun time together as mom and daughter,</p><p>We will be making flower arrangements together that you can take home.</p><p>One arrangement per family. the cost for this due to the supplies is <strong>$10 per family. Payments can be made on Zeffy with this link <span class="redactor-invisible-space"><a href="https://www.zeffy.com/en-US/ticketing/ahg-mother-daughter-event">https://www.zeffy.com/en-US/ticketing/ahg-mother-d...</a></span> or with Amy at drop off.</strong></p><p><strong>Please Bring a snack to share while we craft. No nuts, seeds or humus.</strong></p><p>Here is a link to sign up to help before or after the event <span class="redactor-invisible-space"><a href="https://www.signupgenius.com/go/10C0F4FAEAC2CAAFACE9-60199701-ahgmother">https://www.signupgenius.com/go/10C0F4FAEAC2CAAFAC...</a></span></p><p>Please let us know if you can make it ASAP so we can make sure to have the correct amount of supplies for you ahead of time.</p><p><br /></p></BODY></HTML>
+DTSTART;TZID=UTC:20251115T150000
+DTEND;TZID=UTC:20251115T170000
+LOCATION:2090 S. Clinton Ave Rochester, NY, 14618
+GEO:43.118187;-77.593201
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqa0aievaqq-20250821T225340
+DTSTAMP;TZID=UTC:20250714T163702
+LAST-MODIFIED;TZID=UTC:20250821T225340
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20251117T233000
+DTEND;TZID=UTC:20251118T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evziiakmzazt-20260430T135415
+DTSTAMP;TZID=UTC:20250714T163704
+LAST-MODIFIED;TZID=UTC:20260430T135415
+SUMMARY:Baking for heroes Service Hour Meeting
+DESCRIPTION: We will be baking cookies to distribute to Police and Fire 
+ departments 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be baking cookies to distribute to Police and Fire departments</p></BODY></HTML>
+DTSTART;TZID=UTC:20251124T233000
+DTEND;TZID=UTC:20251125T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evlmapopjulk-20251126T234519
+DTSTAMP;TZID=UTC:20251016T205344
+LAST-MODIFIED;TZID=UTC:20251126T234519
+SUMMARY:Handing out cookies
+DESCRIPTION: We will be meeting at Harvest to work together to take the 
+ cookies made on Monday night to the fire stations and police station 
+ around town. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be meeting at Harvest to work together to take the cookies made on Monday night to the fire stations and police station around town.</p></BODY></HTML>
+DTSTART;TZID=UTC:20251126T190000
+DTEND;TZID=UTC:20251126T210000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjcqycu58hg-20250821T225419
+DTSTAMP;TZID=UTC:20250714T163710
+LAST-MODIFIED;TZID=UTC:20250821T225419
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20251201T233000
+DTEND;TZID=UTC:20251202T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evkl1nkmsnwn-20251208T165754
+DTSTAMP;TZID=UTC:20250714T163715
+LAST-MODIFIED;TZID=UTC:20251208T165754
+SUMMARY:Caroling
+DESCRIPTION: We will be going caroling down the streets around church to 
+ bring joy to the neighborhood. come dressed for the weather. Family 
+ members are welcome to join us for this fun night. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be going caroling down the streets around church to bring joy to the neighborhood.</p><p>come dressed for the weather. Family members are welcome to join us for this fun night.</p></BODY></HTML>
+DTSTART;TZID=UTC:20251208T233000
+DTEND;TZID=UTC:20251209T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqxarlphwu7-20250729T134937
+DTSTAMP;TZID=UTC:20250729T134937
+LAST-MODIFIED;TZID=UTC:20250729T134937
+SUMMARY:Tentative Service Hours laying wreaths on graves
+DESCRIPTION: We will be participating in Wreaths across America and 
+ helping to lay wreaths on graves for the holiday season. TIME IS STILL TO 
+ BE DETERMINED SO DONT GO BY THE TIME SET ON THIS EVENT YET 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be participating in Wreaths across America and helping to lay wreaths on graves for the holiday season.</p><p>TIME IS STILL TO BE DETERMINED SO DONT GO BY THE TIME SET ON THIS EVENT YET</p></BODY></HTML>
+DTSTART;TZID=UTC:20251213T140000
+DTEND;TZID=UTC:20251214T020000
+LOCATION:TBD
+GEO:40.712776;-74.005974
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evtalw9gkh3u-20251210T160956
+DTSTAMP;TZID=UTC:20250714T163718
+LAST-MODIFIED;TZID=UTC:20251210T160956
+SUMMARY:Christmas Party
+DESCRIPTION: We will be having a Christmas party for the girls so Please 
+ bring a snack to share that is nut and seed free and labeled for those 
+ with other allergies. There will be no gift exchange this year instead 
+ the girls will be making gingerbread houses during the party. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be having a Christmas party for the girls so Please bring a snack to share that is nut and seed free and labeled for those with other allergies.</p><p>There will be no gift exchange this year instead the girls will be making gingerbread houses during the party.</p></BODY></HTML>
+DTSTART;TZID=UTC:20251215T233000
+DTEND;TZID=UTC:20251216T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evkmhwxawqfd-20250729T135337
+DTSTAMP;TZID=UTC:20250729T135325
+LAST-MODIFIED;TZID=UTC:20250729T135337
+SUMMARY:NO MEETING
+DESCRIPTION: We will be off for the holidays 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be off for the holidays</p></BODY></HTML>
+DTSTART;TZID=UTC:20251222T230000
+DTEND;TZID=UTC:20251223T010000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evcaeyav5wu1-20250729T135354
+DTSTAMP;TZID=UTC:20250729T135354
+LAST-MODIFIED;TZID=UTC:20250729T135354
+SUMMARY:NO MEETING
+DESCRIPTION: We will be off for the holidays 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be off for the holidays</p></BODY></HTML>
+DTSTART;TZID=UTC:20251229T230000
+DTEND;TZID=UTC:20251230T010000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evwugmemgwaw-20250729T135558
+DTSTAMP;TZID=UTC:20250714T163732
+LAST-MODIFIED;TZID=UTC:20250729T135558
+SUMMARY:Bring a Friend Night Meeting
+DESCRIPTION: We will be working on normal badgework tonight, But this is 
+ the night we set aside for inviting a friend. This is a requirement for 
+ the Tenderheart and Explorer level up awards. These awards are optional 
+ to earn. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be working on normal badgework tonight,</p><p>But this is the night we set aside for inviting a friend. This is a requirement for the Tenderheart and Explorer level up awards. These awards are optional to earn.</p></BODY></HTML>
+DTSTART;TZID=UTC:20260105T233000
+DTEND;TZID=UTC:20260106T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evb16uwzpbtd-20250821T225842
+DTSTAMP;TZID=UTC:20250714T163735
+LAST-MODIFIED;TZID=UTC:20250821T225842
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260112T233000
+DTEND;TZID=UTC:20260113T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjowjwtoaed-20250821T225917
+DTSTAMP;TZID=UTC:20250714T163742
+LAST-MODIFIED;TZID=UTC:20250821T225917
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260119T233000
+DTEND;TZID=UTC:20260120T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evgp9gsdku9p-20250729T135653
+DTSTAMP;TZID=UTC:20250714T163744
+LAST-MODIFIED;TZID=UTC:20250729T135653
+SUMMARY:Service Hour Meeting
+DESCRIPTION: We will be making blankets for a pet shelter 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be making blankets for a pet shelter</p></BODY></HTML>
+DTSTART;TZID=UTC:20260126T233000
+DTEND;TZID=UTC:20260127T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjaxbwfv0tz-20260113T003408
+DTSTAMP;TZID=UTC:20250729T140215
+LAST-MODIFIED;TZID=UTC:20260113T003408
+SUMMARY:Lock in (full Troop)
+DESCRIPTION: We will be spending the night at the church having some with 
+ games and a bible study. Please bring a snack to share for the Friday 
+ night fun . Tenderhearts require a parent AHG Member to be present for 
+ all sleepovers Cost is $5 per person for breakfast supplies. Payment can 
+ be made through Zeffy with this link  
+ zeffy.com/en-US/ticketing/lock-in-jan-full-troop , or by cash or check at 
+ sign in time. Bring Air mattress- camping cot Sleeping bag Toothbrush and 
+ toothpaste/ hair brush change of cloths pillows 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be spending the night at the church having some with games and a bible study.</p> <p><b>Please bring a snack to share for the Friday night fun</b>.</p> <p>Tenderhearts require a parent AHG Member to be present for all sleepovers</p> <p>Cost is $5 per person for breakfast supplies. Payment can be made through Zeffy with this link <a href="https://www.zeffy.com/en-US/ticketing/lock-in-jan-full-troop" target="_blank" rel="noreferrer noopener">zeffy.com/en-US/ticketing/lock-in-jan-full-troop , <span style="color:#000000;">or by cash or check at sign in time.</span></a></p> <p>Bring</p> <p>Air mattress- camping cot</p> <p>Sleeping bag</p> <p>Toothbrush and toothpaste/ hair brush</p> <p>change of cloths</p> <p>pillows</p></BODY></HTML>
+DTSTART;TZID=UTC:20260130T230000
+DTEND;TZID=UTC:20260131T160000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evkhx4jv7jzh-20250821T225950
+DTSTAMP;TZID=UTC:20250714T163749
+LAST-MODIFIED;TZID=UTC:20250821T225950
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260202T233000
+DTEND;TZID=UTC:20260203T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evz0ajmtupmy-20250821T230049
+DTSTAMP;TZID=UTC:20250714T163751
+LAST-MODIFIED;TZID=UTC:20250821T230049
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260209T233000
+DTEND;TZID=UTC:20260210T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqz6qhjbht3-20250821T230107
+DTSTAMP;TZID=UTC:20250729T140420
+LAST-MODIFIED;TZID=UTC:20250821T230107
+SUMMARY:NO MEETING
+DESCRIPTION: We will be off for the holidays 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be off for the holidays</p></BODY></HTML>
+DTSTART;TZID=UTC:20260216T230000
+DTEND;TZID=UTC:20260217T010000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evnwlhnaks5i-20260430T135459
+DTSTAMP;TZID=UTC:20250729T141401
+LAST-MODIFIED;TZID=UTC:20260430T135459
+SUMMARY:Blankets for animals Service Hour Meeting
+DESCRIPTION: Made blankets for pet shelters 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Made blankets for pet shelters</p> <p></p></BODY></HTML>
+DTSTART;TZID=UTC:20260223T233000
+DTEND;TZID=UTC:20260224T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evvy35b6jhdf-20260225T165139
+DTSTAMP;TZID=UTC:20250729T141306
+LAST-MODIFIED;TZID=UTC:20260225T165139
+SUMMARY:Cabin Campout at Camp Hickory Hill
+DESCRIPTION: Join us for a fun weekend at camp Hickory Hill. Tenderhearts 
+ require a Parent Adult member to be present for all overnights. We will 
+ be working on some badgework but also having fun playing in the gym. The 
+ badgework we will be working on will be a part of the Explorers troop 
+ badgework for this year. This means if you have an Explorer and they can 
+ not make it to this campout you will need to make up this work on your 
+ own to earn this badge. Cost is $50 per person. you can pay through zeffy 
+ with this link  
+ zeffy.com/en-US/ticketing/feb-cabin-campout-at-camp-hickory-hill  or by 
+ cash or check at sign in time. This payment is due by Feb 16th. Things to 
+ bring sleeping bag/ pillow/ extra blankets Cloths for the weather ( we 
+ will be outside for different parts of the day) Toiletries (there are 
+ showers) Mess kit refillable bottle for water throughout the day 
+ flashlight coat / hat/ gloves/ winter boots Please also bring a second 
+ pair of sneakers as we can only use clean shoes on the carpeted gym floor 
+ for when we are playing games.  
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a fun weekend at camp Hickory Hill.</p> <p>Tenderhearts require a Parent Adult member to be present for all overnights.</p> <p>We will be working on some badgework but also having fun playing in the gym. </p> <p><b>The badgework we will be working on will be a part of the Explorers troop badgework for this year. This means if you have an Explorer and they can not make it to this campout you will need to make up this work on your own to earn this badge.</b></p> <p>Cost is $50 per person. you can pay through zeffy with this link <a href="https://www.zeffy.com/en-US/ticketing/feb-cabin-campout-at-camp-hickory-hill" target="_blank" rel="noreferrer noopener">zeffy.com/en-US/ticketing/feb-cabin-campout-at-camp-hickory-hill  <span style="color:#000000;">or by cash or check at sign in time.</span></a></p> <p><span style="color:#000000;">This payment is due by Feb 16th.</span></p> <p>Things to bring</p> <p>sleeping bag/ pillow/ extra blankets</p> <p>Cloths for the weather ( we will be outside for different parts of the day)</p> <p>Toiletries (there are showers)</p> <p>Mess kit</p> <p><b>refillable bottle for water </b>throughout the day</p> <p>flashlight</p> <p>coat / hat/ gloves/ winter boots</p> <p>Please also bring a <b>second pair of sneakers</b> as we can only use clean shoes on the carpeted gym floor for when we are playing games. </p> <p></p></BODY></HTML>
+DTSTART;TZID=UTC:20260227T230000
+DTEND;TZID=UTC:20260301T140000
+LOCATION:2970 Kohler Rd Varysburg, NY, 14167
+GEO:42.742722;-78.324799
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evmcih39heia-20250821T230135
+DTSTAMP;TZID=UTC:20250714T163803
+LAST-MODIFIED;TZID=UTC:20250821T230135
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260302T233000
+DTEND;TZID=UTC:20260303T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evlelerfc2py-20250729T142006
+DTSTAMP;TZID=UTC:20250729T141855
+LAST-MODIFIED;TZID=UTC:20250729T142006
+SUMMARY:Derby Car Build day
+DESCRIPTION: Join us to build your derby car all in one go. We will have 
+ the tools needed to help you from start to finish. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to build your derby car all in one go.</p><p>We will have the tools needed to help you from start to finish.</p></BODY></HTML>
+DTSTART;TZID=UTC:20260307T180000
+DTEND;TZID=UTC:20260307T210000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eviudhc6msa1-20250821T230507
+DTSTAMP;TZID=UTC:20250714T163805
+LAST-MODIFIED;TZID=UTC:20250821T230507
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260309T223000
+DTEND;TZID=UTC:20260310T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsfolq2nekx-20250821T230524
+DTSTAMP;TZID=UTC:20250714T163808
+LAST-MODIFIED;TZID=UTC:20250821T230524
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260316T223000
+DTEND;TZID=UTC:20260317T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evh3u8nw9y69-20260319T013628
+DTSTAMP;TZID=UTC:20250729T142401
+LAST-MODIFIED;TZID=UTC:20260319T013628
+SUMMARY:Timber Derby
+DESCRIPTION: Help us as part of the race crew (mostly adult roles, some 
+ available to youth):  
+ https://www.signupgenius.com/go/10C0C45A9AD29A3F4C43-62712680-2026 Since 
+ we can't call it a Pinewood Derby due to copyright laws, we've decided to 
+ adopt the name of "Timber Derby". No matter what you call it, it's a lot 
+ of fun! Design your car, cut it, sand it smooth, paint it, put the wheels 
+ on and then it's time to RACE! The race is open to all registered youth, 
+ but guests are welcome to come cheer on the racers. Be sure to read and 
+ understand our official rules. Though we don't want to disqualify anyone, 
+ we do need to stick to the rules to make the race fair for everyone. 
+ Anyone not meeting the rules will be put into an "Outlaw" class. They 
+ will still be allowed to race, but will not qualify for a trophy. The 
+ "Outlaw" class will only be restricted by the overall size and weight 
+ limits in the official rules.  ​Adults can participate as "Outlaws" 
+ this year. CHECK IN will start at 9:15 and run until 10:15. The RACE will 
+ start promptly at 10:30. Make sure you have checked your car in by 10:15 
+ to be able to race. Late entries will not be allowed. All racers must 
+ check their cars in with race staff. Once a car has been weighed and 
+ fully checked in, it will be placed in the staging area until the race. 
+ Modifications to cars are only allowed before they are fully checked in. 
+ After they have been checked in, no modifications can be made. Mechanical 
+ failures during the race will be assessed on an individual basis, and 
+ repairs may be allowed. Time limits for repairs and post-repair 
+ inspections will be up to the race officials. Uniforms are REQUIRED for 
+ all registered youth who are racing. There will be a small concession 
+ stand available for purchasing refreshments. We need donations of small, 
+ individually wrapped items to be able to sell. The proceeds will go 
+ toward the awards for the race. Please remember that we have individuals 
+ with nut and other allergies, so NO NUTS OR BEANS (including things like 
+ Humus) . We can use things like chips, cookies, juice boxes, water 
+ bottles, fruit, etc. Home made items are fine, but please bring a label 
+ to identify the item with a list of ingredients. We will also have pizza 
+ available for purchase. Please see Bryan with any questions or concerns. 
+ We can't wait to see you there. Good Luck! NY2911 Timber Derby Official 
+ Rules 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p><strong>Help us as part of the race crew (mostly adult roles, some available to youth): <a href="https://www.signupgenius.com/go/10C0C45A9AD29A3F4C43-62712680-2026" target="_blank" rel="noreferrer noopener">https://www.signupgenius.com/go/10C0C45A9AD29A3F4C43-62712680-2026</a></strong></p> <p>Since we can't call it a Pinewood Derby due to copyright laws, we've decided to adopt the name of "Timber Derby". No matter what you call it, it's a lot of fun! Design your car, cut it, sand it smooth, paint it, put the wheels on and then it's time to RACE! The race is open to all registered youth, but guests are welcome to come cheer on the racers. Be sure to read and understand our official rules. Though we don't want to disqualify anyone, we do need to stick to the rules to make the race fair for everyone.</p> <p>Anyone not meeting the rules will be put into an "Outlaw" class. They will still be allowed to race, but will not qualify for a trophy. The "Outlaw" class will only be restricted by the overall size and weight limits in the official rules. <strong>​Adults can participate as "Outlaws" this year.</strong></p> <p>CHECK IN will start at 9:15 and run until 10:15. The RACE will start promptly at 10:30. Make sure you have checked your car in by 10:15 to be able to race. Late entries will not be allowed.</p> <p>All racers must check their cars in with race staff. Once a car has been weighed and fully checked in, it will be placed in the staging area until the race. Modifications to cars are only allowed before they are fully checked in. After they have been checked in, no modifications can be made. Mechanical failures during the race will be assessed on an individual basis, and repairs may be allowed. Time limits for repairs and post-repair inspections will be up to the race officials.</p> <p>Uniforms are REQUIRED for all registered youth who are racing.</p> <p>There will be a small concession stand available for purchasing refreshments. We need donations of small, individually wrapped items to be able to sell. The proceeds will go toward the awards for the race. Please remember that we have individuals with nut and other allergies, so <strong>NO NUTS OR BEANS (including things like Humus)</strong>. We can use things like chips, cookies, juice boxes, water bottles, fruit, etc. Home made items are fine, but please bring a label to identify the item with a list of ingredients. We will also have pizza available for purchase.<br /></p> <p>Please see Bryan with any questions or concerns. We can't wait to see you there. Good Luck!</p> <p><a href="https://www.traillifeconnect.com/getdoc/doci1ceaojdg" target="_blank" rel="noreferrer noopener">NY2911 Timber Derby Official Rules</a></p></BODY></HTML>
+DTSTART;TZID=UTC:20260321T130000
+DTEND;TZID=UTC:20260321T180000
+LOCATION:1125 Calkins Road Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evj2gftk5aka-20260430T135539
+DTSTAMP;TZID=UTC:20250729T141520
+LAST-MODIFIED;TZID=UTC:20260430T135539
+SUMMARY:Blankets for animals Service Hour Meeting
+DESCRIPTION: Made blankets for pet shelters 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Made blankets for pet shelters</p></BODY></HTML>
+DTSTART;TZID=UTC:20260323T223000
+DTEND;TZID=UTC:20260324T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eve7a3fkt2ob-20260209T201432
+DTSTAMP;TZID=UTC:20250714T163814
+LAST-MODIFIED;TZID=UTC:20260209T201432
+SUMMARY:Float Planning Meeting
+DESCRIPTION: Join us to brainstorm and come up with our float design and 
+ materials needed list for this years float. The more people that come the 
+ better ideas we can come up with 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to brainstorm and come up with our float design and materials needed list for this years float.</p> <p>The more people that come the better ideas we can come up with</p></BODY></HTML>
+DTSTART;TZID=UTC:20260330T223000
+DTEND;TZID=UTC:20260331T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evfqzgqrkslh-20250821T230200
+DTSTAMP;TZID=UTC:20250714T163820
+LAST-MODIFIED;TZID=UTC:20250821T230200
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260406T223000
+DTEND;TZID=UTC:20260407T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evziub4cb73o-20260331T183113
+DTSTAMP;TZID=UTC:20250729T143317
+LAST-MODIFIED;TZID=UTC:20260331T183113
+SUMMARY:Father Daughter event
+DESCRIPTION: We will be getting together for pizza and games. Bring your 
+ favorite family game to play so we can play it with friends. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be getting together for pizza and games.</p><p>Bring your favorite family game to play so we can play it with friends.</p> <p></p></BODY></HTML>
+DTSTART;TZID=UTC:20260410T220000
+DTEND;TZID=UTC:20260411T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evchqrardlaa-20250821T230713
+DTSTAMP;TZID=UTC:20250714T163822
+LAST-MODIFIED;TZID=UTC:20250821T230713
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260413T223000
+DTEND;TZID=UTC:20260414T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evan06qgm8jg-20250821T230729
+DTSTAMP;TZID=UTC:20250714T163824
+LAST-MODIFIED;TZID=UTC:20250821T230729
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260420T223000
+DTEND;TZID=UTC:20260421T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evo83lcgwmza-20260428T154305
+DTSTAMP;TZID=UTC:20250729T143336
+LAST-MODIFIED;TZID=UTC:20260428T154305
+SUMMARY:Regular meeting
+DESCRIPTION: We may end up doing this service hours on another night We 
+ are looking to help out the food link orginization in some way this month 
+ Details to come 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We may end up doing this service hours on another night</p> <p>We are looking to help out the food link orginization in some way this month</p> <p>Details to come</p></BODY></HTML>
+DTSTART;TZID=UTC:20260427T223000
+DTEND;TZID=UTC:20260428T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eveynna80tdh-20260427T134801
+DTSTAMP;TZID=UTC:20250729T143839
+LAST-MODIFIED;TZID=UTC:20260427T134801
+SUMMARY:Float Build day
+DESCRIPTION: Join us to make our vision come to life. We will meet at the 
+ church to build the float we have designed. The more hands make light 
+ work saying comes into play here. We need your help to make this vision 
+ come to life. So if you plan to come walk in the parade with us. Please 
+ come help us make the float. Thank you in advance to those who can make 
+ it! We look forward to having fun making this vision come to life. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to make our vision come to life. We will meet at the church to build the float we have designed.</p><p>The more hands make light work saying comes into play here. We need your help to make this vision come to life. So if you plan to come walk in the parade with us. Please come help us make the float. </p><p>Thank you in advance to those who can make it! We look forward to having fun making this vision come to life. </p></BODY></HTML>
+DTSTART;TZID=UTC:20260502T170000
+DTEND;TZID=UTC:20260502T210000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evlqqcp4arnn-20250821T230804
+DTSTAMP;TZID=UTC:20250714T163842
+LAST-MODIFIED;TZID=UTC:20250821T230804
+SUMMARY:Regular Meeting
+DESCRIPTION: Badgework night 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Badgework night</p></BODY></HTML>
+DTSTART;TZID=UTC:20260504T223000
+DTEND;TZID=UTC:20260505T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eveonbuit8pa-20250729T144309
+DTSTAMP;TZID=UTC:20250714T163903
+LAST-MODIFIED;TZID=UTC:20250729T144309
+SUMMARY:Ceremony practice Meeting
+DESCRIPTION: We will be going through the flow of the ceremony night so 
+ girls know where to go and when during our end of year ceremony 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be going through the flow of the ceremony night so girls know where to go and when during our end of year ceremony</p></BODY></HTML>
+DTSTART;TZID=UTC:20260511T223000
+DTEND;TZID=UTC:20260512T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjypczew3yn-20250821T230851
+DTSTAMP;TZID=UTC:20250714T163905
+LAST-MODIFIED;TZID=UTC:20250821T230851
+SUMMARY:End of year Ceremony
+DESCRIPTION: Please make sure to arrive early so we can start on time as 
+ there is alot to get through for both troops. Be in full uniform We start 
+ at 6pm instead of 6:30 so please arrive by 5:45 Please bring a snack to 
+ shar as well for after the ceremony for a time of fellowship and 
+ celebration of what the girls earned- Nut and seed free as well as 
+ labeled for those with other allergies 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Please make sure to arrive early so we can start on time as there is alot to get through for both troops.</p><p>Be in full uniform</p><p>We start at 6pm instead of 6:30 so please arrive by 5:45</p><p>Please bring a snack to shar as well for after the ceremony for a time of fellowship and celebration of what the girls earned- Nut and seed free as well as labeled for those with other allergies</p></BODY></HTML>
+DTSTART;TZID=UTC:20260518T220000
+DTEND;TZID=UTC:20260519T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.068005;-77.595024
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eva8g9qceahy-20260522T143726
+DTSTAMP;TZID=UTC:20250729T144157
+LAST-MODIFIED;TZID=UTC:20260522T143726
+SUMMARY:cancelled PiPa Lock in
+DESCRIPTION: Sorry for the last minute notice. Lock in cancelled 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Sorry for the last minute notice. </p><p>Lock in cancelled</p></BODY></HTML>
+DTSTART;TZID=UTC:20260522T220000
+DTEND;TZID=UTC:20260523T150000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evuklkbxe5ty-20260526T232542
+DTSTAMP;TZID=UTC:20260504T190216
+LAST-MODIFIED;TZID=UTC:20260526T232542
+SUMMARY:PiPa meeting
+DESCRIPTION: Pipa Summer meeting to finish the Theater badge. Let me know 
+ if you can make it. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Pipa Summer meeting to finish the Theater badge.</p><p>Let me know if you can make it.</p></BODY></HTML>
+DTSTART;TZID=UTC:20260601T223000
+DTEND;TZID=UTC:20260602T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evavhakd9fsv-20260527T143821
+DTSTAMP;TZID=UTC:20250729T144838
+LAST-MODIFIED;TZID=UTC:20260527T143821
+SUMMARY:Campout
+DESCRIPTION: Join us for a campout Place to be determined Tenderhearts 
+ Require an Parent adult member to be present for all overnights Here is 
+ the link for Payment on Zeffy. 
+ zeffy.com/en-US/ticketing/june-campout--2026 Payments are due by June 
+ 5th. Things to bring: Refillable water bottle Sneakers Sleeping bag, 
+ Pillow, Blankets Rain gear Spare cloths in case we get wet Flashlight 
+ Sweater/coat Toothbrush /hairbrush/ toiletries (no showers) sunscreen Bug 
+ spray mess kit (you can find them cheap at walmart, or create your own at 
+ the dollar store) Plate, bowl, cup silverware 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a campout Place to be determined</p> <p>Tenderhearts Require an Parent adult member to be present for all overnights</p> <p>Here is the link for Payment on Zeffy.</p> <p><a href="https://www.zeffy.com/en-US/ticketing/june-campout--2026" target="_blank" rel="noreferrer noopener">zeffy.com/en-US/ticketing/june-campout--2026</a></p> <p><b>Payments are due by June 5th.</b></p> <p>Things to bring:</p> <p>Refillable water bottle</p> <p>Sneakers</p> <p>Sleeping bag, Pillow, Blankets</p> <p>Rain gear</p> <p>Spare cloths in case we get wet</p> <p>Flashlight</p> <p>Sweater/coat</p> <p>Toothbrush /hairbrush/ toiletries (no showers)</p> <p>sunscreen</p> <p>Bug spray</p> <p>mess kit (you can find them cheap at walmart, or create your own at the dollar store) Plate, bowl, cup silverware</p> <p></p></BODY></HTML>
+DTSTART;TZID=UTC:20260612T220000
+DTEND;TZID=UTC:20260614T140000
+LOCATION:4661 Shauger Rd Cameron Mills, NY, 14820
+GEO:42.224571;-77.341209
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evwh8svangx0-20260615T193336
+DTSTAMP;TZID=UTC:20260504T190255
+LAST-MODIFIED;TZID=UTC:20260615T193336
+SUMMARY:Cancelling tonights PiPa meeting
+DESCRIPTION: Tonights meeting is being cancelled as we will not have 
+ enough girls to make practicing the play worth it. We hope to see you in 
+ 2 weeks though! Enjoy your week. Summer meeting to finish the Theater 
+ badge 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Tonights meeting is being cancelled as we will not have enough girls to make practicing the play worth it. We hope to see you in 2 weeks though!</p><p>Enjoy your week.</p><p>Summer meeting to finish the Theater badge</p></BODY></HTML>
+DTSTART;TZID=UTC:20260615T223000
+DTEND;TZID=UTC:20260616T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evxhrhm113xf-20260531T170311
+DTSTAMP;TZID=UTC:20260504T191125
+LAST-MODIFIED;TZID=UTC:20260531T170311
+SUMMARY:Board and leader planning meeting
+DESCRIPTION:Board and leader planning meeting
+DTSTART;TZID=UTC:20260622T220000
+DTEND;TZID=UTC:20260623T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsnn0urcvcj-20260615T191314
+DTSTAMP;TZID=UTC:20260504T190257
+LAST-MODIFIED;TZID=UTC:20260615T191314
+SUMMARY:PiPa meeting
+DESCRIPTION: Summer meeting to finish the Theater badge 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Summer meeting to finish the Theater badge</p></BODY></HTML>
+DTSTART;TZID=UTC:20260629T223000
+DTEND;TZID=UTC:20260630T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqiin1hupsk-20260706T160517
+DTSTAMP;TZID=UTC:20260504T190304
+LAST-MODIFIED;TZID=UTC:20260706T160517
+SUMMARY:PiPa meeting
+DESCRIPTION: Summer meeting to finish the Theater badge We are going to 
+ start working on the dance for the play so we need as many of you there 
+ as possible! 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Summer meeting to finish the Theater badge</p><p>We are going to start working on the dance for the play so we need as many of you there as possible!</p></BODY></HTML>
+DTSTART;TZID=UTC:20260713T223000
+DTEND;TZID=UTC:20260714T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evluzia885ai-20260718T120009
+DTSTAMP;TZID=UTC:20250729T145202
+LAST-MODIFIED;TZID=UTC:20260718T120009
+SUMMARY:canceled Hike
+DESCRIPTION: Due to on and off thunderstorms we are canceling today's 
+ hike. Join us for a hike in the woods and some time to hang out/catch up 
+ mid summer. Bring water and proper hiking gear.  Only close toed shoes 
+ for any AHG events! Bring a lunch to possibly eat along the way on the 
+ hike. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Due to on and off thunderstorms we are canceling today's hike.</p><p>Join us for a hike in the woods and some time to hang out/catch up mid summer. Bring water and proper hiking gear. </p> <p>Only close toed shoes for any AHG events!</p> <p>Bring a lunch to possibly eat along the way on the hike.</p></BODY></HTML>
+DTSTART;TZID=UTC:20260718T140000
+DTEND;TZID=UTC:20260718T170000
+LOCATION:1135 Empire Blvd Rochester, NY, 14609
+GEO:43.170197;-77.527519
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evdaomke8cgo-20260504T191214
+DTSTAMP;TZID=UTC:20260504T191214
+LAST-MODIFIED;TZID=UTC:20260504T191214
+SUMMARY:Board and leader planning meeting
+DESCRIPTION:Board and leader planning meeting
+DTSTART;TZID=UTC:20260720T220000
+DTEND;TZID=UTC:20260721T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evyhijxqyrvv-20260720T135937
+DTSTAMP;TZID=UTC:20260715T150407
+LAST-MODIFIED;TZID=UTC:20260720T135937
+SUMMARY:canceled PiPa meeting
+DESCRIPTION: Summer meeting to finish the Theater badge We are going to 
+ start working on the dance for the play so we need as many of you there 
+ as possible! 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Summer meeting to finish the Theater badge</p> <p>We are going to start working on the dance for the play so we need as many of you there as possible!</p></BODY></HTML>
+DTSTART;TZID=UTC:20260720T223000
+DTEND;TZID=UTC:20260721T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evluawqjcd9o-20260504T190419
+DTSTAMP;TZID=UTC:20260504T190419
+LAST-MODIFIED;TZID=UTC:20260504T190419
+SUMMARY:PiPa meeting
+DESCRIPTION: Summer meeting to finish the Theater badge 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Summer meeting to finish the Theater badge</p></BODY></HTML>
+DTSTART;TZID=UTC:20260727T223000
+DTEND;TZID=UTC:20260728T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evbmfygrslcd-20260504T190429
+DTSTAMP;TZID=UTC:20260504T190429
+LAST-MODIFIED;TZID=UTC:20260504T190429
+SUMMARY:PiPa meeting
+DESCRIPTION: Summer meeting to finish the Theater badge 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Summer meeting to finish the Theater badge</p></BODY></HTML>
+DTSTART;TZID=UTC:20260810T223000
+DTEND;TZID=UTC:20260811T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evhee7qbbiya-20260720T210510
+DTSTAMP;TZID=UTC:20250729T145400
+LAST-MODIFIED;TZID=UTC:20260720T210510
+SUMMARY:Campout
+DESCRIPTION: Join us for a full troop campout Planning to visit Watkins 
+ Glenn on Saturday. Come prepared to hike. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a full troop campout</p><p>Planning to visit Watkins Glenn on Saturday. Come prepared to hike.</p></BODY></HTML>
+DTSTART;TZID=UTC:20260814T220000
+DTEND;TZID=UTC:20260816T150000
+LOCATION:4281 Cotton Hanlon Road Montour Falls, NY, 14865
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-eve9gkv048a6-20260504T191231
+DTSTAMP;TZID=UTC:20260504T191231
+LAST-MODIFIED;TZID=UTC:20260504T191231
+SUMMARY:Board and leader planning meeting
+DESCRIPTION:Board and leader planning meeting
+DTSTART;TZID=UTC:20260817T220000
+DTEND;TZID=UTC:20260818T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsk5epcsgcm-20260504T190433
+DTSTAMP;TZID=UTC:20260504T190433
+LAST-MODIFIED;TZID=UTC:20260504T190433
+SUMMARY:PiPa meeting
+DESCRIPTION: Summer meeting to finish the Theater badge 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Summer meeting to finish the Theater badge</p></BODY></HTML>
+DTSTART;TZID=UTC:20260824T223000
+DTEND;TZID=UTC:20260825T000000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjk6aqejvub-20250729T145650
+DTSTAMP;TZID=UTC:20250729T145650
+LAST-MODIFIED;TZID=UTC:20250729T145650
+SUMMARY:Parent meeting
+DESCRIPTION: Join us in welcoming new girls and gathering the paperwork 
+ needed for the new year. Bring your girls so they can play games with 
+ anyone new that comes 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us in welcoming new girls and gathering the paperwork needed for the new year.</p><p>Bring your girls so they can play games with anyone new that comes </p></BODY></HTML>
+DTSTART;TZID=UTC:20260831T103000
+DTEND;TZID=UTC:20260901T000000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evnrfnbiator-20260720T162036
+DTSTAMP;TZID=UTC:20260720T162036
+LAST-MODIFIED;TZID=UTC:20260720T162036
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20260914T221500
+DTEND;TZID=UTC:20260915T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evl3usec2kas-20260720T162454
+DTSTAMP;TZID=UTC:20260720T162425
+LAST-MODIFIED;TZID=UTC:20260720T162454
+SUMMARY:National Day of Service
+DESCRIPTION: Join us to deep clean the church as a thank you for allowing 
+ us to use the building for our meetings for the year. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to deep clean the church as a thank you for allowing us to use the building for our meetings for the year.</p></BODY></HTML>
+DTSTART;TZID=UTC:20260919T140000
+DTEND;TZID=UTC:20260919T160000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evc1xpxmdedq-20260720T162109
+DTSTAMP;TZID=UTC:20260720T162109
+LAST-MODIFIED;TZID=UTC:20260720T162109
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20260921T221500
+DTEND;TZID=UTC:20260922T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evd89wxvvqmf-20260720T162111
+DTSTAMP;TZID=UTC:20260720T162111
+LAST-MODIFIED;TZID=UTC:20260720T162111
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20260928T221500
+DTEND;TZID=UTC:20260929T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evhvxi19ws8c-20260720T162533
+DTSTAMP;TZID=UTC:20260720T162533
+LAST-MODIFIED;TZID=UTC:20260720T162533
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261005T221500
+DTEND;TZID=UTC:20261006T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evrav9leomuj-20260720T162538
+DTSTAMP;TZID=UTC:20260720T162538
+LAST-MODIFIED;TZID=UTC:20260720T162538
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261012T221500
+DTEND;TZID=UTC:20261013T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evzaagrfrgus-20260720T162540
+DTSTAMP;TZID=UTC:20260720T162540
+LAST-MODIFIED;TZID=UTC:20260720T162540
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261019T221500
+DTEND;TZID=UTC:20261020T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evcqmph8ckmc-20260720T162936
+DTSTAMP;TZID=UTC:20260720T162846
+LAST-MODIFIED;TZID=UTC:20260720T162936
+SUMMARY:Service hour meeting
+DESCRIPTION:Service hour meeting
+DTSTART;TZID=UTC:20261026T221500
+DTEND;TZID=UTC:20261027T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsmk5vusl8z-20260720T162959
+DTSTAMP;TZID=UTC:20260720T162959
+LAST-MODIFIED;TZID=UTC:20260720T162959
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261102T231500
+DTEND;TZID=UTC:20261103T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evry81vdq3vq-20260720T163000
+DTSTAMP;TZID=UTC:20260720T163000
+LAST-MODIFIED;TZID=UTC:20260720T163000
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261109T231500
+DTEND;TZID=UTC:20261110T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evkqybshfsm1-20260720T163003
+DTSTAMP;TZID=UTC:20260720T163003
+LAST-MODIFIED;TZID=UTC:20260720T163003
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261116T231500
+DTEND;TZID=UTC:20261117T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjwq61xvblg-20260720T163037
+DTSTAMP;TZID=UTC:20260720T163013
+LAST-MODIFIED;TZID=UTC:20260720T163037
+SUMMARY:Service hour meeting
+DESCRIPTION:Service hour meeting
+DTSTART;TZID=UTC:20261123T231500
+DTEND;TZID=UTC:20261124T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqm71cgsa7r-20260720T163254
+DTSTAMP;TZID=UTC:20260720T163127
+LAST-MODIFIED;TZID=UTC:20260720T163254
+SUMMARY:Service hour meeting
+DESCRIPTION: We will be delivering the cookie trays to fire houses and 
+ Police stations in the area. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be delivering the cookie trays to fire houses and Police stations in the area.</p></BODY></HTML>
+DTSTART;TZID=UTC:20261124T160000
+DTEND;TZID=UTC:20261124T170000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evtyoeftvzio-20260720T163023
+DTSTAMP;TZID=UTC:20260720T163005
+LAST-MODIFIED;TZID=UTC:20260720T163023
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261130T231500
+DTEND;TZID=UTC:20261201T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evc67of0mtwd-20260720T163441
+DTSTAMP;TZID=UTC:20260720T163441
+LAST-MODIFIED;TZID=UTC:20260720T163441
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20261207T231500
+DTEND;TZID=UTC:20261208T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evzw0gzn3g45-20260720T163816
+DTSTAMP;TZID=UTC:20260720T163446
+LAST-MODIFIED;TZID=UTC:20260720T163816
+SUMMARY:Caroling
+DESCRIPTION: Join us to carol for the neighbors of the church we use for 
+ meetings or for caroling at nursing home. Full details to come. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to carol for the neighbors of the church we use for meetings or for caroling at nursing home. Full details to come.</p></BODY></HTML>
+DTSTART;TZID=UTC:20261214T231500
+DTEND;TZID=UTC:20261215T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evfm9foyy4w6-20260720T163629
+DTSTAMP;TZID=UTC:20260720T163454
+LAST-MODIFIED;TZID=UTC:20260720T163629
+SUMMARY:Wreaths Across America placement
+DESCRIPTION: Join us to place the wreaths on the graves of Vets to 
+ decorate them for the holidays. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to place the wreaths on the graves of Vets to decorate them for the holidays.</p></BODY></HTML>
+DTSTART;TZID=UTC:20261219T231500
+DTEND;TZID=UTC:20261220T010000
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evcmnfxijgba-20260720T164055
+DTSTAMP;TZID=UTC:20260720T163855
+LAST-MODIFIED;TZID=UTC:20260720T164055
+SUMMARY:Christmas Party
+DESCRIPTION: Join us to celebrate the birth of Jesus. Please Bring a 
+ snack to share, No nuts or seeds allowed(hummus included) and all home 
+ made items need to be labeled with ingredients please. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to celebrate the birth of Jesus. Please Bring a snack to share, No nuts or seeds allowed(hummus included) and all home made items need to be labeled with ingredients please.</p></BODY></HTML>
+DTSTART;TZID=UTC:20261221T231500
+DTEND;TZID=UTC:20261222T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evevwa2kn52f-20260720T164303
+DTSTAMP;TZID=UTC:20260720T164303
+LAST-MODIFIED;TZID=UTC:20260720T164303
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270104T231500
+DTEND;TZID=UTC:20270105T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsotbkiq0oa-20260720T164500
+DTSTAMP;TZID=UTC:20260720T164314
+LAST-MODIFIED;TZID=UTC:20260720T164500
+SUMMARY:Bring a friend event/Regular Meeting
+DESCRIPTION: Bring a friend to see what we are about! For TH and EX level 
+ bringing a friend is a requirement for the level up award, If you want to 
+ earn it. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Bring a friend to see what we are about!</p><p>For TH and EX level bringing a friend is a requirement for the level up award, If you want to earn it.</p></BODY></HTML>
+DTSTART;TZID=UTC:20270111T231500
+DTEND;TZID=UTC:20270112T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsc3sh1i7lh-20260720T164512
+DTSTAMP;TZID=UTC:20260720T164512
+LAST-MODIFIED;TZID=UTC:20260720T164512
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270118T231500
+DTEND;TZID=UTC:20270119T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evdlu2jg1mtz-20260720T164515
+DTSTAMP;TZID=UTC:20260720T164515
+LAST-MODIFIED;TZID=UTC:20260720T164515
+SUMMARY:Service hour meeting
+DESCRIPTION:Service hour meeting
+DTSTART;TZID=UTC:20270125T231500
+DTEND;TZID=UTC:20270126T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evf66vqnq2uj-20260720T164946
+DTSTAMP;TZID=UTC:20260720T164946
+LAST-MODIFIED;TZID=UTC:20260720T164946
+SUMMARY:Lock in
+DESCRIPTION: Join us for a fun night of games, a bible study and 
+ fellowship. TH level needs a Mother to stay with her and they need to be 
+ a member to participate in an AHG event. Let me know if you need to 
+ become a member to be able to join us for this fun night. This process 
+ can take up to 2 weeks to complete so it should be started sooner than 
+ later. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a fun night of games, a bible study and fellowship.</p><p>TH level needs a Mother to stay with her and they need to be a member to participate in an AHG event. Let me know if you need to become a member to be able to join us for this fun night. This process can take up to 2 weeks to complete so it should be started sooner than later.</p></BODY></HTML>
+DTSTART;TZID=UTC:20270129T230000
+DTEND;TZID=UTC:20270130T160000
+LOCATION:1125 Calkins RD Rochester, NY, 14623
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evaleendahaw-20260720T165034
+DTSTAMP;TZID=UTC:20260720T165034
+LAST-MODIFIED;TZID=UTC:20260720T165034
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270201T231500
+DTEND;TZID=UTC:20270202T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evfqhsuuvn8q-20260720T165037
+DTSTAMP;TZID=UTC:20260720T165037
+LAST-MODIFIED;TZID=UTC:20260720T165037
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270208T231500
+DTEND;TZID=UTC:20270209T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evxtfmkpa5iz-20260720T165046
+DTSTAMP;TZID=UTC:20260720T165046
+LAST-MODIFIED;TZID=UTC:20260720T165046
+SUMMARY:Service hour meeting
+DESCRIPTION:Service hour meeting
+DTSTART;TZID=UTC:20270222T231500
+DTEND;TZID=UTC:20270223T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evqrfaidprer-20260720T165710
+DTSTAMP;TZID=UTC:20260720T165659
+LAST-MODIFIED;TZID=UTC:20260720T165710
+SUMMARY:Cabin Campout Hickory Hill
+DESCRIPTION: Join us for our winter cabin campout. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our winter cabin campout.</p></BODY></HTML>
+DTSTART;TZID=UTC:20270226T230000
+DTEND;TZID=UTC:20270228T150000
+LOCATION:2970 Kohler Rd Varysburg, NY, 14167
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evta87vdksjx-20260720T165101
+DTSTAMP;TZID=UTC:20260720T165101
+LAST-MODIFIED;TZID=UTC:20260720T165101
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270301T231500
+DTEND;TZID=UTC:20270302T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evglubsctz9u-20260720T170511
+DTSTAMP;TZID=UTC:20260720T170511
+LAST-MODIFIED;TZID=UTC:20260720T170511
+SUMMARY:Derby Build day
+DESCRIPTION: Join us to build your derby car. We will have all the tools 
+ needed to be able to complete a car from start to finish and adults 
+ available to help those who may need it. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to build your derby car. We will have all the tools needed to be able to complete a car from start to finish and adults available to help those who may need it.</p><p></p></BODY></HTML>
+DTSTART;TZID=UTC:20270306T190000
+DTEND;TZID=UTC:20270306T210000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsbddtt9rum-20260720T165104
+DTSTAMP;TZID=UTC:20260720T165104
+LAST-MODIFIED;TZID=UTC:20260720T165104
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270308T231500
+DTEND;TZID=UTC:20270309T010000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evv1ppzgewoa-20260720T165108
+DTSTAMP;TZID=UTC:20260720T165108
+LAST-MODIFIED;TZID=UTC:20260720T165108
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270315T221500
+DTEND;TZID=UTC:20270316T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evdfklniszch-20260720T171128
+DTSTAMP;TZID=UTC:20260720T171128
+LAST-MODIFIED;TZID=UTC:20260720T171128
+SUMMARY:Derby
+DESCRIPTION: Join us for our yearly Derby. Invite family and friends for 
+ the fun! Please bring a snack for the Concessions stand (this is how we 
+ make back the cost of the trophies). No nuts, seeds or hummus allowed. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our yearly Derby. </p><p>Invite family and friends for the fun!</p><p>Please bring a snack for the Concessions stand (this is how we make back the cost of the trophies). No nuts, seeds or hummus allowed.</p></BODY></HTML>
+DTSTART;TZID=UTC:20270320T130000
+DTEND;TZID=UTC:20270320T180000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evs0ibig2pbv-20260720T170306
+DTSTAMP;TZID=UTC:20260720T170202
+LAST-MODIFIED;TZID=UTC:20260720T170306
+SUMMARY:Optional Float building Meeting
+DESCRIPTION: Join us to plan out what our float for the memorial day 
+ parade will look like this year. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to plan out what our float for the memorial day parade will look like this year.</p></BODY></HTML>
+DTSTART;TZID=UTC:20270322T221500
+DTEND;TZID=UTC:20270323T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evmaqnucapym-20260720T170212
+DTSTAMP;TZID=UTC:20260720T170212
+LAST-MODIFIED;TZID=UTC:20260720T170212
+SUMMARY:Service hour meeting
+DESCRIPTION:Service hour meeting
+DTSTART;TZID=UTC:20270329T221500
+DTEND;TZID=UTC:20270330T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evpawjtx6ulb-20260720T171144
+DTSTAMP;TZID=UTC:20260720T171144
+LAST-MODIFIED;TZID=UTC:20260720T171144
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270405T221500
+DTEND;TZID=UTC:20270406T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evy02tyakgbm-20260720T171201
+DTSTAMP;TZID=UTC:20260720T171201
+LAST-MODIFIED;TZID=UTC:20260720T171201
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270412T221500
+DTEND;TZID=UTC:20270413T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evy2azicv9wi-20260720T171204
+DTSTAMP;TZID=UTC:20260720T171204
+LAST-MODIFIED;TZID=UTC:20260720T171204
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270419T221500
+DTEND;TZID=UTC:20270420T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evsymjlmks5s-20260720T171208
+DTSTAMP;TZID=UTC:20260720T171208
+LAST-MODIFIED;TZID=UTC:20260720T171208
+SUMMARY:Service hour meeting
+DESCRIPTION:Service hour meeting
+DTSTART;TZID=UTC:20270426T221500
+DTEND;TZID=UTC:20270427T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evhkmrxw6xs8-20260720T171226
+DTSTAMP;TZID=UTC:20260720T171226
+LAST-MODIFIED;TZID=UTC:20260720T171226
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270503T221500
+DTEND;TZID=UTC:20270504T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evaxbx9ckle7-20260720T171233
+DTSTAMP;TZID=UTC:20260720T171233
+LAST-MODIFIED;TZID=UTC:20260720T171233
+SUMMARY:Regular Meeting
+DESCRIPTION:Regular Meeting
+DTSTART;TZID=UTC:20270510T221500
+DTEND;TZID=UTC:20270511T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evliw322mrsp-20260720T171812
+DTSTAMP;TZID=UTC:20260720T171500
+LAST-MODIFIED;TZID=UTC:20260720T171812
+SUMMARY:Ceremony Practice
+DESCRIPTION: Important to be at so that the girls know the flow of the 
+ ceremony and when and where to stand on the stage for the ceremony next 
+ week! 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Important to be at so that the girls know the flow of the ceremony and when and where to stand on the stage for the ceremony next week!</p></BODY></HTML>
+DTSTART;TZID=UTC:20270517T221500
+DTEND;TZID=UTC:20270518T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evumoqzsov0f-20260720T171655
+DTSTAMP;TZID=UTC:20260720T171504
+LAST-MODIFIED;TZID=UTC:20260720T171655
+SUMMARY:End of year Ceremony
+DESCRIPTION: Invite family and friends to celebrate with you all the 
+ things you have done this past year. Please bring a snack to share after 
+ the ceremony while we fellowship together and celebrate the girls 
+ accomplishments. NO NUTS, SEEDS, or HUMMUS allowed 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Invite family and friends to celebrate with you all the things you have done this past year.</p><p>Please bring a snack to share after the ceremony while we fellowship together and celebrate the girls accomplishments.</p><p>NO NUTS, SEEDS, or HUMMUS allowed</p></BODY></HTML>
+DTSTART;TZID=UTC:20270524T221500
+DTEND;TZID=UTC:20270525T000000
+LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+END:VCALENDAR

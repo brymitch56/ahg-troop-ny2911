@@ -1,0 +1,177 @@
+/* AHG Troop NY2911 — brand styles (colors sampled from official AHG logos) */
+:root {
+  --ahg-blue: #0460AB;        /* PMS 293 — primary brand blue */
+  --ahg-blue-dark: #034a84;
+  --ahg-blue-darker: #033a68;
+  --ahg-red: #DA3A26;         /* logo arc red */
+  --ahg-red-dark: #b52e1d;
+  --ink: #1f2733;
+  --paper: #ffffff;
+  --paper-soft: #f2f6fa;
+  --border: #d8e2ec;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+}
+
+h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  background: var(--ahg-blue);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.site-header .brand { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+.site-header .brand img { height: 58px; display: block; }
+.site-header .troop-badge {
+  color: #fff;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  border-left: 2px solid rgba(255,255,255,0.45);
+  padding-left: 0.9rem;
+}
+.nav { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 6px;
+}
+.nav a:hover { background: var(--ahg-blue-dark); }
+.nav a.active { background: var(--ahg-blue-darker); }
+.nav a.nav-give { background: var(--ahg-red); }
+.nav a.nav-give:hover { background: var(--ahg-red-dark); }
+
+/* ---------- Hero ---------- */
+.hero {
+  background: linear-gradient(180deg, var(--ahg-blue) 0%, var(--ahg-blue-dark) 100%);
+  color: #fff;
+  text-align: center;
+  padding: 3.5rem 1.25rem 4rem;
+}
+.hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 0.5rem; }
+.hero .tagline {
+  font-size: 1.15rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #cfe3f5;
+  margin-bottom: 1.75rem;
+}
+.hero .btn-row { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+.btn-red { background: var(--ahg-red); color: #fff; }
+.btn-red:hover { background: var(--ahg-red-dark); }
+.btn-white { background: #fff; color: var(--ahg-blue); }
+.btn-white:hover { background: #e4eef7; }
+.btn-blue { background: var(--ahg-blue); color: #fff; }
+.btn-blue:hover { background: var(--ahg-blue-dark); }
+
+/* ---------- Page body ---------- */
+.container { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.25rem; }
+.page-title { color: var(--ahg-blue); font-size: 2rem; margin-bottom: 0.4rem; }
+.rule { width: 70px; height: 4px; background: var(--ahg-red); border: none; border-radius: 2px; margin: 0.6rem 0 1.5rem; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+.card {
+  background: var(--paper-soft);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--ahg-red);
+  border-radius: 10px;
+  padding: 1.4rem;
+}
+.card h3 { color: var(--ahg-blue); margin-bottom: 0.5rem; font-size: 1.15rem; }
+
+.meeting-box {
+  background: var(--paper-soft);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--ahg-blue);
+  border-radius: 10px;
+  padding: 1.4rem 1.6rem;
+  margin: 1.5rem 0;
+}
+.meeting-box strong { color: var(--ahg-blue); }
+
+/* ---------- Calendar ---------- */
+#calendar { max-width: 1000px; margin: 0 auto; }
+.cal-note { text-align: center; color: #5a6a7a; font-size: 0.95rem; margin-top: 1rem; font-family: "Segoe UI", Arial, sans-serif; }
+.fc .fc-button-primary { background: var(--ahg-blue); border-color: var(--ahg-blue); }
+.fc .fc-button-primary:hover { background: var(--ahg-blue-dark); border-color: var(--ahg-blue-dark); }
+.fc .fc-daygrid-event { background: var(--ahg-red); border-color: var(--ahg-red); }
+
+/* ---------- Members gate ---------- */
+.gate {
+  max-width: 430px;
+  margin: 3rem auto;
+  background: var(--paper-soft);
+  border: 1px solid var(--border);
+  border-top: 5px solid var(--ahg-blue);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+}
+.gate input[type="password"] {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+.gate .error { color: var(--ahg-red-dark); font-weight: 600; display: none; font-family: "Segoe UI", Arial, sans-serif; }
+
+/* ---------- Zeffy embed ---------- */
+.zeffy-wrap { position: relative; width: 100%; min-height: 1200px; }
+.zeffy-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* ---------- Placeholder notice ---------- */
+.placeholder-note {
+  background: #fdf3e7;
+  border: 1px solid #f0d9b8;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.95rem;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--ahg-blue-darker);
+  color: #cfe3f5;
+  text-align: center;
+  padding: 1.75rem 1rem;
+  margin-top: 3rem;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.9rem;
+}
+.site-footer a { color: #fff; }
+
+@media (max-width: 640px) {
+  .site-header { justify-content: center; }
+  .site-header .brand img { height: 46px; }
+}

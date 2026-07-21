@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Give &amp; Fundraisers — AHG Troop NY2911</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img src="assets/img/ahg-logo-horizontal-blue.jpg" alt="American Heritage Girls — Faith, Service, Fun">
+    <span class="troop-badge">Troop NY2911</span>
+  </a>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="calendar.html">Calendar</a>
+    <a href="members.html">Members</a>
+    <a href="giving.html" class="nav-give active">Give &amp; Fundraisers</a>
+  </nav>
+</header>
+
+<main class="container">
+  <h1 class="page-title">Give &amp; Fundraisers</h1>
+  <hr class="rule">
+  <p>Your support helps our girls earn badges, attend camps, and serve the Rochester community. Troop dues, event payments, and fundraiser donations are all handled securely below — 100% of what you give goes to the troop.</p>
+
+  <div id="zeffy-placeholder" class="placeholder-note" style="display:none;margin-top:1.5rem;">
+    The payment form hasn't been connected yet. Once the Zeffy embed URL is added to
+    <code>assets/config.js</code>, the secure payment form will appear here.
+  </div>
+
+  <div class="zeffy-wrap" id="zeffy-wrap" style="display:none;margin-top:1.5rem;">
+    <iframe id="zeffy-frame" title="Troop NY2911 payments and fundraisers"
+            allow="payment" allowtransparency="true"></iframe>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
+</footer>
+
+<script>
+(function () {
+  const c = window.TROOP_CONFIG;
+  if (!c.zeffyEmbedUrl || c.zeffyEmbedUrl.startsWith("REPLACE")) {
+    document.getElementById("zeffy-placeholder").style.display = "block";
+  } else {
+    document.getElementById("zeffy-frame").src = c.zeffyEmbedUrl;
+    document.getElementById("zeffy-wrap").style.display = "block";
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+name: Sync troop calendar
+
+on:
+  schedule:
+    - cron: "17 * * * *"   # hourly
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch iCal feed
+        run: |
+          mkdir -p data
+          curl -fsSL --max-time 30 \
+            "https://www.ahgfamily.org/icalendar/tkf9ba220a56/na/public" \
+            -o data/calendar.ics.new
+          # keep the old file if the fetch returned something empty/bogus
+          if grep -q "BEGIN:VCALENDAR" data/calendar.ics.new; then
+            mv data/calendar.ics.new data/calendar.ics
+          else
+            rm -f data/calendar.ics.new
+            echo "Feed response invalid; keeping previous calendar." >&2
+          fi
+
+      - name: Commit if changed
+        run: |
+          git config user.name "calendar-sync-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/calendar.ics
+          git diff --cached --quiet || git commit -m "Update troop calendar feed"
+          git push

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar — AHG Troop NY2911</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.15/index.global.min.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img src="assets/img/ahg-logo-horizontal-blue.jpg" alt="American Heritage Girls — Faith, Service, Fun">
+    <span class="troop-badge">Troop NY2911</span>
+  </a>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="calendar.html" class="active">Calendar</a>
+    <a href="members.html">Members</a>
+    <a href="giving.html" class="nav-give">Give &amp; Fundraisers</a>
+  </nav>
+</header>
+
+<main class="container">
+  <h1 class="page-title">Troop Calendar</h1>
+  <hr class="rule">
+  <div id="cal-placeholder" class="placeholder-note" style="display:none;">
+    The calendar feed hasn't been connected yet. Once the iCal feed URL is added to
+    <code>assets/config.js</code>, troop events will appear here automatically.
+  </div>
+  <div id="calendar"></div>
+  <p class="cal-note">Events update automatically from the troop's shared calendar.</p>
+</main>
+
+<footer class="site-footer">
+  <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const c = window.TROOP_CONFIG;
+  const calEl = document.getElementById("calendar");
+
+  if (!c.icalUrl || c.icalUrl.startsWith("REPLACE")) {
+    document.getElementById("cal-placeholder").style.display = "block";
+  }
+
+  const calendar = new FullCalendar.Calendar(calEl, {
+    initialView: window.innerWidth < 640 ? "listMonth" : "dayGridMonth",
+    headerToolbar: {
+      left: "prev,next today",
+      center: "title",
+      right: "dayGridMonth,listMonth"
+    },
+    height: "auto",
+    events: (!c.icalUrl || c.icalUrl.startsWith("REPLACE")) ? [] : undefined,
+    eventSources: (!c.icalUrl || c.icalUrl.startsWith("REPLACE")) ? [] : [{
+      url: (c.corsProxy || "") + (c.corsProxy ? encodeURIComponent(c.icalUrl) : c.icalUrl),
+      format: "ics"
+    }]
+  });
+  calendar.render();
+});
+</script>
+</body>
+</html>
