@@ -1746,9 +1746,9 @@ DTEND;TZID=UTC:20260721T000000
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evluawqjcd9o-20260504T190419
+UID:AHGFAMILY-evluawqjcd9o-20260721T143733
 DTSTAMP;TZID=UTC:20260504T190419
-LAST-MODIFIED;TZID=UTC:20260504T190419
+LAST-MODIFIED;TZID=UTC:20260721T143733
 SUMMARY:PiPa meeting
 DESCRIPTION: Summer meeting to finish the Theater badge 
 X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Summer meeting to finish the Theater badge</p></BODY></HTML>
@@ -1768,24 +1768,39 @@ DTEND;TZID=UTC:20260811T000000
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evhee7qbbiya-20260720T210510
+UID:AHGFAMILY-evhee7qbbiya-20260721T151156
 DTSTAMP;TZID=UTC:20250729T145400
-LAST-MODIFIED;TZID=UTC:20260720T210510
+LAST-MODIFIED;TZID=UTC:20260721T151156
 SUMMARY:Campout
 DESCRIPTION: Join us for a full troop campout Planning to visit Watkins 
- Glenn on Saturday. Come prepared to hike. 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a full troop campout</p><p>Planning to visit Watkins Glenn on Saturday. Come prepared to hike.</p></BODY></HTML>
+ Glenn on Saturday. Come prepared to hike. Cost is $35 per person. Here is 
+ the link to pay through zeffy...  
+ zeffy.com/en-US/ticketing/august-campout TH Level requires an adult to 
+ accompany them. This adult must be an AHG member. please let me know if 
+ you need to start the process to become a member sooner than later as it 
+ can take a couple weeks to complete. Bring your sleeping bag, blankets, 
+ pillow Toothbrush/ toothpaste Sneakers Cloths for the weekend and a spare 
+ in case you get wet Rain gear just in case Hiking gear a refillable water 
+ bottle mess kit 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a full troop campout</p> <p>Planning to visit Watkins Glenn on Saturday. Come prepared to hike.</p> <p>Cost is $35 per person.</p> <p>Here is the link to pay through zeffy...  </p> <p><a href="https://www.zeffy.com/en-US/ticketing/august-campout" target="_blank" rel="noreferrer noopener">zeffy.com/en-US/ticketing/august-campout</a></p> <p>TH Level requires an adult to accompany them. This adult must be an AHG member. please let me know if you need to start the process to become a member sooner than later as it can take a couple weeks to complete.</p> <p>Bring your sleeping bag, blankets, pillow</p> <p>Toothbrush/ toothpaste</p> <p>Sneakers</p> <p>Cloths for the weekend and a spare in case you get wet</p> <p>Rain gear just in case</p> <p>Hiking gear</p> <p>a refillable water bottle</p> <p>mess kit</p> <p></p> <p></p></BODY></HTML>
 DTSTART;TZID=UTC:20260814T220000
 DTEND;TZID=UTC:20260816T150000
 LOCATION:4281 Cotton Hanlon Road Montour Falls, NY, 14865
 COLOR:#B18BC0
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-eve9gkv048a6-20260504T191231
+UID:AHGFAMILY-eve9gkv048a6-20260721T143506
 DTSTAMP;TZID=UTC:20260504T191231
-LAST-MODIFIED;TZID=UTC:20260504T191231
+LAST-MODIFIED;TZID=UTC:20260721T143506
 SUMMARY:Board and leader planning meeting
-DESCRIPTION:Board and leader planning meeting
+DESCRIPTION: We have decided to keep this meeting on the schedule. We 
+ will use it to have Kyle help everyone get set up with a troop email 
+ account which will make it easier to share work and lesson plans and 
+ forms and such with each other as we need in the long run. Since it will 
+ be a rotation thing with Kyle I figure we can also use this meeting to 
+ reorganize the storage unit again to start the year off fresh and clean 
+ again. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We have decided to keep this meeting on the schedule. We will use it to have Kyle help everyone get set up with a troop email account which will make it easier to share work and lesson plans and forms and such with each other as we need in the long run.</p> <p>Since it will be a rotation thing with Kyle I figure we can also use this meeting to reorganize the storage unit again to start the year off fresh and clean again.</p></BODY></HTML>
 DTSTART;TZID=UTC:20260817T220000
 DTEND;TZID=UTC:20260818T000000
 COLOR:#D497C4
