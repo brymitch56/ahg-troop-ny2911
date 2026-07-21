@@ -33,8 +33,18 @@
     <code>assets/config.js</code>, troop events will appear here automatically.
   </div>
   <div id="calendar"></div>
-  <p class="cal-note">Events update automatically from the troop's shared calendar.</p>
+  <p class="cal-note">Events update automatically from the troop's shared calendar. Click an event for details.</p>
 </main>
+
+<div class="evt-overlay" id="evt-overlay">
+  <div class="evt-modal" role="dialog" aria-modal="true" aria-labelledby="evt-title">
+    <button class="evt-close" id="evt-close" aria-label="Close">&times;</button>
+    <h3 id="evt-title"></h3>
+    <p class="evt-meta" id="evt-when"></p>
+    <p class="evt-meta" id="evt-where" style="display:none;"></p>
+    <div class="evt-desc" id="evt-desc" style="display:none;"></div>
+  </div>
+</div>
 
 <footer class="site-footer">
   <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
@@ -61,9 +71,58 @@ document.addEventListener("DOMContentLoaded", function () {
     eventSources: (!c.icalUrl || c.icalUrl.startsWith("REPLACE")) ? [] : [{
       url: (c.corsProxy || "") + (c.corsProxy ? encodeURIComponent(c.icalUrl) : c.icalUrl),
       format: "ics"
-    }]
+    }],
+    eventClick: function (info) {
+      info.jsEvent.preventDefault();
+      showEventPopup(info.event);
+    }
   });
   calendar.render();
+
+  // ---- Event detail popup ----
+  const overlay = document.getElementById("evt-overlay");
+
+  function fmtWhen(ev) {
+    const opts = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
+    const tOpts = { hour: "numeric", minute: "2-digit" };
+    const start = ev.start;
+    const end = ev.end;
+    let s = start.toLocaleDateString(undefined, opts);
+    if (!ev.allDay) {
+      s += " · " + start.toLocaleTimeString(undefined, tOpts);
+      if (end) s += " – " + (end.toDateString() === start.toDateString()
+        ? end.toLocaleTimeString(undefined, tOpts)
+        : end.toLocaleDateString(undefined, opts) + " " + end.toLocaleTimeString(undefined, tOpts));
+    }
+    return s;
+  }
+
+  function showEventPopup(ev) {
+    document.getElementById("evt-title").textContent = ev.title;
+    document.getElementById("evt-when").innerHTML = "<strong>When:</strong> ";
+    document.getElementById("evt-when").append(fmtWhen(ev));
+
+    const whereEl = document.getElementById("evt-where");
+    const loc = ev.extendedProps && ev.extendedProps.location;
+    if (loc) {
+      whereEl.style.display = "block";
+      whereEl.innerHTML = "<strong>Where:</strong> ";
+      whereEl.append(loc);
+    } else whereEl.style.display = "none";
+
+    const descEl = document.getElementById("evt-desc");
+    const desc = ev.extendedProps && ev.extendedProps.description;
+    if (desc) {
+      descEl.style.display = "block";
+      descEl.textContent = desc;   // textContent keeps it safe from injected HTML
+    } else descEl.style.display = "none";
+
+    overlay.classList.add("open");
+  }
+
+  document.getElementById("evt-close").addEventListener("click", () => overlay.classList.remove("open"));
+  overlay.addEventListener("click", e => { if (e.target === overlay) overlay.classList.remove("open"); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") overlay.classList.remove("open"); });
 });
 </script>
 </body>

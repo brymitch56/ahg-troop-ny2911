@@ -123,6 +123,41 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .fc .fc-button-primary:hover { background: var(--ahg-blue-dark); border-color: var(--ahg-blue-dark); }
 .fc .fc-daygrid-event { background: var(--ahg-red); border-color: var(--ahg-red); }
 
+/* ---------- Event popup ---------- */
+.evt-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10, 25, 40, 0.55);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+.evt-overlay.open { display: flex; }
+.evt-modal {
+  background: #fff;
+  border-radius: 12px;
+  border-top: 6px solid var(--ahg-red);
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 1.6rem 1.8rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+.evt-modal h3 { color: var(--ahg-blue); font-size: 1.3rem; margin-bottom: 0.75rem; padding-right: 1.5rem; }
+.evt-modal .evt-meta { color: #40506a; font-size: 0.95rem; margin-bottom: 0.35rem; }
+.evt-modal .evt-meta strong { color: var(--ahg-blue); }
+.evt-modal .evt-desc { margin-top: 0.9rem; border-top: 1px solid var(--border); padding-top: 0.9rem; font-size: 0.95rem; white-space: pre-wrap; word-wrap: break-word; }
+.evt-modal .evt-close {
+  position: sticky; top: 0; float: right;
+  background: none; border: none;
+  font-size: 1.6rem; line-height: 1;
+  color: #7a8aa0; cursor: pointer;
+}
+.evt-modal .evt-close:hover { color: var(--ahg-red); }
+.fc-event, .fc-event-title { cursor: pointer; }
+
 /* ---------- Members gate ---------- */
 .gate {
   max-width: 430px;
