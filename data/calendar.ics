@@ -1909,6 +1909,24 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
+UID:AHGFAMILY-evfdapaxtcmb-20260721T160157
+DTSTAMP;TZID=UTC:20260721T155158
+LAST-MODIFIED;TZID=UTC:20260721T160157
+SUMMARY:Explorers Genesee Country Village & Museum field trip
+DESCRIPTION: Join us at the village to walk through history and learn 
+ some things required for our badgework. Cost is $8 per kid attending   
+   $12 per each adult member/leader attending. Here is the Zeffy payment 
+ link... 
+ zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-fi 
+ eld-trip 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us at the village to walk through history and learn some things required for our badgework.</p> <p>Cost is $8 per kid attending</p> <p>    $12 per each adult member/leader attending.</p> <p>Here is the Zeffy payment link...</p><p><a href="https://www.zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-field-trip" target="_blank" rel="noreferrer noopener">zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-field-trip</a></p> <p></p></BODY></HTML>
+DTSTART;TZID=UTC:20261024T140000
+DTEND;TZID=UTC:20261024T160000
+LOCATION:1410 Flint Hill Rd Mumford, NY, 14511
+GEO:42.993977;-77.882103
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
 UID:AHGFAMILY-evcqmph8ckmc-20260720T162936
 DTSTAMP;TZID=UTC:20260720T162846
 LAST-MODIFIED;TZID=UTC:20260720T162936
@@ -2110,6 +2128,21 @@ DESCRIPTION:Regular Meeting
 DTSTART;TZID=UTC:20270201T231500
 DTEND;TZID=UTC:20270202T010000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+COLOR:#D497C4
+END:VEVENT
+BEGIN:VEVENT
+UID:AHGFAMILY-evjqfdywignc-20260721T161018
+DTSTAMP;TZID=UTC:20260721T161018
+LAST-MODIFIED;TZID=UTC:20260721T161018
+SUMMARY:Zoo trip Full troop invited to join
+DESCRIPTION: Join us for a walk through the Zoo where the Explorer level 
+ will be completing some badge work steps as the talk about each animal 
+ and their habitats. Cost to be determined 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a walk through the Zoo where the Explorer level will be completing some badge work steps as the talk about each animal and their habitats.</p><p>Cost to be determined</p><p></p></BODY></HTML>
+DTSTART;TZID=UTC:20270206T060000
+DTEND;TZID=UTC:20270206T200000
+LOCATION:2222 St Paul St Rochester, NY, 14621
+GEO:43.20528;-77.624237
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
