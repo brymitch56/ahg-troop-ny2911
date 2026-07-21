@@ -1960,6 +1960,19 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
+UID:AHGFAMILY-evcw921o6yav-20260721T183637
+DTSTAMP;TZID=UTC:20260721T183637
+LAST-MODIFIED;TZID=UTC:20260721T183637
+SUMMARY:Mother Daughter Event
+DESCRIPTION: Join us to to create stained glass windows together. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to to create stained glass windows together.</p></BODY></HTML>
+DTSTART;TZID=UTC:20261114T150000
+DTEND;TZID=UTC:20261114T170000
+LOCATION:1125 Calkins rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
 UID:AHGFAMILY-evkqybshfsm1-20260720T163003
 DTSTAMP;TZID=UTC:20260720T163003
 LAST-MODIFIED;TZID=UTC:20260720T163003
@@ -2131,15 +2144,15 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evjqfdywignc-20260721T161018
+UID:AHGFAMILY-evjqfdywignc-20260721T184315
 DTSTAMP;TZID=UTC:20260721T161018
-LAST-MODIFIED;TZID=UTC:20260721T161018
+LAST-MODIFIED;TZID=UTC:20260721T184315
 SUMMARY:Zoo trip Full troop invited to join
 DESCRIPTION: Join us for a walk through the Zoo where the Explorer level 
  will be completing some badge work steps as the talk about each animal 
  and their habitats. Cost to be determined 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a walk through the Zoo where the Explorer level will be completing some badge work steps as the talk about each animal and their habitats.</p><p>Cost to be determined</p><p></p></BODY></HTML>
-DTSTART;TZID=UTC:20270206T060000
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a walk through the Zoo where the Explorer level will be completing some badge work steps as the talk about each animal and their habitats.</p> <p>Cost to be determined</p> <p></p></BODY></HTML>
+DTSTART;TZID=UTC:20270206T180000
 DTEND;TZID=UTC:20270206T200000
 LOCATION:2222 St Paul St Rochester, NY, 14621
 GEO:43.20528;-77.624237
@@ -2157,14 +2170,17 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evxtfmkpa5iz-20260720T165046
+UID:AHGFAMILY-evxtfmkpa5iz-20260721T184618
 DTSTAMP;TZID=UTC:20260720T165046
-LAST-MODIFIED;TZID=UTC:20260720T165046
+LAST-MODIFIED;TZID=UTC:20260721T184618
 SUMMARY:Service hour meeting
-DESCRIPTION:Service hour meeting
+DESCRIPTION: Decorating lunch bags and placemats for Ronald McDonald 
+ house and Meals on Wheels. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Decorating lunch bags and placemats for Ronald McDonald house and Meals on Wheels.</p></BODY></HTML>
 DTSTART;TZID=UTC:20270222T231500
 DTEND;TZID=UTC:20270223T010000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
@@ -2252,14 +2268,17 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evmaqnucapym-20260720T170212
+UID:AHGFAMILY-evmaqnucapym-20260721T184456
 DTSTAMP;TZID=UTC:20260720T170212
-LAST-MODIFIED;TZID=UTC:20260720T170212
+LAST-MODIFIED;TZID=UTC:20260721T184456
 SUMMARY:Service hour meeting
-DESCRIPTION:Service hour meeting
+DESCRIPTION: We will be making stuffed animals to give to a shelter for 
+ kids in need. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be making stuffed animals to give to a shelter for kids in need.</p></BODY></HTML>
 DTSTART;TZID=UTC:20270329T221500
 DTEND;TZID=UTC:20270330T000000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
@@ -2285,6 +2304,19 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
+UID:AHGFAMILY-evvpbquohvuw-20260721T185143
+DTSTAMP;TZID=UTC:20260721T185143
+LAST-MODIFIED;TZID=UTC:20260721T185143
+SUMMARY:Father Daughter event
+DESCRIPTION: We will be doing another game night but this time with a 
+ twist. No board games. We will be playing minute to win it style games 
+ and doing some relay race style games as well. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be doing another game night but this time with a twist. No board games. We will be playing minute to win it style games and doing some relay race style games as well.</p></BODY></HTML>
+DTSTART;TZID=UTC:20270417T190000
+DTEND;TZID=UTC:20270417T200000
+COLOR:#B18BC0
+END:VEVENT
+BEGIN:VEVENT
 UID:AHGFAMILY-evy2azicv9wi-20260720T171204
 DTSTAMP;TZID=UTC:20260720T171204
 LAST-MODIFIED;TZID=UTC:20260720T171204
@@ -2296,14 +2328,17 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evsymjlmks5s-20260720T171208
+UID:AHGFAMILY-evsymjlmks5s-20260721T184823
 DTSTAMP;TZID=UTC:20260720T171208
-LAST-MODIFIED;TZID=UTC:20260720T171208
+LAST-MODIFIED;TZID=UTC:20260721T184823
 SUMMARY:Service hour meeting
-DESCRIPTION:Service hour meeting
+DESCRIPTION: We will be finishing the stuffed animals from last month or 
+ if we do not have any to work on this will be a regular meeting. 
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be finishing the stuffed animals from last month or if we do not have any to work on this will be a regular meeting.</p></BODY></HTML>
 DTSTART;TZID=UTC:20270426T221500
 DTEND;TZID=UTC:20270427T000000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
