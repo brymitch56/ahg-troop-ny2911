@@ -39,7 +39,7 @@ window.TROOP_CONFIG = {
   // GIVING: your Zeffy embed URL. In Zeffy: form → Share →
   // Embed → copy the URL inside src="..." of the iframe code.
   // -----------------------------------------------------------
-  zeffyEmbedUrl: "REPLACE_WITH_ZEFFY_EMBED_URL"
+  zeffyEmbedUrl: "https://www.zeffy.com/en-US/organizations/american-heritage-girls-ny2911-at-harvest-bible-fellowship"
 };
 
 // Helper used for password hashing (usable from the console too)
