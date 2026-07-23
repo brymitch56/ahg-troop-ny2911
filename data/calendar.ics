@@ -1756,9 +1756,9 @@ DTEND;TZID=UTC:20260811T000000
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evhee7qbbiya-20260721T151156
+UID:AHGFAMILY-evhee7qbbiya-20260723T124018
 DTSTAMP;TZID=UTC:20250729T145400
-LAST-MODIFIED;TZID=UTC:20260721T151156
+LAST-MODIFIED;TZID=UTC:20260723T124018
 SUMMARY:Campout
 DESCRIPTION: Join us for a full troop campout Planning to visit Watkins 
  Glenn on Saturday. Come prepared to hike. Cost is $35 per person. Here is 
@@ -1774,6 +1774,7 @@ X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN"">
 DTSTART;TZID=UTC:20260814T220000
 DTEND;TZID=UTC:20260816T150000
 LOCATION:4281 Cotton Hanlon Road Montour Falls, NY, 14865
+GEO:42.347023;-76.819847
 COLOR:#B18BC0
 END:VEVENT
 BEGIN:VEVENT
@@ -1805,9 +1806,9 @@ DTEND;TZID=UTC:20260825T000000
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evjk6aqejvub-20260721T020026
+UID:AHGFAMILY-evjk6aqejvub-20260723T124117
 DTSTAMP;TZID=UTC:20250729T145650
-LAST-MODIFIED;TZID=UTC:20260721T020026
+LAST-MODIFIED;TZID=UTC:20260723T124117
 SUMMARY:Parent meeting
 DESCRIPTION: Join us in welcoming new girls and gathering the paperwork 
  needed for the new year. Bring your girls so they can play games with 
@@ -1829,9 +1830,9 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evl3usec2kas-20260720T162454
+UID:AHGFAMILY-evl3usec2kas-20260723T124200
 DTSTAMP;TZID=UTC:20260720T162425
-LAST-MODIFIED;TZID=UTC:20260720T162454
+LAST-MODIFIED;TZID=UTC:20260723T124200
 SUMMARY:National Day of Service
 DESCRIPTION: Join us to deep clean the church as a thank you for allowing 
  us to use the building for our meetings for the year. 
@@ -1839,6 +1840,7 @@ X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN"">
 DTSTART;TZID=UTC:20260919T140000
 DTEND;TZID=UTC:20260919T160000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#B18BC0
 END:VEVENT
 BEGIN:VEVENT
@@ -1897,9 +1899,9 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evfdapaxtcmb-20260721T160157
+UID:AHGFAMILY-evfdapaxtcmb-20260723T124314
 DTSTAMP;TZID=UTC:20260721T155158
-LAST-MODIFIED;TZID=UTC:20260721T160157
+LAST-MODIFIED;TZID=UTC:20260723T124314
 SUMMARY:Explorers Genesee Country Village & Museum field trip
 DESCRIPTION: Join us at the village to walk through history and learn 
  some things required for our badgework. Cost is $8 per kid attending   
@@ -1907,7 +1909,7 @@ DESCRIPTION: Join us at the village to walk through history and learn
  link... 
  zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-fi 
  eld-trip 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us at the village to walk through history and learn some things required for our badgework.</p> <p>Cost is $8 per kid attending</p> <p>    $12 per each adult member/leader attending.</p> <p>Here is the Zeffy payment link...</p><p><a href="https://www.zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-field-trip" target="_blank" rel="noreferrer noopener">zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-field-trip</a></p> <p></p></BODY></HTML>
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us at the village to walk through history and learn some things required for our badgework.</p> <p>Cost is $8 per kid attending</p> <p>    $12 per each adult member/leader attending.</p> <p>Here is the Zeffy payment link...</p> <p><a href="https://www.zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-field-trip" target="_blank" rel="noreferrer noopener">zeffy.com/en-US/ticketing/explorers-genesee-country-village-and-museum-field-trip</a></p> <p></p></BODY></HTML>
 DTSTART;TZID=UTC:20261024T140000
 DTEND;TZID=UTC:20261024T160000
 LOCATION:1410 Flint Hill Rd Mumford, NY, 14511
@@ -1948,9 +1950,9 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evcw921o6yav-20260721T183637
+UID:AHGFAMILY-evcw921o6yav-20260723T124352
 DTSTAMP;TZID=UTC:20260721T183637
-LAST-MODIFIED;TZID=UTC:20260721T183637
+LAST-MODIFIED;TZID=UTC:20260723T124352
 SUMMARY:Mother Daughter Event
 DESCRIPTION: Join us to to create stained glass windows together. 
 X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to to create stained glass windows together.</p></BODY></HTML>
@@ -1983,16 +1985,17 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evqm71cgsa7r-20260720T163254
+UID:AHGFAMILY-evqm71cgsa7r-20260723T124435
 DTSTAMP;TZID=UTC:20260720T163127
-LAST-MODIFIED;TZID=UTC:20260720T163254
-SUMMARY:Service hour meeting
+LAST-MODIFIED;TZID=UTC:20260723T124435
+SUMMARY:Cookie delivery
 DESCRIPTION: We will be delivering the cookie trays to fire houses and 
  Police stations in the area. 
 X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>We will be delivering the cookie trays to fire houses and Police stations in the area.</p></BODY></HTML>
 DTSTART;TZID=UTC:20261124T160000
 DTEND;TZID=UTC:20261124T170000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
@@ -2018,9 +2021,9 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evzw0gzn3g45-20260720T163816
+UID:AHGFAMILY-evzw0gzn3g45-20260723T124517
 DTSTAMP;TZID=UTC:20260720T163446
-LAST-MODIFIED;TZID=UTC:20260720T163816
+LAST-MODIFIED;TZID=UTC:20260723T124517
 SUMMARY:Caroling
 DESCRIPTION: Join us to carol for the neighbors of the church we use for 
  meetings or for caroling at nursing home. Full details to come. 
@@ -2028,12 +2031,13 @@ X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN"">
 DTSTART;TZID=UTC:20261214T231500
 DTEND;TZID=UTC:20261215T010000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evfm9foyy4w6-20260720T163629
+UID:AHGFAMILY-evfm9foyy4w6-20260723T124542
 DTSTAMP;TZID=UTC:20260720T163454
-LAST-MODIFIED;TZID=UTC:20260720T163629
+LAST-MODIFIED;TZID=UTC:20260723T124542
 SUMMARY:Wreaths Across America placement
 DESCRIPTION: Join us to place the wreaths on the graves of Vets to 
  decorate them for the holidays. 
@@ -2043,9 +2047,9 @@ DTEND;TZID=UTC:20261220T010000
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evcmnfxijgba-20260720T164055
+UID:AHGFAMILY-evcmnfxijgba-20260723T124601
 DTSTAMP;TZID=UTC:20260720T163855
-LAST-MODIFIED;TZID=UTC:20260720T164055
+LAST-MODIFIED;TZID=UTC:20260723T124601
 SUMMARY:Christmas Party
 DESCRIPTION: Join us to celebrate the birth of Jesus. Please Bring a 
  snack to share, No nuts or seeds allowed(hummus included) and all home 
@@ -2054,6 +2058,7 @@ X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN"">
 DTSTART;TZID=UTC:20261221T231500
 DTEND;TZID=UTC:20261222T010000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
@@ -2068,17 +2073,18 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evsotbkiq0oa-20260720T164500
+UID:AHGFAMILY-evsotbkiq0oa-20260723T124626
 DTSTAMP;TZID=UTC:20260720T164314
-LAST-MODIFIED;TZID=UTC:20260720T164500
+LAST-MODIFIED;TZID=UTC:20260723T124626
 SUMMARY:Bring a friend event/Regular Meeting
 DESCRIPTION: Bring a friend to see what we are about! For TH and EX level 
  bringing a friend is a requirement for the level up award, If you want to 
  earn it. 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Bring a friend to see what we are about!</p><p>For TH and EX level bringing a friend is a requirement for the level up award, If you want to earn it.</p></BODY></HTML>
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Bring a friend to see what we are about!</p> <p>For TH and EX level bringing a friend is a requirement for the level up award, If you want to earn it.</p></BODY></HTML>
 DTSTART;TZID=UTC:20270111T231500
 DTEND;TZID=UTC:20270112T010000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
@@ -2104,9 +2110,9 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evf66vqnq2uj-20260720T164946
+UID:AHGFAMILY-evf66vqnq2uj-20260723T124656
 DTSTAMP;TZID=UTC:20260720T164946
-LAST-MODIFIED;TZID=UTC:20260720T164946
+LAST-MODIFIED;TZID=UTC:20260723T124656
 SUMMARY:Lock in
 DESCRIPTION: Join us for a fun night of games, a bible study and 
  fellowship. TH level needs a Mother to stay with her and they need to be 
@@ -2114,10 +2120,11 @@ DESCRIPTION: Join us for a fun night of games, a bible study and
  become a member to be able to join us for this fun night. This process 
  can take up to 2 weeks to complete so it should be started sooner than 
  later. 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a fun night of games, a bible study and fellowship.</p><p>TH level needs a Mother to stay with her and they need to be a member to participate in an AHG event. Let me know if you need to become a member to be able to join us for this fun night. This process can take up to 2 weeks to complete so it should be started sooner than later.</p></BODY></HTML>
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for a fun night of games, a bible study and fellowship.</p> <p>TH level needs a Mother to stay with her and they need to be a member to participate in an AHG event. Let me know if you need to become a member to be able to join us for this fun night. This process can take up to 2 weeks to complete so it should be started sooner than later.</p></BODY></HTML>
 DTSTART;TZID=UTC:20270129T230000
 DTEND;TZID=UTC:20270130T160000
 LOCATION:1125 Calkins RD Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#B18BC0
 END:VEVENT
 BEGIN:VEVENT
@@ -2132,9 +2139,9 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evjqfdywignc-20260721T184315
+UID:AHGFAMILY-evjqfdywignc-20260723T124730
 DTSTAMP;TZID=UTC:20260721T161018
-LAST-MODIFIED;TZID=UTC:20260721T184315
+LAST-MODIFIED;TZID=UTC:20260723T124730
 SUMMARY:Zoo trip Full troop invited to join
 DESCRIPTION: Join us for a walk through the Zoo where the Explorer level 
  will be completing some badge work steps as the talk about each animal 
@@ -2172,15 +2179,16 @@ GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evqrfaidprer-20260720T165710
+UID:AHGFAMILY-evqrfaidprer-20260723T124806
 DTSTAMP;TZID=UTC:20260720T165659
-LAST-MODIFIED;TZID=UTC:20260720T165710
+LAST-MODIFIED;TZID=UTC:20260723T124806
 SUMMARY:Cabin Campout Hickory Hill
 DESCRIPTION: Join us for our winter cabin campout. 
 X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our winter cabin campout.</p></BODY></HTML>
 DTSTART;TZID=UTC:20270226T230000
 DTEND;TZID=UTC:20270228T150000
 LOCATION:2970 Kohler Rd Varysburg, NY, 14167
+GEO:42.742722;-78.324799
 COLOR:#B18BC0
 END:VEVENT
 BEGIN:VEVENT
@@ -2195,14 +2203,14 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evglubsctz9u-20260720T170511
+UID:AHGFAMILY-evglubsctz9u-20260723T124832
 DTSTAMP;TZID=UTC:20260720T170511
-LAST-MODIFIED;TZID=UTC:20260720T170511
+LAST-MODIFIED;TZID=UTC:20260723T124832
 SUMMARY:Derby Build day
 DESCRIPTION: Join us to build your derby car. We will have all the tools 
  needed to be able to complete a car from start to finish and adults 
  available to help those who may need it. 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to build your derby car. We will have all the tools needed to be able to complete a car from start to finish and adults available to help those who may need it.</p><p></p></BODY></HTML>
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us to build your derby car. We will have all the tools needed to be able to complete a car from start to finish and adults available to help those who may need it.</p> <p></p></BODY></HTML>
 DTSTART;TZID=UTC:20270306T190000
 DTEND;TZID=UTC:20270306T210000
 COLOR:#B18BC0
@@ -2230,22 +2238,22 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evdfklniszch-20260720T171128
+UID:AHGFAMILY-evdfklniszch-20260723T124858
 DTSTAMP;TZID=UTC:20260720T171128
-LAST-MODIFIED;TZID=UTC:20260720T171128
+LAST-MODIFIED;TZID=UTC:20260723T124858
 SUMMARY:Derby
 DESCRIPTION: Join us for our yearly Derby. Invite family and friends for 
  the fun! Please bring a snack for the Concessions stand (this is how we 
  make back the cost of the trophies). No nuts, seeds or hummus allowed. 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our yearly Derby. </p><p>Invite family and friends for the fun!</p><p>Please bring a snack for the Concessions stand (this is how we make back the cost of the trophies). No nuts, seeds or hummus allowed.</p></BODY></HTML>
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Join us for our yearly Derby. </p> <p>Invite family and friends for the fun!</p> <p>Please bring a snack for the Concessions stand (this is how we make back the cost of the trophies). No nuts, seeds or hummus allowed.</p></BODY></HTML>
 DTSTART;TZID=UTC:20270320T130000
 DTEND;TZID=UTC:20270320T180000
 COLOR:#B18BC0
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evs0ibig2pbv-20260720T170306
+UID:AHGFAMILY-evs0ibig2pbv-20260723T124917
 DTSTAMP;TZID=UTC:20260720T170202
-LAST-MODIFIED;TZID=UTC:20260720T170306
+LAST-MODIFIED;TZID=UTC:20260723T124917
 SUMMARY:Optional Float building Meeting
 DESCRIPTION: Join us to plan out what our float for the memorial day 
  parade will look like this year. 
@@ -2253,6 +2261,7 @@ X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN"">
 DTSTART;TZID=UTC:20270322T221500
 DTEND;TZID=UTC:20270323T000000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
@@ -2366,18 +2375,19 @@ LOCATION:1125 Calkins Rd Rochester, NY, 14623
 COLOR:#D497C4
 END:VEVENT
 BEGIN:VEVENT
-UID:AHGFAMILY-evumoqzsov0f-20260720T171655
+UID:AHGFAMILY-evumoqzsov0f-20260723T125040
 DTSTAMP;TZID=UTC:20260720T171504
-LAST-MODIFIED;TZID=UTC:20260720T171655
+LAST-MODIFIED;TZID=UTC:20260723T125040
 SUMMARY:End of year Ceremony
 DESCRIPTION: Invite family and friends to celebrate with you all the 
  things you have done this past year. Please bring a snack to share after 
  the ceremony while we fellowship together and celebrate the girls 
  accomplishments. NO NUTS, SEEDS, or HUMMUS allowed 
-X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Invite family and friends to celebrate with you all the things you have done this past year.</p><p>Please bring a snack to share after the ceremony while we fellowship together and celebrate the girls accomplishments.</p><p>NO NUTS, SEEDS, or HUMMUS allowed</p></BODY></HTML>
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 3.2//EN""><BODY><p>Invite family and friends to celebrate with you all the things you have done this past year.</p> <p>Please bring a snack to share after the ceremony while we fellowship together and celebrate the girls accomplishments.</p> <p>NO NUTS, SEEDS, or HUMMUS allowed</p></BODY></HTML>
 DTSTART;TZID=UTC:20270524T221500
 DTEND;TZID=UTC:20270525T000000
 LOCATION:1125 Calkins Rd Rochester, NY, 14623
+GEO:43.067997;-77.595024
 COLOR:#D497C4
 END:VEVENT
 END:VCALENDAR
