@@ -14,19 +14,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch iCal feed
+      - name: Fetch and scrub iCal feed
+        env:
+          # Set in repo Settings -> Secrets and variables -> Actions.
+          # Falls back to the public feed if the secret isn't set.
+          ICAL_URL: ${{ secrets.PRIVATE_ICAL_URL }}
         run: |
           mkdir -p data
-          curl -fsSL --max-time 30 \
-            "https://www.ahgfamily.org/icalendar/tkf9ba220a56/na/public" \
-            -o data/calendar.ics.new
-          # keep the old file if the fetch returned something empty/bogus
-          if grep -q "BEGIN:VCALENDAR" data/calendar.ics.new; then
-            mv data/calendar.ics.new data/calendar.ics
-          else
-            rm -f data/calendar.ics.new
+          URL="${ICAL_URL:-https://www.ahgfamily.org/icalendar/tkf9ba220a56/na/public}"
+          curl -fsSL --max-time 30 "$URL" -o /tmp/raw.ics
+          if ! grep -q "BEGIN:VCALENDAR" /tmp/raw.ics; then
             echo "Feed response invalid; keeping previous calendar." >&2
+            exit 0
           fi
+          python3 scripts/scrub_calendar.py /tmp/raw.ics data/calendar.ics
 
       - name: Commit if changed
         run: |

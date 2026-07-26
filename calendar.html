@@ -43,6 +43,8 @@
     <p class="evt-meta" id="evt-when"></p>
     <p class="evt-meta" id="evt-where" style="display:none;"></p>
     <div class="evt-desc" id="evt-desc" style="display:none;"></div>
+    <p style="margin-top:1.1rem;"><a class="btn btn-red" id="evt-link" target="_blank" rel="noopener" style="display:none;">Full Details on AHGfamily &rarr;</a></p>
+    <p class="evt-meta" id="evt-link-note" style="display:none;font-size:0.85rem;color:#7a8aa0;">Troop members can sign in to AHGfamily to see the location and full event details.</p>
   </div>
 </div>
 
@@ -116,6 +118,17 @@ document.addEventListener("DOMContentLoaded", function () {
       descEl.style.display = "block";
       descEl.textContent = desc;   // textContent keeps it safe from injected HTML
     } else descEl.style.display = "none";
+
+    const linkEl = document.getElementById("evt-link");
+    const noteEl = document.getElementById("evt-link-note");
+    if (ev.url) {
+      linkEl.href = ev.url;
+      linkEl.style.display = "inline-block";
+      noteEl.style.display = "block";
+    } else {
+      linkEl.style.display = "none";
+      noteEl.style.display = "none";
+    }
 
     overlay.classList.add("open");
   }
