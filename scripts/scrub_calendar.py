@@ -15,6 +15,13 @@ import sys
 # AHGfamily link, which is login-gated and safe to publish.
 STRIP_PROPS = ("LOCATION", "GEO", "DESCRIPTION", "X-ALT-DESC")
 
+# Events whose title matches this are dropped from the public calendar.
+# Catches: canceled, cancelled, CANCELED:, cancelation, cancellation,
+# and common misspellings like cancled/cancelld, plus postponed and the
+# CXL abbreviation. Requires an 'l' after 'canc' so words like "Cancun"
+# don't match.
+CANCELED_RE = re.compile(r"\b(canc\w*l\w*|cxl\w*|postponed?)\b", re.IGNORECASE)
+
 
 def unfold(lines):
     """Join folded iCal lines (continuations start with space/tab)."""
@@ -41,23 +48,46 @@ def fold(line):
     return out
 
 
+def is_canceled(event_lines):
+    """True if the event looks canceled (title text or STATUS property)."""
+    for line in event_lines:
+        name = line.split(":", 1)[0].split(";", 1)[0].upper()
+        value = line.split(":", 1)[1] if ":" in line else ""
+        if name == "SUMMARY" and CANCELED_RE.search(value):
+            return True
+        if name == "STATUS" and "CANCEL" in value.upper():
+            return True
+    return False
+
+
 def scrub(text):
     lines = unfold(text.replace("\r\n", "\n").split("\n"))
     result = []
-    in_event = False
+    event = None  # buffer for the current VEVENT's lines
+    dropped = 0
 
     for line in lines:
-        name = line.split(":", 1)[0].split(";", 1)[0].upper()
-
         if line.upper().startswith("BEGIN:VEVENT"):
-            in_event = True
-        elif line.upper().startswith("END:VEVENT"):
-            in_event = False
-        elif in_event and name in STRIP_PROPS:
+            event = [line]
+            continue
+
+        if event is not None:
+            event.append(line)
+            if line.upper().startswith("END:VEVENT"):
+                if is_canceled(event):
+                    dropped += 1
+                else:
+                    for ev_line in event:
+                        name = ev_line.split(":", 1)[0].split(";", 1)[0].upper()
+                        if name not in STRIP_PROPS:
+                            result.append(ev_line)
+                event = None
             continue
 
         result.append(line)
 
+    if dropped:
+        print(f"Dropped {dropped} canceled/postponed event(s)")
     folded = []
     for line in result:
         if line:
