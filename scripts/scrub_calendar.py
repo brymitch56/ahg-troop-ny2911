@@ -10,11 +10,10 @@ Usage: scrub_calendar.py <input.ics> <output.ics>
 import re
 import sys
 
-# Properties removed entirely from every event (privacy)
+# Properties removed entirely from every event (privacy).
+# URL is deliberately kept: the private feed carries each event's real
+# AHGfamily link, which is login-gated and safe to publish.
 STRIP_PROPS = ("LOCATION", "GEO", "DESCRIPTION", "X-ALT-DESC")
-
-UID_RE = re.compile(r"^UID:AHGFAMILY-(ev[a-z0-9]+)-", re.IGNORECASE)
-EVENT_URL = "https://www.ahgfamily.org/event/{}"
 
 
 def unfold(lines):
@@ -46,29 +45,16 @@ def scrub(text):
     lines = unfold(text.replace("\r\n", "\n").split("\n"))
     result = []
     in_event = False
-    event_id = None
 
     for line in lines:
         name = line.split(":", 1)[0].split(";", 1)[0].upper()
 
         if line.upper().startswith("BEGIN:VEVENT"):
-            in_event, event_id = True, None
-            result.append(line)
-            continue
-
-        if line.upper().startswith("END:VEVENT"):
-            if event_id:
-                result.append("URL:" + EVENT_URL.format(event_id))
-            result.append(line)
+            in_event = True
+        elif line.upper().startswith("END:VEVENT"):
             in_event = False
+        elif in_event and name in STRIP_PROPS:
             continue
-
-        if in_event:
-            if name in STRIP_PROPS:
-                continue
-            m = UID_RE.match(line)
-            if m:
-                event_id = m.group(1).lower()
 
         result.append(line)
 
