@@ -71,7 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
     height: "auto",
     events: (!c.icalUrl || c.icalUrl.startsWith("REPLACE")) ? [] : undefined,
     eventSources: (!c.icalUrl || c.icalUrl.startsWith("REPLACE")) ? [] : [{
-      url: (c.corsProxy || "") + (c.corsProxy ? encodeURIComponent(c.icalUrl) : c.icalUrl),
+      // cache-buster: always fetch the freshest calendar file
+      url: (c.corsProxy || "") + (c.corsProxy ? encodeURIComponent(c.icalUrl) : c.icalUrl) + "?t=" + Date.now(),
       format: "ics"
     }],
     eventClick: function (info) {
