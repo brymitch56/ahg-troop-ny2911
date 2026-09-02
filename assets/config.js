@@ -23,17 +23,26 @@ window.TROOP_CONFIG = {
   corsProxy: "",
 
   // -----------------------------------------------------------
-  // MEMBERS AREA: link to your SharePoint site, gated by a
-  // shared password. To change the password:
-  //   1. Open the browser console (F12) on any page of the site
-  //   2. Run:  sha256("YourNewPassword").then(console.log)
-  //   3. Paste the result below.
-  // Current password: NY2911family
-  // NOTE: this is a light gate, not real security — SharePoint's
-  // own Microsoft sign-in is what actually protects your data.
+  // LEADERS AREA: leaders sign in with their own Microsoft
+  // account (MSAL) and the page reads the troop SharePoint site
+  // through Microsoft Graph. Nothing here is secret — the app is
+  // a public "single-page application" client. Setup steps for
+  // the Entra app registration are in docs/LEADERS-SETUP.md.
+  //
+  //   clientId   — "Application (client) ID" from the app registration
+  //   tenantId   — "Directory (tenant) ID" from the same page
+  //   siteUrl    — the SharePoint site's home URL, e.g.
+  //                https://contoso.sharepoint.com/sites/AHGLeaders
+  //   libraries  — optional: only show these document libraries,
+  //                in this order (names as they appear in SharePoint).
+  //                Leave empty to show every library on the site.
   // -----------------------------------------------------------
-  sharepointUrl: "REPLACE_WITH_SHAREPOINT_URL",
-  passwordSha256: "732626e409d30e8780c0f16e4b72e10ee4a9085d5dedeb68ee77d2097b1aabd2",
+  leaders: {
+    clientId: "REPLACE_WITH_CLIENT_ID",
+    tenantId: "REPLACE_WITH_TENANT_ID",
+    siteUrl: "REPLACE_WITH_SHAREPOINT_SITE_URL",
+    libraries: []
+  },
 
   // -----------------------------------------------------------
   // GIVING: your Zeffy embed URL. In Zeffy: form → Share →
@@ -41,9 +50,3 @@ window.TROOP_CONFIG = {
   // -----------------------------------------------------------
   zeffyEmbedUrl: "https://www.zeffy.com/en-US/organizations/american-heritage-girls-ny2911-at-harvest-bible-fellowship"
 };
-
-// Helper used for password hashing (usable from the console too)
-async function sha256(str) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
-}

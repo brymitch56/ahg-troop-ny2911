@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaders — AHG Troop NY2911</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script src="assets/config.js?v=4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.20.0/lib/msal-browser.min.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img src="assets/img/ahg-logo-horizontal-blue.jpg" alt="American Heritage Girls — Faith, Service, Fun">
+    <span class="troop-badge">Troop NY2911</span>
+  </a>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="calendar.html">Calendar</a>
+    <a href="leaders.html" class="active">Leaders</a>
+    <a href="giving.html" class="nav-give">Give &amp; Fundraisers</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="ldr-titlebar">
+    <div>
+      <h1 class="page-title">Leader Resources</h1>
+      <hr class="rule">
+    </div>
+    <div class="ldr-account" id="ldr-account" hidden>
+      <span id="ldr-user"></span>
+      <button class="btn-link" id="ldr-signout">Sign out</button>
+    </div>
+  </div>
+
+  <!-- Not configured yet -->
+  <div id="ldr-unconfigured" class="placeholder-note" hidden>
+    The leader sign-in hasn't been connected yet. Add the Microsoft app registration and SharePoint
+    site details to <code>assets/config.js</code> — see <code>docs/LEADERS-SETUP.md</code> for the steps.
+  </div>
+
+  <!-- Signed out -->
+  <div class="gate" id="ldr-gate" hidden>
+    <img src="assets/img/ahg-logo-vertical.jpg" alt="" style="height:120px;margin-bottom:0.5rem;">
+    <h3 style="color:var(--ahg-blue);">Troop Leaders Only</h3>
+    <p>Badge plans, accounting, and planning documents live in the troop SharePoint. Sign in with your leader Microsoft account to browse them here.</p>
+    <p style="margin-top:1.25rem;"><button class="btn btn-blue btn-ms" id="ldr-signin">
+      <svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+      Sign in with Microsoft
+    </button></p>
+    <p class="error" id="ldr-error"></p>
+  </div>
+
+  <!-- Signed in -->
+  <div id="ldr-app" hidden>
+    <div class="ldr-toolbar">
+      <div class="ldr-tabs" id="ldr-tabs" role="tablist"></div>
+      <div class="ldr-tools">
+        <input type="search" id="ldr-search" placeholder="Search this library…" aria-label="Search this library">
+        <a class="btn btn-blue btn-sm" id="ldr-open-sp" target="_blank" rel="noopener">Open in SharePoint &rarr;</a>
+      </div>
+    </div>
+
+    <nav class="ldr-crumbs" id="ldr-crumbs" aria-label="Folder path"></nav>
+
+    <div class="ldr-status" id="ldr-status" hidden></div>
+
+    <table class="ldr-files" id="ldr-files" hidden>
+      <thead>
+        <tr><th>Name</th><th class="ldr-col-mod">Modified</th><th class="ldr-col-by">By</th><th class="ldr-col-size">Size</th></tr>
+      </thead>
+      <tbody id="ldr-rows"></tbody>
+    </table>
+
+    <p class="cal-note">Files open in SharePoint or Office in a new tab. Edits made there show up here automatically.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
+</footer>
+
+<script src="assets/leaders.js?v=4"></script>
+</body>
+</html>
