@@ -1,22 +1,24 @@
 # AHG Troop NY2911 Website
 
-Website for American Heritage Girls Troop NY2911 — Rochester, NY. Hosted on GitHub Pages.
+Website for American Heritage Girls Troop NY2911 — Rochester, NY. Hosted on GitHub Pages at https://ahg2911.org.
 
 ## Pages
 
 - `index.html` — landing page (meeting info, about the troop)
 - `calendar.html` — public calendar fed by an iCal (.ics) feed
-- `members.html` — password-gated link to the troop SharePoint
+- `leaders.html` — leaders sign in with their Microsoft account and browse the troop SharePoint libraries (badge plans, accounting, planning)
 - `giving.html` — embedded Zeffy payment/fundraiser form
 
 ## Updating the site
 
-Everything configurable lives in **`assets/config.js`**: meeting info, contact email, iCal feed URL, SharePoint URL, Zeffy embed URL, and the members-area password hash. Edit that one file and commit — no other changes needed.
+Everything configurable lives in **`assets/config.js`**: meeting info, contact email, iCal feed URL, the leaders-area Microsoft app settings, and the Zeffy embed URL. Edit that one file and commit — no other changes needed.
 
-To change the members password: open the site in a browser, press F12, and in the console run `sha256("YourNewPassword").then(console.log)`, then paste the result into `passwordSha256` in `assets/config.js`.
+## Leaders area
 
-Note: the password gate is a courtesy screen, not real security. The SharePoint site's own Microsoft sign-in is what protects troop data.
+The Leaders page uses Microsoft sign-in (MSAL) and Microsoft Graph to read the troop SharePoint site. Each leader signs in with their own account, so access is controlled entirely by SharePoint permissions — there is no shared password and the site never stores documents.
+
+One-time setup (an Entra app registration in the troop's Microsoft 365 tenant) is described in **[`docs/LEADERS-SETUP.md`](docs/LEADERS-SETUP.md)**. Until that's done, the page shows a "not configured yet" notice.
 
 ## Custom domain
 
-When ready, add the domain in the repo Settings → Pages → Custom domain, and create the DNS records GitHub shows there.
+The domain is set in `CNAME`. To change it, update that file and the DNS records shown under repo Settings → Pages → Custom domain.
