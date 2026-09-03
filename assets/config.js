@@ -38,9 +38,9 @@ window.TROOP_CONFIG = {
   //                Leave empty to show every library on the site.
   // -----------------------------------------------------------
   leaders: {
-    clientId: "REPLACE_WITH_CLIENT_ID",
-    tenantId: "REPLACE_WITH_TENANT_ID",
-    siteUrl: "REPLACE_WITH_SHAREPOINT_SITE_URL",
+    clientId: "f6763f66-416b-4ac6-8a10-077737c57cbb",
+    tenantId: "4a0d1b0b-b695-4650-8318-4aaca5358749",
+    siteUrl: "https://harvestbibleroc.sharepoint.com/sites/AHG-2911",
     libraries: []
   },
 
