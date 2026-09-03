@@ -1,6 +1,6 @@
 # Leaders Area — One-Time Setup
 
-The Leaders page (`leaders.html`) lets troop leaders sign in with their own Microsoft account and browse the troop SharePoint libraries right on the website. It uses Microsoft's MSAL library for sign-in and the Microsoft Graph API to read SharePoint.
+The Leaders page (`leaders.html`) lets troop leaders sign in with their own Microsoft account and work with the troop SharePoint libraries right on the website — browse, search, upload, create folders, rename, move, delete, and download. It uses Microsoft's MSAL library for sign-in and the Microsoft Graph API to read SharePoint.
 
 It needs one thing from the person who manages the troop's Microsoft 365 / SharePoint: an **app registration** in Microsoft Entra ID. This takes about ten minutes and doesn't require any code changes. Nothing secret is involved — the website is a public "single-page application" client, so all it needs is two IDs that are safe to publish.
 
@@ -8,7 +8,8 @@ It needs one thing from the person who manages the troop's Microsoft 365 / Share
 
 - The website never stores files or credentials. It asks Microsoft to sign the leader in, receives a short-lived token in the browser, and calls Graph with it.
 - Access is entirely governed by SharePoint permissions. If a leader can't see a library in SharePoint, they can't see it on the website either. Removing someone from the SharePoint site removes their access here too.
-- Permissions requested are read-only (`User.Read`, `Sites.Read.All` — delegated, meaning "on behalf of the signed-in user", limited to what that user can already see). Leaders edit files by clicking through to SharePoint/Office, which opens in a new tab.
+- Permissions requested are `User.Read` and `Sites.ReadWrite.All` — *delegated*, meaning "on behalf of the signed-in user" and limited to what that user can already do. A leader with read-only access in SharePoint can still only read here; the website never gets more power than the person using it. Document *contents* are edited by clicking through to SharePoint/Office (new tab), so version history and co-authoring work as usual.
+- Deletes go to the SharePoint site's recycle bin (restorable for 93 days). Uploading a file with the same name as an existing one replaces it — SharePoint keeps the previous version in the file's version history.
 - Leaders stay signed in on their own device (tokens are cached in the browser and refreshed silently) until they click **Sign out**.
 
 ## Step 1 — Register the app in Entra ID
@@ -42,10 +43,10 @@ The sign-in fails with error **AADSTS50011** if the page's exact address isn't l
 Under **API permissions**:
 
 1. The registration starts with **Microsoft Graph → User.Read** (delegated). Keep it.
-2. **Add a permission → Microsoft Graph → Delegated permissions**, search for and add **`Sites.Read.All`**.
+2. **Add a permission → Microsoft Graph → Delegated permissions**, search for and add **`Sites.ReadWrite.All`**.
 3. Click **Grant admin consent for <tenant>** and confirm.
 
-`Sites.Read.All` (delegated) doesn't strictly require admin consent, but granting it up front means leaders won't each see a consent prompt on first sign-in — and if the tenant has user consent turned off, this step is required.
+`Sites.ReadWrite.All` (delegated) doesn't strictly require admin consent, but granting it up front means leaders won't each see a consent prompt on first sign-in — and if the tenant has user consent turned off, this step is required.
 
 ## Step 4 — Paste the settings into the website
 
@@ -79,7 +80,8 @@ A leader can bookmark a specific library: `https://ahg2911.org/leaders.html#Badg
 1. Open https://ahg2911.org/leaders.html and click **Sign in with Microsoft**.
 2. Sign in with a leader account. You should land back on the page with the library tabs showing.
 3. Browse a folder, try a search, and click a file to confirm it opens in SharePoint/Office.
-4. Try a second leader's account, including a guest if you have one.
+4. Try the management features: upload a file (button or drag-and-drop), create a folder, rename, move, and delete — then check in SharePoint that the change is there (and that the deleted item is in the recycle bin).
+5. Try a second leader's account, including a guest if you have one.
 
 ## Troubleshooting
 
@@ -91,6 +93,8 @@ A leader can bookmark a specific library: `https://ahg2911.org/leaders.html#Badg
 | Signed in, but "your account doesn't have access to the troop SharePoint site" | The leader is in the tenant but not a member of the SharePoint site. Add them under Site permissions. |
 | "The SharePoint site in config.js couldn't be found" | `siteUrl` is wrong or includes extra path segments. |
 | Libraries show but a folder is empty that shouldn't be | Library-level or folder-level permissions exclude that leader — same as they'd see in SharePoint. |
+| "You don't have permission to upload/rename/delete here" | The leader has Read (not Edit/Contribute) on that library in SharePoint, or the app registration still has `Sites.Read.All` instead of `Sites.ReadWrite.All`. |
+| Upload of a large file fails partway | Large files upload in 10 MB chunks; a flaky connection can interrupt it. Retry — a partial upload leaves nothing behind. |
 | "The Microsoft sign-in library failed to load" | The browser blocked `cdn.jsdelivr.net` (ad blocker or corporate proxy). |
 
 ## Recommended SharePoint setup for badge plans
@@ -99,5 +103,5 @@ The website simply reflects what's in SharePoint, so a little structure there pa
 
 ## Extending later
 
-- **Uploads/edits from the website:** possible by adding the `Sites.ReadWrite.All` delegated permission and an upload control. Not included yet — editing in SharePoint/Office directly is simpler and keeps version history.
+- **Copy** (as opposed to move) and **moving between libraries:** Graph supports both; not wired up yet.
 - **A "recent changes" view across all libraries:** Graph supports it (`/sites/{id}/drives/{id}/root/delta`); a small addition to `assets/leaders.js`.

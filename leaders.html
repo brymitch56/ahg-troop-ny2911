@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leaders — AHG Troop NY2911</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="assets/style.css?v=4">
-<script src="assets/config.js?v=4"></script>
+<link rel="stylesheet" href="assets/style.css?v=5">
+<script src="assets/config.js?v=5"></script>
 <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.20.0/lib/msal-browser.min.js"></script>
 </head>
 <body>
@@ -46,7 +46,7 @@
   <div class="gate" id="ldr-gate" hidden>
     <img src="assets/img/ahg-logo-vertical.jpg" alt="" style="height:120px;margin-bottom:0.5rem;">
     <h3 style="color:var(--ahg-blue);">Troop Leaders Only</h3>
-    <p>Badge plans, accounting, and planning documents live in the troop SharePoint. Sign in with your leader Microsoft account to browse them here.</p>
+    <p>Badge plans, accounting, and planning documents live in the troop SharePoint. Sign in with your leader Microsoft account to view and manage them here.</p>
     <p style="margin-top:1.25rem;"><button class="btn btn-blue btn-ms" id="ldr-signin">
       <svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
       Sign in with Microsoft
@@ -64,25 +64,51 @@
       </div>
     </div>
 
-    <nav class="ldr-crumbs" id="ldr-crumbs" aria-label="Folder path"></nav>
+    <div class="ldr-actionbar">
+      <nav class="ldr-crumbs" id="ldr-crumbs" aria-label="Folder path"></nav>
+      <div class="ldr-actions" id="ldr-folder-actions">
+        <button type="button" class="btn btn-red btn-sm" id="ldr-upload-btn">&#8679; Upload</button>
+        <button type="button" class="btn btn-outline btn-sm" id="ldr-newfolder-btn">+ New folder</button>
+        <input type="file" id="ldr-file-input" multiple hidden>
+      </div>
+    </div>
 
-    <div class="ldr-status" id="ldr-status" hidden></div>
+    <div class="ldr-uploads" id="ldr-uploads" hidden></div>
 
-    <table class="ldr-files" id="ldr-files" hidden>
-      <thead>
-        <tr><th>Name</th><th class="ldr-col-mod">Modified</th><th class="ldr-col-by">By</th><th class="ldr-col-size">Size</th></tr>
-      </thead>
-      <tbody id="ldr-rows"></tbody>
-    </table>
+    <div class="ldr-dropzone" id="ldr-dropzone">
+      <div class="ldr-status" id="ldr-status" hidden></div>
 
-    <p class="cal-note">Files open in SharePoint or Office in a new tab. Edits made there show up here automatically.</p>
+      <table class="ldr-files" id="ldr-files" hidden>
+        <thead>
+          <tr><th>Name</th><th class="ldr-col-mod">Modified</th><th class="ldr-col-by">By</th><th class="ldr-col-size">Size</th><th class="ldr-col-act"><span class="sr-only">Actions</span></th></tr>
+        </thead>
+        <tbody id="ldr-rows"></tbody>
+      </table>
+      <div class="ldr-drophint" id="ldr-drophint">Drop files here to upload to this folder</div>
+    </div>
+
+    <p class="cal-note">Drag files onto the list to upload. Files open in SharePoint or Office in a new tab; deleted files go to the SharePoint recycle bin.</p>
   </div>
 </main>
+
+<!-- Generic dialog (rename, new folder, move, delete) -->
+<div class="evt-overlay" id="ldr-dialog">
+  <div class="evt-modal ldr-modal" role="dialog" aria-modal="true" aria-labelledby="ldr-dialog-title">
+    <h3 id="ldr-dialog-title"></h3>
+    <div id="ldr-dialog-body"></div>
+    <div class="ldr-dialog-btns">
+      <button type="button" class="btn btn-outline btn-sm" id="ldr-dialog-cancel">Cancel</button>
+      <button type="button" class="btn btn-blue btn-sm" id="ldr-dialog-ok">OK</button>
+    </div>
+  </div>
+</div>
+
+<div class="ldr-toast" id="ldr-toast" hidden></div>
 
 <footer class="site-footer">
   <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
 </footer>
 
-<script src="assets/leaders.js?v=4"></script>
+<script src="assets/leaders.js?v=5"></script>
 </body>
 </html>

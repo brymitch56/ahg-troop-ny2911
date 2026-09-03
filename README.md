@@ -6,7 +6,7 @@ Website for American Heritage Girls Troop NY2911 — Rochester, NY. Hosted on Gi
 
 - `index.html` — landing page (meeting info, about the troop)
 - `calendar.html` — public calendar fed by an iCal (.ics) feed
-- `leaders.html` — leaders sign in with their Microsoft account and browse the troop SharePoint libraries (badge plans, accounting, planning)
+- `leaders.html` — leaders sign in with their Microsoft account and manage the troop SharePoint libraries (badge plans, accounting, planning): browse, search, upload, folders, rename, move, delete, download
 - `giving.html` — embedded Zeffy payment/fundraiser form
 
 ## Updating the site
@@ -15,7 +15,7 @@ Everything configurable lives in **`assets/config.js`**: meeting info, contact e
 
 ## Leaders area
 
-The Leaders page uses Microsoft sign-in (MSAL) and Microsoft Graph to read the troop SharePoint site. Each leader signs in with their own account, so access is controlled entirely by SharePoint permissions — there is no shared password and the site never stores documents.
+The Leaders page uses Microsoft sign-in (MSAL) and Microsoft Graph to read and manage files on the troop SharePoint site. Each leader signs in with their own account, so access is controlled entirely by SharePoint permissions — there is no shared password and the site never stores documents.
 
 One-time setup (an Entra app registration in the troop's Microsoft 365 tenant) is described in **[`docs/LEADERS-SETUP.md`](docs/LEADERS-SETUP.md)**. Until that's done, the page shows a "not configured yet" notice.
 
