@@ -55,8 +55,8 @@ window.TROOP_CONFIG = {
   //   scope   — api://<tracker-client-id>/access_as_leader
   // -----------------------------------------------------------
   tracker: {
-    baseUrl: "REPLACE-WITH-TRACKER-URL",
-    scope: "REPLACE-WITH-TRACKER-SCOPE"
+    baseUrl: "https://badges.ahg2911.org",
+    scope: "api://1bfb9f44-a625-4869-b9ca-49321d8b9ddd/access_as_leader"
   },
 
   // -----------------------------------------------------------
