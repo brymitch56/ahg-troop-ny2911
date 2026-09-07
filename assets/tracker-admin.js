@@ -20,11 +20,12 @@
       <div class="trk-panel" id="trk-conflicts"><h3>Conflicts</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-mapping"><h3>Girl ↔ AHGFamily mapping</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-queue"><h3>Push queue</h3><p class="trk-muted">Loading…</p></div>
+      <div class="trk-panel" id="trk-access"><h3>Leaders &amp; admins</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-creds"><h3>AHGFamily credentials</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-catalog"><h3>Badge catalog</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-audit"><h3>Recent activity</h3><p class="trk-muted">Loading…</p></div>
     `;
-    statusPanel(); conflictsPanel(); mappingPanel(); queuePanel(); credsPanel(); catalogPanel(); auditPanel();
+    statusPanel(); conflictsPanel(); mappingPanel(); queuePanel(); accessPanel(); credsPanel(); catalogPanel(); auditPanel();
   }
   const guard = (fn) => async () => { try { await fn(); } catch (e) { toast(e.message, true); } };
 
@@ -157,6 +158,60 @@
       <p class="trk-muted">Items confirmed here but missing on AHGFamily wait in this queue. Pushing to AHGFamily is a later, explicitly-enabled step — nothing is sent yet.</p>`
         : `<p class="trk-muted">The queue is empty.</p>`}
     `;
+  }
+
+  // ----------------------------------------------------- leaders/admins ---
+  async function accessPanel() {
+    const el = $("trk-access");
+    if (me.role !== "admin") { el.innerHTML = `<h3>Leaders &amp; admins</h3><p class="trk-muted">Admins only.</p>`; return; }
+    const v = await api("/admin/access");
+    // working copy: [{ email, role }]
+    const rows = [
+      ...v.adminEmails.map((e) => ({ email: e, role: "admin" })),
+      ...v.leaderEmails.filter((e) => !v.adminEmails.includes(e)).map((e) => ({ email: e, role: "leader" })),
+    ];
+    const draw = () => {
+      el.innerHTML = `
+        <h3>Leaders &amp; admins</h3>
+        <p class="trk-muted">Who can use these badge pages, by their Microsoft sign-in e-mail. Leaders plan and confirm; admins also manage settings, sync, and this list. Changes apply immediately.</p>
+        ${v.env.adminEmails.length || v.env.leaderEmails.length || v.leaderGroupConfigured ? `<p class="trk-muted">Always allowed (set on the server, not editable here):
+          ${v.env.adminEmails.map((e) => `<span class="trk-pill ok">${esc(e)} · admin</span>`).join(" ")}
+          ${v.env.leaderEmails.map((e) => `<span class="trk-pill mut">${esc(e)} · leader</span>`).join(" ")}
+          ${v.leaderGroupConfigured ? '<span class="trk-pill mut">a Microsoft security group also grants leader access</span>' : ""}</p>` : ""}
+        ${rows.length ? `<div class="trk-wrap"><table class="trk-table">
+          <thead><tr><th>E-mail</th><th>Role</th><th></th></tr></thead>
+          <tbody>${rows.map((r, i) => `
+            <tr>
+              <td>${esc(r.email)}</td>
+              <td><select data-acc-role="${i}"><option value="leader" ${r.role === "leader" ? "selected" : ""}>leader</option><option value="admin" ${r.role === "admin" ? "selected" : ""}>admin</option></select></td>
+              <td><button class="btn-link trk-danger" data-acc-del="${i}">remove</button></td>
+            </tr>`).join("")}</tbody>
+        </table></div>` : `<p class="trk-muted">No one added here yet.</p>`}
+        <div class="trk-row-tools">
+          <input type="text" id="trk-acc-email" placeholder="name@church-tenant e-mail" autocomplete="off" style="min-width:230px">
+          <select id="trk-acc-newrole"><option value="leader">leader</option><option value="admin">admin</option></select>
+          <button class="btn btn-outline btn-sm" id="trk-acc-add">Add</button>
+          <button class="btn btn-blue btn-sm" id="trk-acc-save">Save list</button>
+        </div>`;
+      el.querySelectorAll("[data-acc-role]").forEach((sel) => sel.addEventListener("change", () => { rows[Number(sel.dataset.accRole)].role = sel.value; }));
+      el.querySelectorAll("[data-acc-del]").forEach((b) => b.addEventListener("click", () => { rows.splice(Number(b.dataset.accDel), 1); draw(); }));
+      $("trk-acc-add").addEventListener("click", () => {
+        const email = $("trk-acc-email").value.trim().toLowerCase();
+        if (!email || !email.includes("@")) { toast("Enter an e-mail address"); return; }
+        if (rows.some((r) => r.email === email)) { toast("Already on the list"); return; }
+        rows.push({ email, role: $("trk-acc-newrole").value });
+        draw();
+      });
+      $("trk-acc-save").addEventListener("click", guard(async () => {
+        await api("/admin/access", { body: {
+          leaderEmails: rows.filter((r) => r.role === "leader").map((r) => r.email),
+          adminEmails: rows.filter((r) => r.role === "admin").map((r) => r.email),
+        } });
+        toast("Saved — changes are live");
+        accessPanel();
+      }));
+    };
+    draw();
   }
 
   // ------------------------------------------------------ credentials ---
