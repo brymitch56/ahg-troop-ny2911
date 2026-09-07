@@ -346,3 +346,46 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
   .site-header { justify-content: center; }
   .site-header .brand img { height: 46px; }
 }
+
+/* ---------- Badge tracker pages (leaders area) ---------- */
+.trk-subnav { display: flex; gap: 0.35rem; flex-wrap: wrap; margin: 0 0 1.1rem; }
+.trk-subnav a { padding: 0.35rem 0.9rem; border-radius: 999px; border: 1px solid var(--border);
+  color: var(--ahg-blue); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+.trk-subnav a:hover { background: var(--paper-soft); }
+.trk-subnav a.active { background: var(--ahg-blue); border-color: var(--ahg-blue); color: #fff; }
+.trk-chips { display: flex; gap: 0.35rem; flex-wrap: wrap; margin: 0 0 1rem; }
+.trk-chip { padding: 0.3rem 0.8rem; border-radius: 999px; border: 1px solid var(--border);
+  background: #fff; color: var(--ink); cursor: pointer; font-size: 0.9rem; }
+.trk-chip.active { background: var(--ahg-blue); border-color: var(--ahg-blue); color: #fff; }
+.trk-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.8rem; }
+.trk-card { border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; background: #fff;
+  cursor: pointer; text-align: left; font: inherit; }
+.trk-card:hover { border-color: var(--ahg-blue); box-shadow: 0 1px 6px rgba(4, 96, 171, 0.15); }
+.trk-card h3 { margin: 0 0 0.25rem; color: var(--ahg-blue); font-size: 1.02rem; }
+.trk-card .trk-meta { color: #5a6675; font-size: 0.85rem; }
+.trk-panel { border: 1px solid var(--border); border-radius: 10px; background: #fff; padding: 1rem 1.2rem; margin: 0 0 1rem; }
+.trk-panel h3 { margin-top: 0; color: var(--ahg-blue); }
+.trk-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.trk-table th, .trk-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.trk-table th { color: #5a6675; font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.02em; }
+.trk-wrap { overflow-x: auto; }
+.trk-pill { display: inline-block; padding: 0.1rem 0.6rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+.trk-pill.ok, .trk-pill.complete, .trk-pill.confirmed { background: #e2f4e5; color: #1e7a34; }
+.trk-pill.warn, .trk-pill.in_progress, .trk-pill.proposed, .trk-pill.queued { background: #fdf1dc; color: #9a6b00; }
+.trk-pill.err, .trk-pill.latched, .trk-pill.failed, .trk-pill.rejected { background: #fde3df; color: var(--ahg-red-dark); }
+.trk-pill.mut, .trk-pill.not_started, .trk-pill.none, .trk-pill.off, .trk-pill.skipped { background: var(--paper-soft); color: #5a6675; }
+.trk-req { padding: 0.55rem 0; border-bottom: 1px solid var(--paper-soft); }
+.trk-num { font-weight: 700; color: var(--ahg-blue); margin-right: 0.4rem; }
+.trk-req .trk-text { margin: 0.2rem 0 0; white-space: pre-wrap; }
+.trk-req ul { margin: 0.3rem 0 0 1.2rem; }
+.trk-row-tools { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.6rem 0; }
+.trk-row-tools select, .trk-row-tools input[type="date"], .trk-row-tools input[type="text"] {
+  padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; font: inherit; }
+.trk-grid-x { border: 1px solid var(--border); }
+.trk-grid-x td.done { background: #e2f4e5; text-align: center; }
+.trk-grid-x td.prop { background: #fdf1dc; text-align: center; }
+.trk-grid-x td.blank { text-align: center; color: #c3ccd6; }
+.trk-statusline { display: flex; gap: 1rem; flex-wrap: wrap; align-items: baseline; margin-bottom: 0.8rem; }
+.trk-muted { color: #5a6675; font-size: 0.88rem; }
+.trk-danger { color: var(--ahg-red-dark); }
+@media (max-width: 640px) { .trk-cards { grid-template-columns: 1fr; } }

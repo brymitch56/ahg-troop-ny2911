@@ -45,6 +45,21 @@ window.TROOP_CONFIG = {
   },
 
   // -----------------------------------------------------------
+  // BADGE TRACKER: the leaders Badges/Planning/Progress/Admin
+  // pages call the troop's badge tracker API (self-hosted on the
+  // Pi) with the same Microsoft sign-in. Needs the tracker's OWN
+  // Entra app registration — steps in the badge tracker repo's
+  // docs/entra-setup.md. Until both values are set, the pages
+  // show a "not connected" note.
+  //   baseUrl — https://badges.<the troop domain>
+  //   scope   — api://<tracker-client-id>/access_as_leader
+  // -----------------------------------------------------------
+  tracker: {
+    baseUrl: "REPLACE-WITH-TRACKER-URL",
+    scope: "REPLACE-WITH-TRACKER-SCOPE"
+  },
+
+  // -----------------------------------------------------------
   // GIVING: your Zeffy embed URL. In Zeffy: form → Share →
   // Embed → copy the URL inside src="..." of the iframe code.
   // -----------------------------------------------------------
