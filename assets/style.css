@@ -417,3 +417,13 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-bar .done { background: var(--ahg-blue); }
 .trk-yr-nums { white-space: nowrap; font-size: 0.85rem; }
 @media (max-width: 640px) { .trk-yr-row { grid-template-columns: 1fr; gap: 0.25rem; } }
+
+/* program-year drill-down modal */
+.trk-yr-click { cursor: pointer; }
+.trk-yr-click:hover { background: var(--paper-soft); }
+.trk-yr-modal { max-width: 560px; max-height: 85vh; overflow-y: auto; }
+.trk-yr-h4 { color: var(--ahg-blue); margin: 0.9rem 0 0.3rem; font-size: 1.02rem; }
+.trk-yr-ev { border-left: 3px solid var(--border); padding: 0.2rem 0 0.2rem 0.7rem; margin: 0.45rem 0; }
+.trk-yr-ev.past { border-left-color: var(--ahg-blue); }
+.trk-yr-ev ul, .trk-yr-gaps { margin: 0.15rem 0 0 1.1rem; }
+.trk-yr-ev li, .trk-yr-gaps li { margin: 0.15rem 0; }

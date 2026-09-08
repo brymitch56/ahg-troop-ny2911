@@ -80,7 +80,7 @@
             const plannedPct = b.needed ? Math.round((b.planned / b.needed) * 100) : 0;
             const donePct = b.needed ? Math.round((b.done / b.needed) * 100) : 0;
             return `
-            <div class="trk-yr-row">
+            <div class="trk-yr-row trk-yr-click" role="button" tabindex="0" data-yr-badge="${esc(b.badgeId)}" data-yr-unit="${esc(u.unit)}" title="Show the full plan">
               <div class="trk-yr-name"><strong>${esc(b.name)}</strong>${b.frontier ? ` <span class="trk-muted">· ${esc(b.frontier)}</span>` : ""}</div>
               <div class="trk-bar" title="${b.planned} of ${b.needed} requirements scheduled; ${b.done} already held">
                 <span class="plan" style="width:${plannedPct}%"></span>
@@ -91,6 +91,78 @@
           }).join("")}
         </div>`).join("")}
     `;
+    body.querySelectorAll("[data-yr-badge]").forEach((row) => {
+      const open = () => badgeModal(row.dataset.yrBadge, row.dataset.yrUnit, py);
+      row.addEventListener("click", open);
+      row.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
+  }
+
+  // The drill-down modal: the badge's full plan for the year (dates and
+  // requirements), then what still needs planning — required gaps first,
+  // then optional groups only while their threshold isn't met.
+  async function badgeModal(badgeId, unit, py) {
+    let d;
+    try {
+      d = await api(`/progress/year/badge?badgeId=${encodeURIComponent(badgeId)}&unit=${encodeURIComponent(unit)}&from=${py.from}&to=${py.to}`);
+    } catch (e) { toast(e.message, true); return; }
+
+    // chronological plan: event → its items for this badge
+    const byEvent = new Map();
+    for (const g of d.groups) for (const r of g.requirements) for (const ses of r.sessions) {
+      const key = ses.eventId;
+      if (!byEvent.has(key)) byEvent.set(key, { title: ses.title, startAt: ses.startAt, past: ses.past, items: [] });
+      byEvent.get(key).items.push({ number: r.number, letter: r.letter || "", title: r.title, role: ses.role });
+    }
+    const events = [...byEvent.values()].sort((a, b) => a.startAt.localeCompare(b.startAt));
+
+    const requiredGaps = [];
+    const optionalGaps = [];
+    for (const g of d.groups) {
+      const unplanned = g.requirements.filter((r) => !r.planned);
+      if (g.ruleType === "n_of") {
+        if (g.remaining > 0) optionalGaps.push({ label: g.label, need: g.need, remaining: g.remaining, reqs: unplanned });
+      } else {
+        requiredGaps.push(...unplanned.map((r) => ({ ...r, groupLabel: g.label })));
+      }
+    }
+    const complete = !requiredGaps.length && !optionalGaps.length;
+    const reqLine = (r) => `<span class="trk-num">${r.number}${esc(r.letter || "")}</span>${esc(r.title || "")}${r.startedOnly ? ' <span class="trk-pill warn">started — no finish scheduled</span>' : ""}`;
+
+    let overlay = $("trk-yr-modal");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "trk-yr-modal";
+      overlay.className = "evt-overlay";
+      document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `
+      <div class="evt-modal trk-yr-modal" role="dialog" aria-modal="true" aria-labelledby="trk-yr-modal-title">
+        <h3 id="trk-yr-modal-title">${esc(d.name)}</h3>
+        <p class="evt-meta">${esc(unit)}${d.frontier ? " · " + esc(d.frontier) : ""} · program year plan</p>
+        ${events.length ? `
+          <h4 class="trk-yr-h4">On the calendar</h4>
+          ${events.map((ev) => `
+            <div class="trk-yr-ev ${ev.past ? "past" : ""}">
+              <div class="trk-yr-ev-head"><strong>${fmtDate(ev.startAt)}</strong> · ${esc(ev.title)}${ev.past ? ' <span class="trk-pill ok">held</span>' : ""}</div>
+              <ul>${ev.items.map((it) => `<li><span class="trk-num">${it.number}${esc(it.letter)}</span>${esc(it.title || "")} <span class="trk-pill ${it.role === "session" || it.role === "finish" ? "ok" : "mut"}">${it.role}</span></li>`).join("")}</ul>
+            </div>`).join("")}` : '<p class="trk-muted">Nothing on the calendar for this badge yet.</p>'}
+        ${complete ? '<p><span class="trk-pill complete">This plan completes the badge</span></p>' : `
+          <h4 class="trk-yr-h4">Still needs planning</h4>
+          ${requiredGaps.length ? `
+            <p class="trk-muted" style="margin:0.2rem 0">Required:</p>
+            <ul class="trk-yr-gaps">${requiredGaps.map((r) => `<li>${reqLine(r)}</li>`).join("")}</ul>` : ""}
+          ${optionalGaps.map((g) => `
+            <p class="trk-muted" style="margin:0.6rem 0 0.2rem">${esc(g.label || "Options")} — plan <strong>${g.remaining}</strong> more of these:</p>
+            <ul class="trk-yr-gaps">${g.reqs.map((r) => `<li>${reqLine(r)}</li>`).join("")}</ul>`).join("")}`}
+        <div class="ldr-dialog-btns"><button type="button" class="btn btn-blue btn-sm" id="trk-yr-modal-close">Close</button></div>
+      </div>`;
+    overlay.classList.add("open");
+    const close = () => { overlay.classList.remove("open"); document.removeEventListener("keydown", onKey); };
+    const onKey = (e) => { if (e.key === "Escape") close(); };
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+    $("trk-yr-modal-close").addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
   }
 
   // ------------------------------------------------ by girl --------------
