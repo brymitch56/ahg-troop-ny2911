@@ -93,7 +93,9 @@
             <thead><tr><th>Requirement</th><th>Role</th><th></th></tr></thead>
             <tbody>${items.map((it, idx) => `
               <tr>
-                <td><strong>${esc(it.badgeName)}</strong> ${it.number}${esc(it.letter || "")}${it.title ? " — " + esc(it.title) : ""}</td>
+                <td><strong>${esc(it.badgeName)}</strong> ${it.number}${esc(it.letter || "")}${it.title ? " — " + esc(it.title) : ""}
+                  ${it.text ? `<p class="trk-text trk-muted" style="margin:0.3rem 0 0">${esc(it.text)}</p>` : ""}
+                  ${it.subItems && it.subItems.length ? `<ul class="trk-muted" style="margin:0.2rem 0 0 1.2rem">${it.subItems.map((si) => `<li>${esc(si)}</li>`).join("")}</ul>` : ""}</td>
                 <td><select data-role="${idx}">${ROLES.map((r) => `<option value="${r}" ${it.role === r ? "selected" : ""}>${r}</option>`).join("")}</select>
                   <div class="trk-muted" data-rolehelp="${idx}">${ROLE_HELP[it.role]}</div></td>
                 <td><button class="btn-link trk-danger" data-del="${idx}">remove</button></td>
@@ -134,15 +136,28 @@
           .map((r) => `<option value="${esc(r.trackerId)}">${r.number}${esc(r.letter || "")} — ${esc(r.title || "")}</option>`).join("");
         reqSel.hidden = addBtn.hidden = !reqSel.options.length;
         if (!reqSel.options.length) toast("Every requirement of that badge is already on the plan");
+        reqSel.dispatchEvent(new Event("reqs-loaded"));
         },
       });
       addBtn.addEventListener("click", () => {
         const b = badgeCache[pickedBadge];
         const r = b.groups.flatMap((g) => g.requirements).find((x) => x.trackerId === reqSel.value);
         if (!r) return;
-        items.push({ requirementId: r.trackerId, badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, role: "session" });
+        items.push({ requirementId: r.trackerId, badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, text: r.text, subItems: r.subItems || [], role: "session" });
         draw();
       });
+      // full handbook text of the highlighted requirement, before it's added
+      const preview = document.createElement("p");
+      preview.className = "trk-text trk-muted";
+      preview.style.margin = "0.4rem 0 0";
+      reqSel.parentNode.insertBefore(preview, reqSel.parentNode.querySelector(".trk-row-tools:last-of-type"));
+      const showPreview = () => {
+        const bb = badgeCache[pickedBadge];
+        const rr = bb && bb.groups.flatMap((g) => g.requirements).find((x) => x.trackerId === reqSel.value);
+        preview.textContent = rr && rr.text ? rr.text : "";
+      };
+      reqSel.addEventListener("change", showPreview);
+      reqSel.addEventListener("reqs-loaded", showPreview);
 
       $("trk-plan-save").addEventListener("click", async () => {
         try {

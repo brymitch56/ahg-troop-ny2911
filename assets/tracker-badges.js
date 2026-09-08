@@ -10,24 +10,33 @@
 
   let badges = [];
   let filter = "";
+  let frontierFilter = "";
 
   function listView() {
     const groups = [...new Set(badges.map((b) => b.levelGroup))].sort();
-    const shown = badges.filter((b) => !filter || b.levelGroup === filter);
+    const frontiers = [...new Set(badges.map((b) => b.frontier).filter(Boolean))].sort();
+    const shown = badges.filter((b) => (!filter || b.levelGroup === filter) && (!frontierFilter || b.frontier === frontierFilter));
     root().innerHTML = `
       <div class="trk-chips">
-        <button class="trk-chip ${!filter ? "active" : ""}" data-lg="">All</button>
+        <button class="trk-chip ${!filter ? "active" : ""}" data-lg="">All levels</button>
         ${groups.map((g) => `<button class="trk-chip ${filter === g ? "active" : ""}" data-lg="${esc(g)}">${esc(g)}</button>`).join("")}
       </div>
+      ${frontiers.length ? `<div class="trk-chips">
+        <button class="trk-chip ${!frontierFilter ? "active" : ""}" data-fr="">All frontiers</button>
+        ${frontiers.map((f) => `<button class="trk-chip ${frontierFilter === f ? "active" : ""}" data-fr="${esc(f)}">${esc(f)}</button>`).join("")}
+      </div>` : ""}
       ${shown.length ? `<div class="trk-cards">
         ${shown.map((b) => `
           <button class="trk-card" data-id="${esc(b.id)}">
             <h3>${esc(b.name)}</h3>
-            <div class="trk-meta">${esc(b.levelGroup)} · ${b.requirementCount} requirements${b.pages && b.pages.length ? ` · handbook p. ${b.pages.join("–")}` : ""}</div>
+            <div class="trk-meta">${esc(b.levelGroup)}${b.frontier ? " · " + esc(b.frontier) : ""} · ${b.requirementCount} requirements${b.pages && b.pages.length ? ` · handbook p. ${b.pages.join("–")}` : ""}</div>
           </button>`).join("")}
       </div>` : `<p class="trk-muted">No badges in the catalog yet${filter ? " for this level group" : ""}. Only annotated badges appear here — the pilot set to start.</p>`}
     `;
-    root().querySelectorAll(".trk-chip").forEach((c) => c.addEventListener("click", () => { filter = c.dataset.lg; listView(); }));
+    root().querySelectorAll(".trk-chip").forEach((c) => c.addEventListener("click", () => {
+      if (c.dataset.fr !== undefined) frontierFilter = c.dataset.fr; else filter = c.dataset.lg;
+      listView();
+    }));
     root().querySelectorAll(".trk-card").forEach((c) => c.addEventListener("click", () => detailView(c.dataset.id)));
   }
 
