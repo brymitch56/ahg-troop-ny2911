@@ -24,15 +24,69 @@
   const badgeFits = (badgeLevelGroup, unit) => badgeLevelGroup === "All" || badgeLevelGroup === unit
     || (unit === "Pioneer/Patriot" && (badgeLevelGroup === "Pioneer" || badgeLevelGroup === "Patriot"));
 
-  const isoDay = (d) => d.toISOString().slice(0, 10);
+  // local-calendar YYYY-MM-DD (toISOString would shift across midnight UTC)
+  const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const dayDiff = (a, b) => Math.round((b - a) / 864e5);
 
   // ------------------------------------------------ events list ----------
+  // Date-range state: default two weeks back – sixty days ahead; quick
+  // presets, a custom range, and paging by the current window's own size.
+  const PRESETS = [
+    { key: "default", label: "2 wk back – 60 d ahead", calc: () => [addDays(new Date(), -14), addDays(new Date(), 60)] },
+    { key: "month", label: "This month", calc: () => { const n = new Date(); return [new Date(n.getFullYear(), n.getMonth(), 1), new Date(n.getFullYear(), n.getMonth() + 1, 0)]; } },
+    { key: "next90", label: "Next 90 days", calc: () => [new Date(), addDays(new Date(), 90)] },
+    { key: "past90", label: "Past 90 days", calc: () => [addDays(new Date(), -90), new Date()] },
+    { key: "year", label: "Program year", calc: () => { const n = new Date(); const y = n.getMonth() >= 8 ? n.getFullYear() : n.getFullYear() - 1; return [new Date(y, 8, 1), new Date(y + 1, 7, 31)]; } },
+  ];
+  const range = { preset: "default", from: addDays(new Date(), -14), to: addDays(new Date(), 60) };
+
   async function listView() {
-    const from = isoDay(new Date(Date.now() - 14 * 864e5));
-    const to = isoDay(new Date(Date.now() + 60 * 864e5));
+    const from = isoDay(range.from);
+    const to = isoDay(range.to);
     const events = await api(`/events?from=${from}&to=${to}`);
+    const spanDays = dayDiff(range.from, range.to);
     root().innerHTML = `
-      <p class="trk-muted">Events mirror the check-in app (two weeks back, sixty days ahead). Pick one to plan badgework or review the meeting afterward.</p>
+      <div class="trk-chips">
+        ${PRESETS.map((pr) => `<button class="trk-chip ${range.preset === pr.key ? "active" : ""}" data-preset="${pr.key}">${pr.label}</button>`).join("")}
+      </div>
+      <div class="trk-row-tools">
+        <button class="btn btn-outline btn-sm" id="trk-ev-prev" title="Back ${spanDays + 1} days">&larr; Earlier</button>
+        <strong>${fmtDate(from)} – ${fmtDate(to)}</strong>
+        <button class="btn btn-outline btn-sm" id="trk-ev-next" title="Forward ${spanDays + 1} days">Later &rarr;</button>
+        <span class="trk-muted">·</span>
+        <input type="date" id="trk-ev-from" value="${from}" aria-label="From">
+        <span class="trk-muted">to</span>
+        <input type="date" id="trk-ev-to" value="${to}" aria-label="To">
+        <button class="btn btn-outline btn-sm" id="trk-ev-apply">Apply</button>
+      </div>
+      <p class="trk-muted">${events.length} event${events.length === 1 ? "" : "s"} in this range. Pick one to plan badgework or review the meeting afterward. History goes back to the tracker's install; the mirror looks about a year ahead.</p>`;
+    root().insertAdjacentHTML("beforeend", listTable(events));
+    root().querySelectorAll("[data-preset]").forEach((c) => c.addEventListener("click", () => {
+      const pr = PRESETS.find((x) => x.key === c.dataset.preset);
+      const [f, t] = pr.calc();
+      range.preset = pr.key; range.from = f; range.to = t;
+      listView();
+    }));
+    const shift = (dir) => {
+      const step = (spanDays + 1) * dir;
+      range.preset = "custom"; range.from = addDays(range.from, step); range.to = addDays(range.to, step);
+      listView();
+    };
+    $("trk-ev-prev").addEventListener("click", () => shift(-1));
+    $("trk-ev-next").addEventListener("click", () => shift(1));
+    $("trk-ev-apply").addEventListener("click", () => {
+      const f = $("trk-ev-from").value; const t = $("trk-ev-to").value;
+      if (!f || !t) { toast("Pick both dates"); return; }
+      if (f > t) { toast("The start date is after the end date"); return; }
+      range.preset = "custom"; range.from = new Date(f + "T12:00:00"); range.to = new Date(t + "T12:00:00");
+      listView();
+    });
+    root().querySelectorAll("a[data-ev]").forEach((a) => a.addEventListener("click", (ev) => { ev.preventDefault(); eventView(Number(a.dataset.ev)); }));
+  }
+
+  function listTable(events) {
+    return `
       ${events.length ? `<div class="trk-wrap"><table class="trk-table">
         <thead><tr><th>When</th><th>Event</th><th>Plans</th><th>Attendance</th></tr></thead>
         <tbody>${events.map((e) => `
@@ -42,9 +96,8 @@
             <td>${(e.planLevelGroups || []).map((g) => `<span class="trk-pill ok">${esc(g)}</span>`).join(" ") || '<span class="trk-muted">—</span>'}</td>
             <td>${e.attendance ? `${e.attendance.total} signed in${e.attendance.open ? ` <span class="trk-pill warn">${e.attendance.open} still open</span>` : ""}` : '<span class="trk-muted">—</span>'}</td>
           </tr>`).join("")}</tbody>
-      </table></div>` : `<p class="trk-muted">No events in the window. Check the sync status on the Admin page.</p>`}
+      </table></div>` : `<p class="trk-muted">No events in this range. Events appear once the check-in app knows them (iCal feed or manual entry) and the tracker has synced.</p>`}
     `;
-    root().querySelectorAll("a[data-ev]").forEach((a) => a.addEventListener("click", (ev) => { ev.preventDefault(); eventView(Number(a.dataset.ev)); }));
   }
 
   // ------------------------------------------------ event detail ---------
