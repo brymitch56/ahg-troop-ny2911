@@ -405,3 +405,15 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-notes { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 6px;
   font: inherit; line-height: 1.4; resize: none; overflow: hidden; min-height: 2.2rem; }
 .trk-notes:focus { outline: 2px solid var(--ahg-blue); outline-offset: -1px; }
+
+/* program-year stacked bars (Progress page) */
+.trk-yr-row { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(160px, 2fr) auto;
+  gap: 0.8rem; align-items: center; padding: 0.45rem 0; border-bottom: 1px solid var(--paper-soft); }
+.trk-yr-row:last-child { border-bottom: none; }
+.trk-bar { position: relative; height: 0.95rem; background: var(--paper-soft);
+  border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+.trk-bar span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; }
+.trk-bar .plan { background: #b9d7f2; }
+.trk-bar .done { background: var(--ahg-blue); }
+.trk-yr-nums { white-space: nowrap; font-size: 0.85rem; }
+@media (max-width: 640px) { .trk-yr-row { grid-template-columns: 1fr; gap: 0.25rem; } }

@@ -11,7 +11,7 @@
 
   let girls = [];
   let badges = [];
-  let mode = "girl"; // girl | badge
+  let mode = "year"; // year | girl | badge
   let selGirl = null;
   let selBadge = null;
 
@@ -21,6 +21,7 @@
   function shell() {
     root().innerHTML = `
       <div class="trk-chips">
+        <button class="trk-chip ${mode === "year" ? "active" : ""}" data-mode="year">Program year</button>
         <button class="trk-chip ${mode === "girl" ? "active" : ""}" data-mode="girl">By girl</button>
         <button class="trk-chip ${mode === "badge" ? "active" : ""}" data-mode="badge">By badge</button>
       </div>
@@ -29,6 +30,7 @@
     `;
     root().querySelectorAll("[data-mode]").forEach((c) => c.addEventListener("click", () => { mode = c.dataset.mode; shell(); }));
     const picker = $("trk-picker");
+    if (mode === "year") { picker.innerHTML = ""; yearView(); return; }
     picker.innerHTML = '<div id="trk-sel"></div>';
     if (mode === "girl") {
       combo($("trk-sel"), {
@@ -47,6 +49,48 @@
       });
       badgeView();
     }
+  }
+
+  // ------------------------------------------------ program year ---------
+  // Plan-based bars (decision: this tracks the SCHEDULE, not confirmations):
+  // the light bar fills as completing sessions (roles session/finish) are
+  // planned; the solid bar fills as those planned sessions' dates pass.
+  const localISO = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  function programYear() {
+    const n = new Date();
+    const y = n.getMonth() >= 8 ? n.getFullYear() : n.getFullYear() - 1;
+    return { from: localISO(new Date(y, 8, 1)), to: localISO(new Date(y + 1, 7, 31)), label: `${y}–${y + 1}` };
+  }
+  async function yearView() {
+    const body = $("trk-body");
+    const py = programYear();
+    const data = await api(`/progress/year?from=${py.from}&to=${py.to}`);
+    if (!data.units.length) {
+      body.innerHTML = `<p class="trk-muted">Nothing planned yet for the ${py.label} program year. Build a plan on the Planning tab and it appears here.</p>`;
+      return;
+    }
+    body.innerHTML = `
+      <p class="trk-muted">Program year ${py.label} (${fmtDate(py.from)} – ${fmtDate(py.to)}). Bars follow the plan:
+        <span class="trk-pill mut">light = requirements scheduled</span> <span class="trk-pill ok">solid = sessions already held</span>.
+        Actual per-girl confirmations live under By girl / By badge.</p>
+      ${data.units.map((u) => `
+        <div class="trk-panel">
+          <h3>${esc(u.unit)}</h3>
+          ${u.badges.map((b) => {
+            const plannedPct = b.needed ? Math.round((b.planned / b.needed) * 100) : 0;
+            const donePct = b.needed ? Math.round((b.done / b.needed) * 100) : 0;
+            return `
+            <div class="trk-yr-row">
+              <div class="trk-yr-name"><strong>${esc(b.name)}</strong>${b.frontier ? ` <span class="trk-muted">· ${esc(b.frontier)}</span>` : ""}</div>
+              <div class="trk-bar" title="${b.planned} of ${b.needed} requirements scheduled; ${b.done} already held">
+                <span class="plan" style="width:${plannedPct}%"></span>
+                <span class="done" style="width:${donePct}%"></span>
+              </div>
+              <div class="trk-yr-nums trk-muted">held ${b.done} · planned ${b.planned} / ${b.needed}${b.startedOnly ? ` · ${b.startedOnly} started, no finish scheduled` : ""}</div>
+            </div>`;
+          }).join("")}
+        </div>`).join("")}
+    `;
   }
 
   // ------------------------------------------------ by girl --------------
