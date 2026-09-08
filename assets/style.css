@@ -389,3 +389,14 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-muted { color: #5a6675; font-size: 0.88rem; }
 .trk-danger { color: var(--ahg-red-dark); }
 @media (max-width: 640px) { .trk-cards { grid-template-columns: 1fr; } }
+
+/* searchable dropdown (assets/tracker.js → Tracker.combo) */
+.trk-combo { position: relative; display: inline-block; min-width: 240px; }
+.trk-combo-input { width: 100%; padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 6px; font: inherit; background: #fff; }
+.trk-combo-input:focus { outline: 2px solid var(--ahg-blue); outline-offset: -1px; }
+.trk-combo-list { position: absolute; z-index: 40; left: 0; right: 0; top: calc(100% + 2px);
+  max-height: 16rem; overflow-y: auto; background: #fff; border: 1px solid var(--border);
+  border-radius: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12); }
+.trk-combo-opt { padding: 0.4rem 0.6rem; cursor: pointer; }
+.trk-combo-opt:hover, .trk-combo-opt.active { background: var(--paper-soft); }
+.trk-combo-empty { padding: 0.5rem 0.6rem; color: #5a6675; }

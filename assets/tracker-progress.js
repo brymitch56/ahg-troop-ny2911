@@ -6,7 +6,7 @@
 // ============================================================
 (function () {
   "use strict";
-  const { init, api, esc, toast, fmtDate, $ } = window.Tracker;
+  const { init, api, esc, toast, fmtDate, combo, $ } = window.Tracker;
   const root = () => $("pg-progress");
 
   let girls = [];
@@ -29,15 +29,22 @@
     `;
     root().querySelectorAll("[data-mode]").forEach((c) => c.addEventListener("click", () => { mode = c.dataset.mode; shell(); }));
     const picker = $("trk-picker");
+    picker.innerHTML = '<div id="trk-sel"></div>';
     if (mode === "girl") {
-      picker.innerHTML = `<select id="trk-sel"><option value="">Choose a girl…</option>
-        ${girls.map((g) => `<option value="${g.id}" ${selGirl === g.id ? "selected" : ""}>${esc(g.lastName)}, ${esc(g.firstName)}${g.ahgLevel ? ` (${esc(g.ahgLevel)})` : ""}</option>`).join("")}</select>`;
-      $("trk-sel").addEventListener("change", (e) => { selGirl = Number(e.target.value) || null; girlView(); });
+      combo($("trk-sel"), {
+        items: girls.map((g) => ({ value: String(g.id), label: `${g.lastName}, ${g.firstName}`, sub: g.ahgLevel || "" })),
+        value: selGirl ? String(selGirl) : null,
+        placeholder: "Search girls…",
+        onChange: (v) => { selGirl = Number(v) || null; girlView(); },
+      });
       girlView();
     } else {
-      picker.innerHTML = `<select id="trk-sel"><option value="">Choose a badge…</option>
-        ${badges.map((b) => `<option value="${esc(b.id)}" ${selBadge === b.id ? "selected" : ""}>${esc(b.name)} (${esc(b.levelGroup)})</option>`).join("")}</select>`;
-      $("trk-sel").addEventListener("change", (e) => { selBadge = e.target.value || null; badgeView(); });
+      combo($("trk-sel"), {
+        items: badges.map((b) => ({ value: b.id, label: b.name, sub: b.levelGroup })),
+        value: selBadge,
+        placeholder: "Search badges…",
+        onChange: (v) => { selBadge = v || null; badgeView(); },
+      });
       badgeView();
     }
   }

@@ -169,5 +169,78 @@
     }
   }
 
-  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, $ };
+  // ---------- searchable dropdown (combobox) ----------
+  // Type to filter, arrows/Enter to pick, click to pick. Used wherever a
+  // list can get long — badges (hundreds once the whole handbook is in),
+  // girls, AHGFamily members. items: [{ value, label, sub }].
+  function combo(host, { items, value = null, placeholder = "", onChange, emptyText = "No matches" }) {
+    const chosen = () => items.find((i) => String(i.value) === String(value)) || null;
+    host.innerHTML = `<div class="trk-combo">
+      <input type="text" class="trk-combo-input" placeholder="${esc(placeholder)}" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false">
+      <div class="trk-combo-list" hidden></div>
+    </div>`;
+    const input = host.querySelector(".trk-combo-input");
+    const list = host.querySelector(".trk-combo-list");
+    let filtered = items;
+    let active = -1;
+    let open = false;
+    const label = (i) => i.label + (i.sub ? "  ·  " + i.sub : "");
+    if (chosen()) input.value = chosen().label;
+
+    function render() {
+      list.innerHTML = filtered.length
+        ? filtered.map((i, n) => `<div class="trk-combo-opt${n === active ? " active" : ""}" data-n="${n}">${esc(i.label)}${i.sub ? ` <span class="trk-muted">${esc(i.sub)}</span>` : ""}</div>`).join("")
+        : `<div class="trk-combo-empty">${esc(emptyText)}</div>`;
+      list.querySelectorAll(".trk-combo-opt").forEach((el) => {
+        el.addEventListener("mousedown", (e) => { e.preventDefault(); pick(filtered[Number(el.dataset.n)]); });
+      });
+    }
+    function show(q) {
+      const t = String(q || "").trim().toLowerCase();
+      filtered = !t ? items : items.filter((i) => label(i).toLowerCase().includes(t));
+      active = filtered.length ? 0 : -1;
+      open = true;
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+      render();
+    }
+    function hide() {
+      open = false;
+      list.hidden = true;
+      input.setAttribute("aria-expanded", "false");
+      // snap back to the current selection so the box never shows a
+      // half-typed value that isn't what's actually selected
+      input.value = chosen() ? chosen().label : "";
+    }
+    function pick(item) {
+      if (!item) return;
+      value = item.value;
+      input.value = item.label;
+      hide();
+      if (onChange) onChange(item.value, item);
+    }
+    input.addEventListener("focus", () => show(""));
+    input.addEventListener("click", () => { if (!open) show(""); });
+    input.addEventListener("input", () => show(input.value));
+    input.addEventListener("blur", () => setTimeout(hide, 0));
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!open) return show("");
+        active = Math.max(0, Math.min(filtered.length - 1, active + (e.key === "ArrowDown" ? 1 : -1)));
+        render();
+        const el = list.querySelector(".trk-combo-opt.active");
+        if (el) el.scrollIntoView({ block: "nearest" });
+      } else if (e.key === "Enter") {
+        if (open && active >= 0) { e.preventDefault(); pick(filtered[active]); }
+      } else if (e.key === "Escape") {
+        hide();
+        input.blur();
+      }
+      return undefined;
+    });
+    return { get value() { return value; }, set(v) { value = v; input.value = chosen() ? chosen().label : ""; }, focus: () => input.focus() };
+  }
+
+  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $ };
 })();

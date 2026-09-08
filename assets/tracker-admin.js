@@ -7,7 +7,7 @@
 // ============================================================
 (function () {
   "use strict";
-  const { init, api, esc, toast, fmtDate, $ } = window.Tracker;
+  const { init, api, esc, toast, fmtDate, combo, $ } = window.Tracker;
   const root = () => $("pg-admin");
   let me = { role: "leader" };
 
@@ -110,20 +110,28 @@
       <div class="trk-row-tools"><button class="btn btn-blue btn-sm" id="trk-map-refresh">Refresh from AHGFamily</button></div>
       ${m.unmappedGirls.length ? `<div class="trk-wrap"><table class="trk-table">
         <thead><tr><th>Girl (roster)</th><th>AHGFamily match</th><th></th></tr></thead>
-        <tbody>${m.unmappedGirls.map((g) => {
-          const sug = m.suggestions.find((s) => s.girlId === g.id);
-          const free = m.youth.filter((y) => !y.girlId);
-          return `<tr>
+        <tbody>${m.unmappedGirls.map((g) => `<tr>
             <td>${esc(g.lastName)}, ${esc(g.firstName)}${g.ahgLevel ? ` <span class="trk-muted">(${esc(g.ahgLevel)})</span>` : ""}</td>
-            <td><select data-map-girl="${g.id}">
-              <option value="">— pick —</option>
-              ${free.map((y) => `<option value="${esc(y.id)}" ${sug && sug.ahgYouthId === y.id ? "selected" : ""}>${esc(y.name)}${sug && sug.ahgYouthId === y.id ? " (suggested)" : ""}</option>`).join("")}
-            </select></td>
+            <td><div data-map-host="${g.id}"></div></td>
             <td><button class="btn btn-outline btn-sm" data-map-confirm="${g.id}">Confirm</button></td>
-          </tr>`;
-        }).join("")}</tbody></table></div>`
+          </tr>`).join("")}</tbody></table></div>`
         : `<p class="trk-muted">Every active girl on the roster is mapped${m.youth.length ? "" : " (or the AHGFamily list hasn't been fetched)"}.</p>`}
     `;
+    // one searchable picker per unmapped girl, pre-filled with the
+    // name-match suggestion (a leader still confirms every pair)
+    const picked = new Map();
+    const free = m.youth.filter((y) => !y.girlId).map((y) => ({ value: y.id, label: y.name }));
+    el.querySelectorAll("[data-map-host]").forEach((host) => {
+      const girlId = Number(host.dataset.mapHost);
+      const sug = m.suggestions.find((s) => s.girlId === girlId);
+      if (sug) picked.set(girlId, sug.ahgYouthId);
+      combo(host, {
+        items: free,
+        value: sug ? sug.ahgYouthId : null,
+        placeholder: sug ? "suggested — check it" : "Search AHGFamily members…",
+        onChange: (v) => picked.set(girlId, v),
+      });
+    });
     $("trk-map-refresh").addEventListener("click", guard(async () => {
       toast("Signing in to AHGFamily…");
       await api("/admin/mapping/refresh", { method: "POST" });
@@ -132,10 +140,10 @@
     }));
     el.querySelectorAll("[data-map-confirm]").forEach((b) => b.addEventListener("click", guard(async () => {
       const girlId = Number(b.dataset.mapConfirm);
-      const sel = el.querySelector(`[data-map-girl="${girlId}"]`);
-      if (!sel.value) { toast("Pick an AHGFamily member first"); return; }
-      if (!window.confirm(`Map this girl to "${youthName(sel.value)}" on AHGFamily?`)) return;
-      await api("/admin/mapping/confirm", { body: [{ girlId, ahgYouthId: sel.value }] });
+      const chosen = picked.get(girlId);
+      if (!chosen) { toast("Pick an AHGFamily member first"); return; }
+      if (!window.confirm(`Map this girl to "${youthName(chosen)}" on AHGFamily?`)) return;
+      await api("/admin/mapping/confirm", { body: [{ girlId, ahgYouthId: chosen }] });
       toast("Mapped");
       mappingPanel();
     })));

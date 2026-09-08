@@ -6,7 +6,7 @@
 // ============================================================
 (function () {
   "use strict";
-  const { init, api, esc, toast, fmtDate, fmtTime, $ } = window.Tracker;
+  const { init, api, esc, toast, fmtDate, fmtTime, combo, $ } = window.Tracker;
   const root = () => $("pg-planning");
 
   const UNITS = ["Tenderheart", "Explorer", "Pioneer/Patriot"];
@@ -101,10 +101,7 @@
           </table></div>` : `<p class="trk-muted">Nothing planned for ${esc(unit)} yet.</p>`}
 
           <div class="trk-row-tools">
-            <select id="trk-add-badge">
-              <option value="">Add from badge…</option>
-              ${badgeList.filter((b) => badgeFits(b.levelGroup, unit)).map((b) => `<option value="${esc(b.id)}">${esc(b.name)} (${esc(b.levelGroup)})</option>`).join("")}
-            </select>
+            <div id="trk-add-badge"></div>
             <select id="trk-add-req" hidden></select>
             <button class="btn btn-blue btn-sm" id="trk-add-btn" hidden>Add</button>
           </div>
@@ -122,20 +119,25 @@
       }));
       body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => { items.splice(Number(b.dataset.del), 1); draw(); }));
 
-      const badgeSel = $("trk-add-badge");
       const reqSel = $("trk-add-req");
       const addBtn = $("trk-add-btn");
-      badgeSel.addEventListener("change", async () => {
-        if (!badgeSel.value) { reqSel.hidden = addBtn.hidden = true; return; }
-        const b = badgeCache[badgeSel.value] || (badgeCache[badgeSel.value] = await api("/badges/" + encodeURIComponent(badgeSel.value)));
+      let pickedBadge = null;
+      combo($("trk-add-badge"), {
+        items: badgeList.filter((b) => badgeFits(b.levelGroup, unit)).map((b) => ({ value: b.id, label: b.name, sub: b.levelGroup })),
+        placeholder: "Add from badge — type to search…",
+        onChange: async (v) => {
+        pickedBadge = v;
+        if (!v) { reqSel.hidden = addBtn.hidden = true; return; }
+        const b = badgeCache[v] || (badgeCache[v] = await api("/badges/" + encodeURIComponent(v)));
         const taken = new Set(items.map((i) => i.requirementId));
         reqSel.innerHTML = b.groups.flatMap((g) => g.requirements).filter((r) => !taken.has(r.trackerId))
           .map((r) => `<option value="${esc(r.trackerId)}">${r.number}${esc(r.letter || "")} — ${esc(r.title || "")}</option>`).join("");
         reqSel.hidden = addBtn.hidden = !reqSel.options.length;
         if (!reqSel.options.length) toast("Every requirement of that badge is already on the plan");
+        },
       });
       addBtn.addEventListener("click", () => {
-        const b = badgeCache[badgeSel.value];
+        const b = badgeCache[pickedBadge];
         const r = b.groups.flatMap((g) => g.requirements).find((x) => x.trackerId === reqSel.value);
         if (!r) return;
         items.push({ requirementId: r.trackerId, badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, role: "session" });
