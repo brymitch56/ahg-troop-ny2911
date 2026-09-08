@@ -108,7 +108,7 @@
             <button class="btn btn-blue btn-sm" id="trk-add-btn" hidden>Add</button>
           </div>
           <div class="trk-row-tools">
-            <input type="text" id="trk-plan-notes" placeholder="Plan notes (optional)" value="${esc(plan ? plan.notes || "" : "")}" style="flex:1;min-width:200px">
+            <textarea id="trk-plan-notes" class="trk-notes" rows="1" placeholder="Plan notes (optional)" style="flex:1;min-width:200px">${esc(plan ? plan.notes || "" : "")}</textarea>
             <button class="btn btn-blue btn-sm" id="trk-plan-save">Save plan</button>
             ${plan ? `<button class="btn btn-outline btn-sm trk-danger" id="trk-plan-clear">Delete plan</button>` : ""}
           </div>
@@ -158,6 +158,12 @@
       };
       reqSel.addEventListener("change", showPreview);
       reqSel.addEventListener("reqs-loaded", showPreview);
+
+      // the notes box grows with its content instead of scrolling one line
+      const notesEl = $("trk-plan-notes");
+      const growNotes = () => { notesEl.style.height = "auto"; notesEl.style.height = notesEl.scrollHeight + 2 + "px"; };
+      notesEl.addEventListener("input", growNotes);
+      growNotes();
 
       $("trk-plan-save").addEventListener("click", async () => {
         try {

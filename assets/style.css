@@ -400,3 +400,8 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-combo-opt { padding: 0.4rem 0.6rem; cursor: pointer; }
 .trk-combo-opt:hover, .trk-combo-opt.active { background: var(--paper-soft); }
 .trk-combo-empty { padding: 0.5rem 0.6rem; color: #5a6675; }
+
+/* auto-growing notes box (planning tab) */
+.trk-notes { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 6px;
+  font: inherit; line-height: 1.4; resize: none; overflow: hidden; min-height: 2.2rem; }
+.trk-notes:focus { outline: 2px solid var(--ahg-blue); outline-offset: -1px; }
