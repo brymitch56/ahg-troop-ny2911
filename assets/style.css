@@ -439,3 +439,6 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-stars-bar { height: 0.55rem; margin: 0.3rem 0 0.2rem; }
 .trk-stars-nums { font-size: 0.8rem; white-space: nowrap; }
 .trk-stars-props td:first-child, .trk-stars-props th:first-child { width: 2rem; }
+.trk-pf-note { font-size: 0.8rem; white-space: normal; max-width: 260px; margin-top: 0.25rem; color: #5a6675; }
+.trk-prior { border-left: 3px solid #e0a800; }
+.trk-prior-note { margin: 0.2rem 0 0.4rem; }

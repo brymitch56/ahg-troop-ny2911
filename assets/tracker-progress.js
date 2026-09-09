@@ -172,11 +172,16 @@
     const body = $("trk-body");
     if (!selGirl) { body.innerHTML = `<p class="trk-muted">${girls.length ? "Pick a girl to see her badge progress." : "The roster is empty — run a check-in sync from the Admin page."}</p>`; return; }
     const p = await api(`/girls/${selGirl}/progress`);
+    // Badges with activity always show (including ones from an earlier
+    // level — earned or started before she moved up); "not started" is
+    // limited to badges she can earn at her CURRENT level.
     const active = p.badges.filter((b) => b.status !== "not_started");
-    const untouched = p.badges.filter((b) => b.status === "not_started");
+    const untouched = p.badges.filter((b) => b.status === "not_started" && b.eligible !== false);
+    const priorLevel = (b) => b.eligible === false;
     const badgePanel = (b) => `
-      <div class="trk-panel">
-        <h3>${esc(b.name)} ${statusPill(b.status)} <span class="trk-pill mut">${esc(b.levelGroup)}</span></h3>
+      <div class="trk-panel${priorLevel(b) ? " trk-prior" : ""}">
+        <h3>${esc(b.name)} ${statusPill(b.status)} <span class="trk-pill mut">${esc(b.levelGroup)}</span>${priorLevel(b) ? ' <span class="trk-pill warn">earlier level</span>' : ""}</h3>
+        ${priorLevel(b) ? `<p class="trk-muted trk-prior-note">${esc(b.levelGroup)} badge; ${esc(p.girl.firstName)} is a ${esc(p.girl.ahgLevel || "")} now. Shown for the record — any back-recording of requirements or completion for this badge is done directly in AHGFamily, not here.</p>` : ""}
         ${b.groups.map((g) => `
           ${g.label ? `<p class="trk-muted" style="margin:0.4rem 0 0.2rem"><strong>${esc(g.label)}</strong>${g.ruleType === "n_of" ? ` — complete ${g.ruleN}` : ""}</p>` : ""}
           <div class="trk-wrap"><table class="trk-table"><tbody>
@@ -188,7 +193,7 @@
                 <td class="trk-muted">${r.completedOn ? fmtDate(r.completedOn) : ""}${r.source && r.state !== "none" ? ` · ${r.source === "ahgfamily" ? "AHGFamily" : r.source}` : ""}</td>
               </tr>`).join("")}
           </tbody></table></div>`).join("")}
-        ${manualAdd(b)}
+        ${priorLevel(b) ? "" : manualAdd(b)}
       </div>`;
     body.innerHTML = `
       ${active.length ? active.map(badgePanel).join("") : `<p class="trk-muted">No badge activity yet for ${esc(p.girl.firstName)}.</p>`}
@@ -340,7 +345,8 @@
       const q = starFilter.trim().toLowerCase();
       const rows = data.girls.filter((g) => !q || `${g.lastName}, ${g.firstName} ${g.nickname || ""} ${g.ahgLevel || ""}`.toLowerCase().includes(q));
       $("trk-stars-rows").innerHTML = rows.length ? rows.map((g) => `<tr>
-        <td style="white-space:nowrap"><strong>${esc(g.lastName)}, ${esc(g.firstName)}</strong><div class="trk-muted">${esc(g.ahgLevel || "")}${g.mapped ? "" : " · not mapped"}${g.mapped && g.totalApprovedHours ? ` · ${h1(g.totalApprovedHours)} h approved` : ""}</div></td>
+        <td style="white-space:nowrap"><strong>${esc(g.lastName)}, ${esc(g.firstName)}</strong><div class="trk-muted">${esc(g.ahgLevel || "")}${g.mapped ? "" : " · not mapped"}${g.mapped && g.totalApprovedHours ? ` · ${h1(g.totalApprovedHours)} h approved` : ""}</div>
+          ${g.pathfinderHours ? `<div class="trk-pf-note" title="Pathfinders don't earn service stars; these entries are usually an attendance artefact. Review or revise them on AHGFamily (Troop Activities). The tracker already leaves them out of every total above."><span class="trk-pill warn">Pathfinder hours</span> ${h1(g.pathfinderHours.approved + g.pathfinderHours.pending)} h in ${g.pathfinderHours.entries} entr${g.pathfinderHours.entries === 1 ? "y" : "ies"} logged as a Pathfinder — review/revise in AHGFamily; excluded here.</div>` : ""}</td>
         ${g.levels.map((l) => (g.mapped ? levelCell(g, l) : '<td class="trk-stars-na">—</td>')).join("")}
       </tr>`).join("") : `<tr><td colspan="5" class="trk-muted">No girls match.</td></tr>`;
     };
