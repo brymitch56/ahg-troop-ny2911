@@ -51,7 +51,8 @@
       ${me.role === "admin" ? `<div class="trk-row-tools">
         <button class="btn btn-blue btn-sm" id="trk-sync-checkin">Sync check-in now</button>
         <button class="btn btn-blue btn-sm" id="trk-sync-pull">Pull from AHGFamily now</button>
-        <span class="trk-muted">The pull signs in to AHGFamily (read-only). One failed login latches everything until credentials are re-entered.</span>
+        <button class="btn btn-blue btn-sm" id="trk-sync-service">Pull service hours</button>
+        <span class="trk-muted">Both pulls sign in to AHGFamily (read-only). One failed login latches everything until credentials are re-entered.</span>
       </div>` : ""}
     `;
     if (me.role === "admin") {
@@ -67,7 +68,21 @@
         toast(`Pull finished: ${r.checked} checked items, ${r.newFromAhg} new here, ${r.queued} queued, ${r.conflicts} conflicts`);
         shell();
       }));
+      $("trk-sync-service").addEventListener("click", guard(async () => {
+        toast("Pulling service hours from AHGFamily — one page per girl, this can take a minute or two…");
+        const r = await api("/sync/service", { method: "POST" });
+        toast(`Service pull finished: ${r.ledgerRows} hour entries, ${r.instances} stars on record, ${r.proposed} new proposals, ${r.conflicts} conflicts${r.warnings.length ? `, ${r.warnings.length} warnings` : ""}`);
+        shell();
+      }));
     }
+  }
+
+  // Star conflicts carry no requirement; explain them from their detail.
+  function conflictWhat(c) {
+    const d = c.detail || {};
+    if (c.kind === "star_more_on_record") return `${d.unexplained} ${d.level} Service Star(s) on AHGFamily that approved hours (${d.hours} h) don't explain`;
+    if (c.kind === "star_instance_removed") return `A ${d.level} Service Star instance was removed on AHGFamily (had ${d.baselineOnRecord}, now ${d.onRecord})`;
+    return "Complete here, but un-checked on AHGFamily";
   }
 
   // -------------------------------------------------------- conflicts ---
@@ -80,14 +95,15 @@
         <thead><tr><th>Girl</th><th>Requirement</th><th>What happened</th><th></th></tr></thead>
         <tbody>${list.map((c) => `<tr>
           <td>${esc(c.firstName)} ${esc(c.lastName)}</td>
-          <td>${esc(c.badgeName || "")} ${c.number != null ? c.number + esc(c.letter || "") : ""}</td>
-          <td class="trk-muted">Complete here, but un-checked on AHGFamily (${fmtDate(c.detectedAt)})</td>
+          <td>${c.kind.startsWith("star_") ? `Service Star (${esc((c.detail || {}).level || "")})` : `${esc(c.badgeName || "")} ${c.number != null ? c.number + esc(c.letter || "") : ""}`}</td>
+          <td class="trk-muted">${esc(conflictWhat(c))} (${fmtDate(c.detectedAt)})</td>
           <td style="white-space:nowrap">
             <button class="btn btn-outline btn-sm" data-res="accept_ahgfamily" data-id="${c.id}">AHGFamily is right</button>
-            <button class="btn btn-outline btn-sm" data-res="keep_tracker" data-id="${c.id}">Tracker is right</button>
+            <button class="btn btn-outline btn-sm" data-res="keep_tracker" data-id="${c.id}">${c.kind.startsWith("star_") ? "Close, no change" : "Tracker is right"}</button>
           </td>
         </tr>`).join("")}</tbody></table></div>
-      <p class="trk-muted">"AHGFamily is right" retracts the tracker's record; "Tracker is right" queues it to push again once pushing ships.</p>`
+      <p class="trk-muted">Requirements: "AHGFamily is right" retracts the tracker's record; "Tracker is right" queues it to push again once pushing ships.
+        Service Stars: "AHGFamily is right" accepts the count on record as the new baseline for that level (stars stay on AHGFamily either way — the tracker never removes one); "Close, no change" just closes the note, and the next weekly pull raises it again if still unexplained.</p>`
         : `<p class="trk-muted">No open conflicts — the tracker and AHGFamily agree.</p>`}
     `;
     el.querySelectorAll("[data-res]").forEach((b) => b.addEventListener("click", guard(async () => {
@@ -159,7 +175,7 @@
         <thead><tr><th>Girl</th><th>Item</th><th>Date</th><th>Status</th></tr></thead>
         <tbody>${rows.slice(0, 50).map((q) => `<tr>
           <td>${esc(q.firstName)} ${esc(q.lastName)}</td>
-          <td>${esc(q.badgeName || "")} ${q.number != null ? q.number + esc(q.letter || "") : ""} <span class="trk-muted">${esc(q.action)}</span></td>
+          <td>${q.action === "add_instance" ? `Service Star (${esc((q.detail || {}).level || "")}) #${(q.detail || {}).ordinal || ""}` : `${esc(q.badgeName || "")} ${q.number != null ? q.number + esc(q.letter || "") : ""}`} <span class="trk-muted">${esc(q.action)}</span></td>
           <td class="trk-muted">${q.date ? fmtDate(q.date) : ""}</td>
           <td>${pill(q.status)}${q.lastError ? ` <span class="trk-muted">${esc(q.lastError)}</span>` : ""}</td>
         </tr>`).join("")}</tbody></table></div>

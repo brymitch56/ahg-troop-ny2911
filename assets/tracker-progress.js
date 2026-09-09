@@ -24,6 +24,7 @@
         <button class="trk-chip ${mode === "year" ? "active" : ""}" data-mode="year">Program year</button>
         <button class="trk-chip ${mode === "girl" ? "active" : ""}" data-mode="girl">By girl</button>
         <button class="trk-chip ${mode === "badge" ? "active" : ""}" data-mode="badge">By badge</button>
+        <button class="trk-chip ${mode === "stars" ? "active" : ""}" data-mode="stars">Service stars</button>
       </div>
       <div class="trk-row-tools" id="trk-picker"></div>
       <div id="trk-body"></div>
@@ -31,6 +32,7 @@
     root().querySelectorAll("[data-mode]").forEach((c) => c.addEventListener("click", () => { mode = c.dataset.mode; shell(); }));
     const picker = $("trk-picker");
     if (mode === "year") { picker.innerHTML = ""; yearView(); return; }
+    if (mode === "stars") { picker.innerHTML = ""; starsView(); return; }
     picker.innerHTML = '<div id="trk-sel"></div>';
     if (mode === "girl") {
       combo($("trk-sel"), {
@@ -249,6 +251,129 @@
   }
   const badgeCovers = (badgeLevelGroup, girlLevel) => badgeLevelGroup === "All" || badgeLevelGroup === girlLevel
     || (badgeLevelGroup === "Pioneer/Patriot" && (girlLevel === "Pioneer" || girlLevel === "Patriot"));
+
+  // ------------------------------------------------ service stars --------
+  // Read side only: approved service hours mirrored weekly from AHGFamily,
+  // stars earnable = floor(hours / rate) with unused hours carrying forward
+  // to the next level (Pathfinder never counts). Proposals wait for a
+  // leader; confirming queues the star for the (not yet enabled) push.
+  const LEVELS = ["Tenderheart", "Explorer", "Pioneer", "Patriot"];
+  const SHORT = { Tenderheart: "TH", Explorer: "EX", Pioneer: "PI", Patriot: "PA" };
+  const h1 = (n) => (Math.round(n * 100) / 100).toFixed(2).replace(/\.?0+$/, "");
+  const starIcons = (n) => (n > 0 ? `<span class="trk-star" title="${n} on record at AHGFamily">${"★".repeat(Math.min(n, 6))}${n > 6 ? `<sub>${n}</sub>` : ""}</span>` : "");
+  let starFilter = "";
+
+  async function starsView() {
+    const body = $("trk-body");
+    body.innerHTML = '<p class="trk-muted">Loading…</p>';
+    let data; let props;
+    try { [data, props] = await Promise.all([api("/stars"), api("/stars/proposals")]); } catch (e) { toast(e.message, true); return; }
+    const mapped = data.girls.filter((g) => g.mapped);
+    const pull = data.lastPull;
+    const conflicted = data.girls.filter((g) => g.levels.some((l) => l.conflict)).length;
+
+    const proposalsPanel = () => {
+      if (!props.length) return "";
+      const byGirl = new Map();
+      for (const p of props) {
+        const k = p.girlId;
+        if (!byGirl.has(k)) byGirl.set(k, { name: `${p.lastName}, ${p.firstName}`, level: p.ahgLevel, rows: [] });
+        byGirl.get(k).rows.push(p);
+      }
+      return `
+        <div class="trk-panel">
+          <h3>Stars ready to confirm <span class="trk-pill proposed">${props.length}</span></h3>
+          <p class="trk-muted">Approved hours on AHGFamily now cover these stars. Confirming records the star here (dated today) and lines it up for AHGFamily; rejecting keeps it from being proposed again for that star.</p>
+          <div class="trk-wrap"><table class="trk-table trk-stars-props">
+            <thead><tr><th><input type="checkbox" id="trk-sp-all" checked aria-label="Select all"></th><th>Girl</th><th>Star</th><th>Hours at level</th><th>Note</th></tr></thead>
+            <tbody>${[...byGirl.values()].map((g) => g.rows.map((p, i) => `<tr>
+              <td><input type="checkbox" class="trk-sp" data-id="${p.id}" checked></td>
+              <td>${i === 0 ? `${esc(g.name)} <span class="trk-muted">${esc(g.level || "")}</span>` : ""}</td>
+              <td><strong>${esc(p.level)}</strong> star #${p.ordinal}</td>
+              <td class="trk-muted">${esc(p.hoursDisplay)} h of ${p.rate} needed${p.carryIn ? ` <span title="hours carried in from the level below">(incl. ${h1(p.carryIn)} carried)</span>` : ""}</td>
+              <td><input type="text" class="trk-sp-note" data-id="${p.id}" placeholder="optional" style="width:100%"></td>
+            </tr>`).join("")).join("")}</tbody>
+          </table></div>
+          <div class="trk-row-tools">
+            <button class="btn btn-blue btn-sm" id="trk-sp-confirm">Confirm selected</button>
+            <button class="btn btn-outline btn-sm" id="trk-sp-reject">Reject selected</button>
+            <span class="trk-muted" id="trk-sp-count"></span>
+          </div>
+        </div>`;
+    };
+
+    const levelCell = (g, l) => {
+      if (!l.reachable) return '<td class="trk-stars-na" title="not at this level yet">·</td>';
+      const pct = Math.max(0, Math.min(100, l.toNextPct));
+      const bits = [];
+      if (l.hours && l.carryIn) bits.push(`<span title="${h1(l.hours)} h at this level plus ${h1(l.carryIn)} h carried from the level below">${h1(l.available)} h (incl. ${h1(l.carryIn)} carried)</span>`);
+      else if (l.hours) bits.push(`${h1(l.hours)} h`);
+      else if (l.carryIn) bits.push(`<span title="no hours at this level yet">${h1(l.carryIn)} h carried in</span>`);
+      if (l.pendingHours) bits.push(`<span title="submitted, not yet approved on AHGFamily">+${h1(l.pendingHours)} pending</span>`);
+      return `<td class="trk-stars-cell ${l.current ? "current" : ""}">
+        <div class="trk-stars-top">${starIcons(l.onRecord) || '<span class="trk-muted">no stars</span>'}
+          ${l.proposedPending ? `<span class="trk-pill proposed" title="waiting on a leader">+${l.proposedPending}</span>` : ""}
+          ${l.conflict ? `<span class="trk-pill err" title="${esc(conflictText(l.conflict, l.level))}">conflict</span>` : ""}
+        </div>
+        <div class="trk-bar trk-stars-bar" title="${h1(l.carryOut)} of ${l.rate} h toward the next ${l.level} star"><span class="done" style="width:${pct}%"></span></div>
+        <div class="trk-muted trk-stars-nums">${bits.join(" · ") || "&nbsp;"}</div>
+      </td>`;
+    };
+
+    body.innerHTML = `
+      ${!pull ? `<p class="trk-muted">Service hours haven't been pulled from AHGFamily yet — an admin can run "Pull service hours" on the Admin page (it also runs weekly).</p>` : ""}
+      ${proposalsPanel()}
+      <div class="trk-panel">
+        <h3>Service stars by girl</h3>
+        <p class="trk-muted">Rates: ${LEVELS.map((l) => `${SHORT[l]} ${data.rates[l]} h`).join(" · ")} per star. Unused hours carry forward to the next level; Pathfinder hours never count.
+          ★ = on record at AHGFamily · bar = progress toward the next star · <span class="trk-pill proposed">+n</span> waiting to confirm${conflicted ? ` · <span class="trk-pill err">conflict</span> needs a look on the Admin page` : ""}.
+          ${pull ? `Last pull ${fmtDate(pull.startedAt)}${pull.ok ? "" : " (failed)"}.` : ""}</p>
+        <div class="trk-row-tools"><input type="search" id="trk-stars-filter" placeholder="Filter girls…" value="${esc(starFilter)}" style="max-width:240px"></div>
+        <div class="trk-wrap"><table class="trk-table trk-stars">
+          <thead><tr><th>Girl</th>${LEVELS.map((l) => `<th>${l}</th>`).join("")}</tr></thead>
+          <tbody id="trk-stars-rows"></tbody>
+        </table></div>
+        ${data.girls.length - mapped.length ? `<p class="trk-muted">${data.girls.length - mapped.length} girl(s) aren't mapped to AHGFamily yet, so their hours can't be read — see Admin → AHGFamily mapping.</p>` : ""}
+      </div>`;
+
+    const renderRows = () => {
+      const q = starFilter.trim().toLowerCase();
+      const rows = data.girls.filter((g) => !q || `${g.lastName}, ${g.firstName} ${g.nickname || ""} ${g.ahgLevel || ""}`.toLowerCase().includes(q));
+      $("trk-stars-rows").innerHTML = rows.length ? rows.map((g) => `<tr>
+        <td style="white-space:nowrap"><strong>${esc(g.lastName)}, ${esc(g.firstName)}</strong><div class="trk-muted">${esc(g.ahgLevel || "")}${g.mapped ? "" : " · not mapped"}${g.mapped && g.totalApprovedHours ? ` · ${h1(g.totalApprovedHours)} h approved` : ""}</div></td>
+        ${g.levels.map((l) => (g.mapped ? levelCell(g, l) : '<td class="trk-stars-na">—</td>')).join("")}
+      </tr>`).join("") : `<tr><td colspan="5" class="trk-muted">No girls match.</td></tr>`;
+    };
+    renderRows();
+    $("trk-stars-filter").addEventListener("input", (e) => { starFilter = e.target.value; renderRows(); });
+
+    if (props.length) {
+      const boxes = () => [...body.querySelectorAll(".trk-sp")];
+      const count = () => { $("trk-sp-count").textContent = `${boxes().filter((b) => b.checked).length} of ${props.length} selected`; };
+      $("trk-sp-all").addEventListener("change", (e) => { boxes().forEach((b) => { b.checked = e.target.checked; }); count(); });
+      boxes().forEach((b) => b.addEventListener("change", count));
+      count();
+      const decide = (decision) => async () => {
+        const ids = boxes().filter((b) => b.checked).map((b) => Number(b.dataset.id));
+        if (!ids.length) { toast("Nothing selected", true); return; }
+        if (decision === "reject" && !window.confirm(`Reject ${ids.length} proposed star(s)? They won't be proposed again.`)) return;
+        const decisions = ids.map((id) => ({ id, decision, note: (body.querySelector(`.trk-sp-note[data-id="${id}"]`) || {}).value || undefined }));
+        try {
+          await api("/stars/proposals/decide", { body: decisions });
+          toast(`${ids.length} star(s) ${decision === "confirm" ? "confirmed" : "rejected"}`);
+          starsView();
+        } catch (e) { toast(e.message, true); }
+      };
+      $("trk-sp-confirm").addEventListener("click", decide("confirm"));
+      $("trk-sp-reject").addEventListener("click", decide("reject"));
+    }
+  }
+  function conflictText(c, level) {
+    if (!c) return "";
+    if (c.kind === "more_on_record") return `${c.unexplained} ${level} star(s) on AHGFamily that approved hours don't explain`;
+    if (c.kind === "instance_removed") return `a ${level} star was removed on AHGFamily (had ${c.baselineOnRecord}, now ${c.onRecord})`;
+    return c.kind;
+  }
 
   init(async () => {
     [girls, badges] = await Promise.all([api("/girls"), api("/badges")]);

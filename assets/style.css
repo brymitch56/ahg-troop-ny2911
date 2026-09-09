@@ -427,3 +427,15 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-yr-ev.past { border-left-color: var(--ahg-blue); }
 .trk-yr-ev ul, .trk-yr-gaps { margin: 0.15rem 0 0 1.1rem; }
 .trk-yr-ev li, .trk-yr-gaps li { margin: 0.15rem 0; }
+
+/* service stars (Progress page) */
+.trk-stars th, .trk-stars td { vertical-align: top; }
+.trk-stars-cell { min-width: 150px; }
+.trk-stars-cell.current { background: #f4f8fd; }
+.trk-stars-na { color: #c3ccd6; text-align: center; }
+.trk-stars-top { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; min-height: 1.4rem; }
+.trk-star { color: #c99700; letter-spacing: -0.05em; font-size: 1.05rem; line-height: 1; }
+.trk-star sub { font-size: 0.7rem; color: #5a6675; margin-left: 0.15rem; letter-spacing: 0; }
+.trk-stars-bar { height: 0.55rem; margin: 0.3rem 0 0.2rem; }
+.trk-stars-nums { font-size: 0.8rem; white-space: nowrap; }
+.trk-stars-props td:first-child, .trk-stars-props th:first-child { width: 2rem; }
