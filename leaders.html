@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon/icon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/apple-touch-icon.png">
 <title>Leaders — AHG Troop NY2911</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="assets/style.css?v=8">
+<link rel="stylesheet" href="assets/style.css?v=9">
 <script src="assets/config.js?v=5"></script>
 <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.20.0/lib/msal-browser.min.js"></script>
 </head>
@@ -44,6 +49,9 @@
     <a href="leaders-progress.html">Progress</a>
     <a href="leaders-admin.html">Admin</a>
   </nav>
+
+  <!-- Visible without signing in: the meeting check-in app lives on its own site -->
+  <p class="ldr-checkin">Meeting check-in: <a href="https://checkin.ahg2911.org" target="_blank" rel="noopener"><strong>checkin.ahg2911.org</strong></a> <span class="trk-muted">— sign girls in and out at meetings and events. Separate site, no Microsoft sign-in needed.</span></p>
 
   <!-- Not configured yet -->
   <div id="ldr-unconfigured" class="placeholder-note" hidden>

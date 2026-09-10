@@ -452,3 +452,4 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-rv-girl { margin: 0.5rem 0 0.2rem; }
 .trk-rv-girlhead { margin: 0.3rem 0 0.15rem; }
 .trk-panel h3 .btn-link { font-size: 0.8rem; margin-left: 0.5rem; }
+.ldr-checkin { margin: 0.6rem 0 0.4rem; padding: 0.5rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--paper-soft); }
