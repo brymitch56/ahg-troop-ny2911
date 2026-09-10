@@ -128,7 +128,7 @@
       note.textContent = "Development mode — talking to " + trk.baseUrl + " without sign-in. Never deploy this configuration.";
       document.querySelector("main").prepend(note);
       $("trk-app").hidden = false;
-      runPage().catch((e) => toast(e.message, true));
+      runPage().then(refreshBanner).catch((e) => toast(e.message, true));
       return;
     }
     if (isPlaceholder(cfg.clientId) || isPlaceholder(cfg.tenantId)) {
@@ -173,6 +173,7 @@
     $("trk-app").hidden = false;
     try {
       await runPage();
+      refreshBanner();
     } catch (e) {
       if (e.status === 403) {
         $("trk-app").hidden = true;
@@ -262,5 +263,30 @@
     return { get value() { return value; }, set(v) { value = v; input.value = chosen() ? chosen().label : ""; }, focus: () => input.focus() };
   }
 
-  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $ };
+  // ---------- "Waiting on you" banner ----------
+  // Under the sub-nav on every tracker page: proposed completions from
+  // meetings that have ended, plus service-star proposals. Hidden on the
+  // Review page itself and when nothing is pending. Failures are silent —
+  // the banner is a convenience, never a blocker.
+  async function refreshBanner() {
+    const nav = document.querySelector(".trk-subnav");
+    if (!nav || /leaders-review\.html$/.test(window.location.pathname)) return;
+    let c;
+    try { c = await api("/review/counts"); } catch (_) { return; }
+    let el = $("trk-banner");
+    if (!c || !c.total) { if (el) el.remove(); return; }
+    if (!el) {
+      el = document.createElement("a");
+      el.id = "trk-banner";
+      el.className = "trk-banner";
+      el.href = "leaders-review.html";
+      nav.insertAdjacentElement("afterend", el);
+    }
+    const parts = [];
+    if (c.completions) parts.push(`${c.completions} requirement completion${c.completions === 1 ? "" : "s"} from ${c.events} meeting${c.events === 1 ? "" : "s"}`);
+    if (c.stars) parts.push(`${c.stars} service star${c.stars === 1 ? "" : "s"}`);
+    el.innerHTML = `<strong>Waiting on you:</strong> ${esc(parts.join(" and "))} to confirm &rarr; <span class="trk-banner-link">Review</span>`;
+  }
+
+  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $, refreshBanner };
 })();

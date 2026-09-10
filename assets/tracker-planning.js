@@ -326,6 +326,9 @@
 
   init(async () => {
     badgeList = await api("/badges");
+    // deep link from the Review page: leaders-planning.html#event=<id>
+    const m = /^#event=(\d+)$/.exec(window.location.hash || "");
+    if (m) { history.replaceState(null, "", window.location.pathname); await eventView(Number(m[1]), "after"); return; }
     await listView();
   });
 })();

@@ -442,3 +442,13 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-pf-note { font-size: 0.8rem; white-space: normal; max-width: 260px; margin-top: 0.25rem; color: #5a6675; }
 .trk-prior { border-left: 3px solid #e0a800; }
 .trk-prior-note { margin: 0.2rem 0 0.4rem; }
+
+/* "waiting on you" banner + review page */
+.trk-banner { display: block; margin: 0.6rem 0 0.2rem; padding: 0.55rem 0.9rem; border-radius: 8px;
+  background: #fdf1dc; color: #6b4a00; border: 1px solid #f1d9a6; text-decoration: none; }
+.trk-banner:hover { background: #fbe7c4; }
+.trk-banner-link { text-decoration: underline; font-weight: 600; }
+.trk-rv-bar { position: sticky; top: 0; background: var(--paper, #fff); padding: 0.5rem 0; z-index: 2; border-bottom: 1px solid var(--border); }
+.trk-rv-girl { margin: 0.5rem 0 0.2rem; }
+.trk-rv-girlhead { margin: 0.3rem 0 0.15rem; }
+.trk-panel h3 .btn-link { font-size: 0.8rem; margin-left: 0.5rem; }
