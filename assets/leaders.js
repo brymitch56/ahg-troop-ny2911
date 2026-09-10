@@ -196,11 +196,25 @@
       const r = await msalApp.acquireTokenSilent({ scopes: SCOPES, account });
       return r.accessToken;
     } catch (e) {
-      if (e instanceof msal.InteractionRequiredAuthError) {
-        await msalApp.acquireTokenRedirect({ scopes: SCOPES, account });
-        return null; // page will redirect
+      // A browser SPA's refresh token lives a fixed 24 h ("stay signed in"
+      // doesn't extend it) and the hidden-iframe renewal after that is
+      // blocked by third-party-cookie rules, which surfaces as a timeout
+      // rather than InteractionRequired. Any silent failure → back through
+      // Microsoft (no prompt while the session cookie is alive), guarded
+      // against loops.
+      const msg = String((e && (e.errorCode || e.message)) || "");
+      if (/interaction_in_progress/.test(msg)) throw e;
+      const key = "ldr-auth-redirect-at";
+      let last = 0;
+      try { last = Number(sessionStorage.getItem(key) || 0); } catch (_) { /* storage blocked */ }
+      if (Date.now() - last < 60e3) {
+        const err = new Error("Your Microsoft sign-in has expired and couldn't be renewed. Sign out, then sign in again.");
+        err.authExpired = true;
+        throw err;
       }
-      throw e;
+      try { sessionStorage.setItem(key, String(Date.now())); } catch (_) { /* storage blocked */ }
+      await msalApp.acquireTokenRedirect({ scopes: SCOPES, account, loginHint: account && account.username });
+      return null; // page will redirect
     }
   }
 
@@ -798,7 +812,12 @@
       if (hash) initial = state.drives.find((d) => d.name.toLowerCase() === hash) || initial;
       selectDrive(initial);
     } catch (e) {
-      if (e.status === 403) {
+      if (e.authExpired) {
+        el.app.hidden = true;
+        el.account.hidden = true;
+        el.gate.hidden = false;
+        showGateError(e.message);
+      } else if (e.status === 403) {
         setStatus("Signed in, but your account doesn't have access to the troop SharePoint site yet. Ask the SharePoint admin to add you.", "error");
       } else if (e.status === 404) {
         setStatus("The SharePoint site in config.js couldn't be found (" + cfg.siteUrl + "). Check the siteUrl setting.", "error");

@@ -58,11 +58,26 @@
       const r = await msalApp.acquireTokenSilent({ scopes: [trk.scope], account });
       return r.accessToken;
     } catch (e) {
-      if (e instanceof msal.InteractionRequiredAuthError) {
-        await msalApp.acquireTokenRedirect({ scopes: [trk.scope], account });
-        return new Promise(() => {}); // navigating away
+      // Silent renewal fails for more reasons than "interaction required":
+      // a browser SPA's refresh token lives a fixed 24 h ("stay signed in"
+      // doesn't extend it), and the hidden-iframe renewal that follows is
+      // blocked by third-party-cookie rules in Chrome/Edge/Safari, which
+      // surfaces as a timeout. Any of those → go back through Microsoft
+      // (a no-prompt round trip when the session cookie is alive). Guarded
+      // so a broken sign-in can't loop the page.
+      const msg = String((e && (e.errorCode || e.message)) || "");
+      if (/interaction_in_progress/.test(msg)) throw e;
+      const key = "trk-auth-redirect-at";
+      let last = 0;
+      try { last = Number(sessionStorage.getItem(key) || 0); } catch (_) { /* storage blocked */ }
+      if (Date.now() - last < 60e3) {
+        const err = new Error("Your Microsoft sign-in has expired and couldn't be renewed. Sign out, then sign in again.");
+        err.authExpired = true;
+        throw err;
       }
-      throw e;
+      try { sessionStorage.setItem(key, String(Date.now())); } catch (_) { /* storage blocked */ }
+      await msalApp.acquireTokenRedirect({ scopes: [trk.scope], account, loginHint: account && account.username });
+      return new Promise(() => {}); // navigating away
     }
   }
 
@@ -163,6 +178,11 @@
         $("trk-app").hidden = true;
         $("trk-gate").hidden = false;
         showGateError("You're signed in, but this account isn't on the leader list for the badge tracker.");
+      } else if (e.authExpired) {
+        // never leave a blank app behind a "signed in" header
+        $("trk-app").hidden = true;
+        $("trk-gate").hidden = false;
+        showGateError(e.message);
       } else {
         toast(e.message, true);
       }
