@@ -92,7 +92,7 @@
         <tbody>${events.map((e) => `
           <tr>
             <td style="white-space:nowrap">${fmtDate(e.startAt)}<div class="trk-muted">${fmtTime(e.startAt)}</div></td>
-            <td><a href="#" data-ev="${e.id}"><strong>${esc(e.title)}</strong></a>${e.location ? `<div class="trk-muted">${esc(e.location)}</div>` : ""}</td>
+            <td><a href="#" data-ev="${e.id}"><strong>${esc(e.title)}</strong></a>${e.removedFromFeed ? ' <span class="trk-pill err" title="The check-in app no longer lists this event (renamed or deleted on the calendar). Open it to move its plans to the current entry.">no longer on the calendar</span>' : ""}${e.location ? `<div class="trk-muted">${esc(e.location)}</div>` : ""}</td>
             <td>${(e.planLevelGroups || []).map((g) => `<span class="trk-pill ok">${esc(g)}</span>`).join(" ") || '<span class="trk-muted">—</span>'}</td>
             <td>${e.attendance ? `${e.attendance.total} signed in${e.attendance.open ? ` <span class="trk-pill warn">${e.attendance.open} still open</span>` : ""}` : '<span class="trk-muted">—</span>'}</td>
           </tr>`).join("")}</tbody>
@@ -118,6 +118,7 @@
         <h3>${esc(ev.title)}</h3>
         <p class="trk-muted">${fmtDate(ev.startAt)}, ${fmtTime(ev.startAt)}${ev.endAt ? "–" + fmtTime(ev.endAt) : ""}${ev.location ? " · " + esc(ev.location) : ""}
         ${ev.attendance && ev.attendance.length ? ` · ${ev.attendance.length} girls signed in` : ""}</p>
+        ${ev.removedFromFeed ? `<div id="trk-move"><p class="trk-muted"><span class="trk-pill err">no longer on the calendar</span> The check-in app no longer lists this event — it was renamed or deleted on the AHGFamily calendar. Its plans are still here; move them to the current entry.</p></div>` : ""}
       </div>
       <div class="trk-chips">
         ${UNITS.map((u) => `<button class="trk-chip ${tab === u ? "active" : ""}" data-tab="${esc(u)}">${esc(u)}${cur.plans.get(u) ? " ●" : ""}</button>`).join("")}
@@ -129,6 +130,39 @@
     root().querySelectorAll(".trk-chip").forEach((c) => c.addEventListener("click", () => { cur.tab = c.dataset.tab; render(); }));
     if (tab === "after") proposalsTab();
     else planTab(tab);
+    if (ev.removedFromFeed) movePanel();
+  }
+
+  // A removed event's plans can be moved to another event on the same day
+  // (the sync does this automatically when exactly one same-time event
+  // exists; this is the manual path for everything else).
+  async function movePanel() {
+    const { ev } = cur;
+    const day = ev.startAt.slice(0, 10);
+    let candidates = [];
+    try {
+      candidates = (await api(`/events?from=${day}&to=${day}`)).filter((e) => e.id !== ev.id && !e.removedFromFeed);
+    } catch (e) { toast(e.message, true); return; }
+    const host = $("trk-move");
+    if (!host) return;
+    if (!candidates.length) {
+      host.insertAdjacentHTML("beforeend", '<p class="trk-muted">No other event is on the calendar that day yet. Once the check-in app syncs the new entry (nightly, or Admin → Sync check-in now), come back here to move the plans.</p>');
+      return;
+    }
+    host.insertAdjacentHTML("beforeend", `<div class="trk-row-tools">
+      <label>Move all plans to
+        <select id="trk-move-to">${candidates.map((c) => `<option value="${c.id}">${esc(c.title)} — ${fmtTime(c.startAt)}${(c.planLevelGroups || []).length ? ` (already has ${c.planLevelGroups.map(esc).join(", ")} plans)` : ""}</option>`).join("")}</select>
+      </label>
+      <button class="btn btn-blue btn-sm" id="trk-move-go">Move plans</button>
+    </div>`);
+    $("trk-move-go").addEventListener("click", async () => {
+      const toEventId = Number($("trk-move-to").value);
+      try {
+        const r = await api(`/events/${ev.id}/plans/move`, { body: { toEventId } });
+        toast(`Moved ${r.moved.length} plan(s)${r.skipped.length ? `; ${r.skipped.join(", ")} left here because the target already has that plan` : ""}`);
+        eventView(r.skipped.length ? ev.id : toEventId);
+      } catch (e) { toast(e.message, true); }
+    });
   }
 
   // ------------------------------------------------ plan editor ----------
