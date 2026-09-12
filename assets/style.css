@@ -452,3 +452,8 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-rv-girl { margin: 0.5rem 0 0.2rem; }
 .trk-rv-girlhead { margin: 0.3rem 0 0.15rem; }
 .trk-panel h3 .btn-link { font-size: 0.8rem; margin-left: 0.5rem; }
+
+/* Review: a finish row whose planned sessions were not all attended */
+.trk-rv-warn { display: flex; flex-wrap: wrap; gap: 0.5rem 0.8rem; align-items: center; margin-top: 0.35rem; }
+.trk-rv-warn .trk-rv-note { flex: 1 1 16rem; min-width: 12rem; font-size: 0.9rem; }
+.trk-pill.ok { background: #e3f4e6; color: #1d6b2a; }

@@ -44,6 +44,20 @@
     renderStars(stars);
   }
 
+  // A requirement planned over several meetings: list every planned date
+  // with whether she was there. Missed dates get a warning and a box the
+  // leader must tick to confirm — "she completed the full requirement" —
+  // which is recorded and written into the AHGFamily note.
+  function sessionsBlock(it) {
+    const p = it.participation;
+    const list = (p.sessions || []).map((s) => `<span class="trk-pill ${s.attended ? "ok" : "err"}" title="${esc(s.title)} (${esc(s.role)})">${s.attended ? "✓" : "✗"} ${fmtDate(s.date)}</span>`).join(" ");
+    const missed = p.missed || [];
+    return `<div class="trk-muted">Planned meetings: ${list || "—"}</div>
+      ${missed.length ? `<div class="trk-rv-warn"><span class="trk-pill warn">missed ${missed.length} planned session${missed.length === 1 ? "" : "s"}</span>
+        <label><input type="checkbox" class="trk-rv-verify" data-id="${it.completionId}"> I verified she completed the <b>full</b> requirement</label>
+        <input type="text" class="trk-rv-note" data-id="${it.completionId}" placeholder="how it was completed (optional; goes into the AHGFamily note)" maxlength="200"></div>` : ""}`;
+  }
+
   function renderQueue(q) {
     const body = $("trk-rv-body");
     if (!q.events.length) {
@@ -72,7 +86,7 @@
                     <td><strong>${esc(it.badgeName)}</strong> ${it.number}${esc(it.letter || "")}${it.title ? " — " + esc(it.title) : ""}
                       ${it.levelGroup ? ` <span class="trk-pill mut">${esc(it.levelGroup)}</span>` : ""}
                       ${it.needsReview ? `<div><span class="trk-pill err">needs review</span> <span class="trk-muted">${esc(it.reviewReason || "")}</span></div>` : ""}
-                      ${it.participation ? `<div class="trk-muted">present for ${it.participation.count} of ${it.participation.planned} planned session${it.participation.planned === 1 ? "" : "s"}</div>` : ""}</td>
+                      ${it.participation ? sessionsBlock(it) : ""}</td>
                     <td style="white-space:nowrap"><input type="date" data-date="${it.completionId}" value="${esc(it.completedOn || "")}" title="Completion date (defaults to the meeting date)"></td>
                   </tr>`).join("")}
               </tbody></table></div>
@@ -97,8 +111,21 @@
         const d = { completionId, decision };
         const dateEl = body.querySelector(`[data-date="${completionId}"]`);
         if (decision === "confirm" && dateEl && dateEl.value) d.completedOn = dateEl.value;
+        const verifyEl = body.querySelector(`.trk-rv-verify[data-id="${completionId}"]`);
+        if (decision === "confirm" && verifyEl) {
+          d.verified = verifyEl.checked;
+          const noteEl = body.querySelector(`.trk-rv-note[data-id="${completionId}"]`);
+          if (noteEl && noteEl.value.trim()) d.note = noteEl.value.trim();
+        }
         return d;
       });
+      if (decision === "confirm") {
+        const unverified = decisions.filter((d) => d.verified === false);
+        if (unverified.length) {
+          toast(`${unverified.length} selected item${unverified.length === 1 ? " has" : "s have"} missed sessions — tick "I verified…" on each, or uncheck them`, true);
+          return;
+        }
+      }
       try {
         await api("/review/decide", { body: decisions });
         if (decision === "reject") undo = undo.concat(chosen.map((b) => ({ completionId: Number(b.dataset.id), label: b.closest("tr").querySelector("td:nth-child(2)").textContent.trim().slice(0, 60) })));

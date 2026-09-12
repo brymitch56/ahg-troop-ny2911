@@ -172,12 +172,23 @@
     const queued = rows.filter((q) => q.status === "queued").length;
     const held = rows.filter((q) => q.status === "held").length;
     const on = !!s.pushEnabled;
+    const reqOn = !!s.pushRequirementsEnabled;
+    const rep = await api("/sync/push-report").catch(() => null);
     const controls = me.role === "admin" ? `
       <div class="trk-row-tools">
         <label><input type="checkbox" id="trk-push-flag"${on ? " checked" : ""}> Allow pushing to AHGFamily</label>
         <button class="btn btn-blue btn-sm" id="trk-push-now"${on ? "" : " disabled"}>Push to AHGFamily now</button>
-        <span class="trk-muted">Writes new Service Star instances. One at a time, read back after each; anything unconfirmed is <b>held</b> for you, never retried. Off by default.</span>
+        <span class="trk-muted">Service Stars. One at a time, read back after each; anything unconfirmed is <b>held</b> for you, never retried. While on, the tracker also pushes <b>weekly</b> on its own. Off by default.</span>
+      </div>
+      <div class="trk-row-tools">
+        <label><input type="checkbox" id="trk-push-req-flag"${reqOn ? " checked" : ""}${on ? "" : " disabled"}> Also push requirement completions, with notes</label>
+        <span class="trk-muted">Marks each confirmed requirement on AHGFamily and writes the note (meeting dates she attended, plan notes, and any leader verification). Leave off until the step-5b check has been run — see the tracker docs.</span>
+      </div>
+      <div class="trk-row-tools">
+        <label>Run report e-mail <select id="trk-report-mode"><option value="always"${s.reportMode === "always" ? " selected" : ""}>after every run</option><option value="errors_only"${s.reportMode === "errors_only" ? " selected" : ""}>only when something is held/failed</option></select></label>
+        <span class="trk-muted">${s.mailConfigured ? "Mail is configured on the server." : "Mail is <b>not configured</b> on the server (SMTP_URL / REPORT_FROM / REPORT_EMAILS) — reports are kept here only."}</span>
       </div>` : "";
+    const lastReport = rep ? `<details class="trk-muted" style="margin-top:0.6rem"><summary>Last run report — ${fmtDate(rep.at)} (${esc(rep.trigger)}${rep.sent ? ", e-mailed" : rep.wanted ? ", not e-mailed" : ", no mail needed"})</summary><pre style="white-space:pre-wrap">${esc(rep.text)}</pre></details>` : "";
     el.innerHTML = `
       <h3>Push queue</h3>
       ${rows.length ? `<div class="trk-wrap"><table class="trk-table">
@@ -191,12 +202,23 @@
         : `<p class="trk-muted">The queue is empty.</p>`}
       ${controls}
       <p class="trk-muted">${queued} queued, ${held} held. ${on ? "Pushing is <b>enabled</b>." : "Pushing is <b>off</b> — confirmed items wait here and nothing is sent."} A <b>held</b> row needs a look on AHGFamily before it can be cleared.</p>
+      ${lastReport}
     `;
     if (me.role === "admin") {
       $("trk-push-flag").addEventListener("change", guard(async (e) => {
         await api("/admin/push-enabled", { body: { enabled: e.target.checked } });
         toast(e.target.checked ? "Pushing enabled" : "Pushing turned off");
         queuePanel();
+      }));
+      $("trk-push-req-flag").addEventListener("change", guard(async (e) => {
+        if (e.target.checked && !window.confirm("Push requirement completions (with notes) to AHGFamily? Only turn this on after the step-5b verification has been run.")) { e.target.checked = false; return; }
+        await api("/admin/push-requirements-enabled", { body: { enabled: e.target.checked } });
+        toast(e.target.checked ? "Requirement push enabled" : "Requirement push turned off");
+        queuePanel();
+      }));
+      $("trk-report-mode").addEventListener("change", guard(async (e) => {
+        await api("/admin/report-mode", { body: { mode: e.target.value } });
+        toast("Report setting saved");
       }));
       $("trk-push-now").addEventListener("click", guard(async () => {
         if (!window.confirm("Push queued Service Star instances to AHGFamily now?")) return;
