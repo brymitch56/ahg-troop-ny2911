@@ -167,8 +167,17 @@
 
   // ------------------------------------------------------------ queue ---
   async function queuePanel() {
-    const rows = await api("/sync/queue");
+    const [rows, s] = await Promise.all([api("/sync/queue"), api("/sync/status")]);
     const el = $("trk-queue");
+    const queued = rows.filter((q) => q.status === "queued").length;
+    const held = rows.filter((q) => q.status === "held").length;
+    const on = !!s.pushEnabled;
+    const controls = me.role === "admin" ? `
+      <div class="trk-row-tools">
+        <label><input type="checkbox" id="trk-push-flag"${on ? " checked" : ""}> Allow pushing to AHGFamily</label>
+        <button class="btn btn-blue btn-sm" id="trk-push-now"${on ? "" : " disabled"}>Push to AHGFamily now</button>
+        <span class="trk-muted">Writes new Service Star instances. One at a time, read back after each; anything unconfirmed is <b>held</b> for you, never retried. Off by default.</span>
+      </div>` : "";
     el.innerHTML = `
       <h3>Push queue</h3>
       ${rows.length ? `<div class="trk-wrap"><table class="trk-table">
@@ -178,10 +187,25 @@
           <td>${q.action === "add_instance" ? `Service Star (${esc((q.detail || {}).level || "")}) #${(q.detail || {}).ordinal || ""}` : `${esc(q.badgeName || "")} ${q.number != null ? q.number + esc(q.letter || "") : ""}`} <span class="trk-muted">${esc(q.action)}</span></td>
           <td class="trk-muted">${q.date ? fmtDate(q.date) : ""}</td>
           <td>${pill(q.status)}${q.lastError ? ` <span class="trk-muted">${esc(q.lastError)}</span>` : ""}</td>
-        </tr>`).join("")}</tbody></table></div>
-      <p class="trk-muted">Items confirmed here but missing on AHGFamily wait in this queue. Pushing to AHGFamily is a later, explicitly-enabled step — nothing is sent yet.</p>`
+        </tr>`).join("")}</tbody></table></div>`
         : `<p class="trk-muted">The queue is empty.</p>`}
+      ${controls}
+      <p class="trk-muted">${queued} queued, ${held} held. ${on ? "Pushing is <b>enabled</b>." : "Pushing is <b>off</b> — confirmed items wait here and nothing is sent."} A <b>held</b> row needs a look on AHGFamily before it can be cleared.</p>
     `;
+    if (me.role === "admin") {
+      $("trk-push-flag").addEventListener("change", guard(async (e) => {
+        await api("/admin/push-enabled", { body: { enabled: e.target.checked } });
+        toast(e.target.checked ? "Pushing enabled" : "Pushing turned off");
+        queuePanel();
+      }));
+      $("trk-push-now").addEventListener("click", guard(async () => {
+        if (!window.confirm("Push queued Service Star instances to AHGFamily now?")) return;
+        toast("Pushing to AHGFamily…");
+        const r = await api("/sync/push", { method: "POST" });
+        toast(r.skipped ? `Nothing pushed (${r.skipped})` : `Push finished: ${r.pushed} sent, ${r.held} held, ${r.failed} failed`);
+        queuePanel();
+      }));
+    }
   }
 
   // ----------------------------------------------------- leaders/admins ---
