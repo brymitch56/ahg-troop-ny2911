@@ -27,7 +27,7 @@
     `;
     statusPanel(); conflictsPanel(); mappingPanel(); queuePanel(); accessPanel(); credsPanel(); catalogPanel(); auditPanel();
   }
-  const guard = (fn) => async () => { try { await fn(); } catch (e) { toast(e.message, true); } };
+  const guard = (fn) => async (...args) => { try { await fn(...args); } catch (e) { toast(e.message, true); } };
 
   // ---------------------------------------------------------- status ----
   async function statusPanel() {
