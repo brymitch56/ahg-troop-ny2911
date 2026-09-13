@@ -211,16 +211,32 @@
       const reqSel = $("trk-add-req");
       const addBtn = $("trk-add-btn");
       let pickedBadge = null;
+      let planState = {}; // requirementId → { state, sessions } for the picked badge + this unit
       combo($("trk-add-badge"), {
         items: badgeList.filter((b) => badgeFits(b.levelGroup, unit)).map((b) => ({ value: b.id, label: b.name, sub: b.levelGroup })),
         placeholder: "Add from badge — type to search…",
         onChange: async (v) => {
         pickedBadge = v;
         if (!v) { reqSel.hidden = addBtn.hidden = true; return; }
-        const b = badgeCache[v] || (badgeCache[v] = await api("/badges/" + encodeURIComponent(v)));
+        const [b, state] = await Promise.all([
+          badgeCache[v] || (badgeCache[v] = await api("/badges/" + encodeURIComponent(v))),
+          api(`/badges/${encodeURIComponent(v)}/plan-state?unit=${encodeURIComponent(unit)}`).catch(() => ({})),
+        ]);
+        planState = state || {};
         const taken = new Set(items.map((i) => i.requirementId));
-        reqSel.innerHTML = b.groups.flatMap((g) => g.requirements).filter((r) => !taken.has(r.trackerId))
-          .map((r) => `<option value="${esc(r.trackerId)}">${r.number}${esc(r.letter || "")} — ${esc(r.title || "")}</option>`).join("");
+        // Unplanned first, then started-not-finished, then already planned —
+        // nothing hidden (a repeat can be deliberate), but the label says
+        // where each one stands and lists every planned date.
+        const rank = { unplanned: 0, started: 1, planned: 2 };
+        const reqs = b.groups.flatMap((g) => g.requirements).filter((r) => !taken.has(r.trackerId))
+          .map((r) => ({ r, st: planState[r.trackerId] || { state: "unplanned", sessions: [] } }))
+          .sort((a, z) => rank[a.st.state] - rank[z.st.state]);
+        const label = ({ r, st }) => {
+          const dates = st.sessions.filter((s) => s.eventId !== cur.ev.id).map((s) => `${fmtDate(s.date)}${s.role === "session" ? "" : ` (${s.role})`}`);
+          const tag = st.state === "planned" ? `already planned ${dates.join(", ")}` : st.state === "started" ? `started ${dates.join(", ")} — not finished` : "";
+          return `${r.number}${esc(r.letter || "")} — ${esc(r.title || "")}${tag ? ` · ${esc(tag)}` : ""}`;
+        };
+        reqSel.innerHTML = reqs.map((x) => `<option value="${esc(x.r.trackerId)}">${label(x)}</option>`).join("");
         reqSel.hidden = addBtn.hidden = !reqSel.options.length;
         if (!reqSel.options.length) toast("Every requirement of that badge is already on the plan");
         reqSel.dispatchEvent(new Event("reqs-loaded"));
@@ -241,7 +257,11 @@
       const showPreview = () => {
         const bb = badgeCache[pickedBadge];
         const rr = bb && bb.groups.flatMap((g) => g.requirements).find((x) => x.trackerId === reqSel.value);
-        preview.textContent = rr && rr.text ? rr.text : "";
+        const st = rr && planState[rr.trackerId];
+        const history = st && st.sessions.length
+          ? `<div class="trk-plan-history"><strong>${st.state === "started" ? "Started, not finished" : "Already planned"}:</strong> ${st.sessions.map((s) => `${esc(fmtDate(s.date))} ${esc(s.title || "")} <span class="trk-pill mut">${esc(s.role)}</span>${s.notes ? ` <span class="trk-muted">— ${esc(s.notes)}</span>` : ""}`).join("; ")}</div>`
+          : "";
+        preview.innerHTML = `${history}${rr && rr.text ? esc(rr.text) : ""}`;
       };
       reqSel.addEventListener("change", showPreview);
       reqSel.addEventListener("reqs-loaded", showPreview);
