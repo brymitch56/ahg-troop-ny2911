@@ -190,7 +190,8 @@
                 <td style="width:60%"><span class="trk-num">${r.number}${esc(r.letter || "")}</span>${esc(r.title || "")}</td>
                 <td>${r.state === "none" ? '<span class="trk-pill none">—</span>'
                   : `<span class="trk-pill ${r.state}">${r.state}</span>${r.needsReview ? ' <span class="trk-pill err">review</span>' : ""}`}</td>
-                <td class="trk-muted">${r.completedOn ? fmtDate(r.completedOn) : ""}${r.source && r.state !== "none" ? ` · ${r.source === "ahgfamily" ? "AHGFamily" : r.source}` : ""}</td>
+                <td class="trk-muted">${r.completedOn ? fmtDate(r.completedOn) : ""}${r.source && r.state !== "none" ? ` · ${r.source === "ahgfamily" ? "AHGFamily" : r.source}` : ""}${r.notes ? ` · <span title="${esc(r.notes)}">note</span>` : ""}${r.pushed ? ' · <span class="trk-pill ok" title="marked on AHGFamily by the tracker">pushed</span>' : ""}
+                  ${r.completionId && r.source === "manual" && !priorLevel(b) ? ` <button class="btn-link trk-muted" data-mdel="${r.completionId}" data-mdel-pushed="${r.pushed ? 1 : 0}" title="Remove this home completion">remove</button>` : ""}</td>
               </tr>`).join("")}
           </tbody></table></div>`).join("")}
         ${priorLevel(b) ? "" : manualAdd(b)}
@@ -208,6 +209,7 @@
     return `<div class="trk-row-tools">
       <select data-madd-req="${esc(b.badgeId)}">${open.map((r) => `<option value="${esc(r.requirementId)}">${r.number}${esc(r.letter || "")} — ${esc(r.title || "")}</option>`).join("")}</select>
       <input type="date" data-madd-date="${esc(b.badgeId)}" value="${new Date().toISOString().slice(0, 10)}">
+      <input type="text" data-madd-notes="${esc(b.badgeId)}" placeholder="Note (how it was done — goes to AHGFamily)" maxlength="300" style="flex:1 1 14rem;min-width:10rem">
       <button class="btn btn-outline btn-sm" data-madd="${esc(b.badgeId)}">Mark done at home</button>
     </div>`;
   }
@@ -215,14 +217,29 @@
     body.querySelectorAll("[data-madd]").forEach((btn) => btn.addEventListener("click", async () => {
       const id = btn.dataset.madd;
       try {
+        const notes = body.querySelector(`[data-madd-notes="${CSS.escape(id)}"]`).value.trim();
         await api("/completions", {
           body: {
             girlId: selGirl,
             requirementId: body.querySelector(`[data-madd-req="${CSS.escape(id)}"]`).value,
             completedOn: body.querySelector(`[data-madd-date="${CSS.escape(id)}"]`).value,
+            ...(notes ? { notes } : {}),
           },
         });
         toast("Recorded");
+        girlView();
+      } catch (e) { toast(e.message, true); }
+    }));
+    body.querySelectorAll("[data-mdel]").forEach((btn) => btn.addEventListener("click", async () => {
+      const id = Number(btn.dataset.mdel);
+      const pushed = btn.dataset.mdelPushed === "1";
+      const msg = pushed
+        ? "This completion was already pushed to AHGFamily. The tracker never un-checks anything there — un-check it on AHGFamily yourself FIRST, then confirm here that you have. Remove it from the tracker now?"
+        : "Remove this home completion from the tracker?";
+      if (!window.confirm(msg)) return;
+      try {
+        await api(`/completions/${id}${pushed ? "?afterAhgRemoval=1" : ""}`, { method: "DELETE" });
+        toast("Removed");
         girlView();
       } catch (e) { toast(e.message, true); }
     }));
