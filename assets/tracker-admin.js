@@ -132,6 +132,15 @@
             <td><button class="btn btn-outline btn-sm" data-map-confirm="${g.id}">Confirm</button></td>
           </tr>`).join("")}</tbody></table></div>`
         : `<p class="trk-muted">Every active girl on the roster is mapped${m.youth.length ? "" : " (or the AHGFamily list hasn't been fetched)"}.</p>`}
+      ${(() => {
+        const orphans = m.youth.filter((y) => !y.girlId);
+        if (!orphans.length) return "";
+        return `<details class="trk-muted" style="margin-top:0.6rem"${m.unmappedGirls.length ? "" : " open"}>
+          <summary>On AHGFamily but not on the check-in roster (${orphans.length})</summary>
+          <ul>${orphans.map((y) => `<li>${esc(y.name)}</li>`).join("")}</ul>
+          <p>Girls come into the tracker from the <b>check-in app's roster</b>, not from AHGFamily. A newly registered girl shows up here only after that roster is refreshed: in the check-in app's Admin → Import, run <b>Sync now</b> and approve the pending import, then press <b>Sync check-in now</b> on this page. She then appears above with her AHGFamily match suggested.</p>
+        </details>`;
+      })()}
     `;
     // one searchable picker per unmapped girl, pre-filled with the
     // name-match suggestion (a leader still confirms every pair)
