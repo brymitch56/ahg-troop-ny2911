@@ -206,7 +206,7 @@
           <td>${esc(q.firstName)} ${esc(q.lastName)}</td>
           <td>${q.action === "add_instance" ? `Service Star (${esc((q.detail || {}).level || "")}) #${(q.detail || {}).ordinal || ""}` : `${esc(q.badgeName || "")} ${q.number != null ? q.number + esc(q.letter || "") : ""}`} <span class="trk-muted">${esc(q.action)}</span></td>
           <td class="trk-muted">${q.date ? fmtDate(q.date) : ""}</td>
-          <td>${pill(q.status)}${q.lastError ? ` <span class="trk-muted">${esc(q.lastError)}</span>` : ""}</td>
+          <td>${pill(q.status)}${q.lastError ? ` <span class="trk-muted">${esc(q.lastError)}</span>` : ""}${me.role === "admin" && (q.status === "held" || q.status === "failed") ? ` <button class="btn-link" data-requeue="${q.id}" title="Put this row back in the queue for the next push">re-queue</button>` : ""}</td>
         </tr>`).join("")}</tbody></table></div>`
         : `<p class="trk-muted">The queue is empty.</p>`}
       ${controls}
@@ -225,6 +225,12 @@
         toast(e.target.checked ? "Requirement push enabled" : "Requirement push turned off");
         queuePanel();
       }));
+      el.querySelectorAll("[data-requeue]").forEach((b) => b.addEventListener("click", guard(async () => {
+        if (!window.confirm("Put this row back in the queue? Only do this after checking it on AHGFamily — the next push will try the save again.")) return;
+        await api(`/sync/queue/${b.dataset.requeue}/requeue`, { method: "POST" });
+        toast("Re-queued");
+        queuePanel();
+      })));
       $("trk-report-mode").addEventListener("change", guard(async (e) => {
         await api("/admin/report-mode", { body: { mode: e.target.value } });
         toast("Report setting saved");
