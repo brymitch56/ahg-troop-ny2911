@@ -118,7 +118,26 @@
     const el = $("trk-mapping");
     if (me.role !== "admin") { el.innerHTML = `<h3>Girl ↔ AHGFamily mapping</h3><p class="trk-muted">Admins only.</p>`; return; }
     const m = await api("/admin/mapping");
+    const dups = m.duplicates || [];
+    const activeGirls = dups.length ? await api("/girls") : [];
     const youthName = (id) => { const y = m.youth.find((x) => x.id === id); return y ? y.name : id; };
+    // [singular, plural] for each per-girl table an old record can hold
+    const HOLDS = {
+      completions: ["requirement completion", "requirement completions"],
+      attendance: ["meeting attendance record", "meeting attendance records"],
+      participation: ["planned-session record", "planned-session records"],
+      ahg_state: ["AHGFamily requirement record", "AHGFamily requirement records"],
+      service_hours: ["service-hour entry", "service-hour entries"],
+      award_instances: ["AHGFamily award record", "AHGFamily award records"],
+      star_baseline: ["service-star baseline", "service-star baselines"],
+      star_proposals: ["service-star proposal", "service-star proposals"],
+      push_queue: ["push-queue row", "push-queue rows"],
+      conflicts: ["conflict", "conflicts"],
+    };
+    const holds = (d) => [
+      ...(d.ahgYouthId ? ["the AHGFamily ID"] : []),
+      ...Object.entries(d.data || {}).map(([t, n]) => { const w = HOLDS[t] || [t, t]; return `${n} ${n === 1 ? w[0] : w[1]}`; }),
+    ].join(", ");
     el.innerHTML = `
       <h3>Girl ↔ AHGFamily mapping</h3>
       <p class="trk-muted">${m.fetchedAt ? `AHGFamily member list fetched ${fmtDate(m.fetchedAt)} (${m.youth.length} youth).` : "The AHGFamily member list hasn't been fetched yet."}
@@ -141,11 +160,25 @@
           <p>Girls come into the tracker from the <b>check-in app's roster</b>, not from AHGFamily. A newly registered girl shows up here only after that roster is refreshed: in the check-in app's Admin → Import, run <b>Sync now</b> and approve the pending import, then press <b>Sync check-in now</b> on this page. She then appears above with her AHGFamily match suggested.</p>
         </details>`;
       })()}
+      ${dups.length ? `
+        <h4 class="trk-yr-h4" style="margin-top:1.1rem">Old records still holding data (${dups.length})</h4>
+        <p class="trk-muted">These girls are no longer active on the check-in roster but still hold an AHGFamily ID or history. It happens when a girl added without a member number is later merged in the check-in app into her registered record, which the tracker sees as a new girl, or when a girl is deleted there.
+          <b>Merge</b> moves the ID and history to the girl's current record. <b>Release ID</b> frees only the AHGFamily ID, for a girl with no current record.</p>
+        <div class="trk-wrap"><table class="trk-table">
+          <thead><tr><th>Old record</th><th>Still holds</th><th>Merge into current record</th><th></th></tr></thead>
+          <tbody>${dups.map((d) => `<tr>
+            <td>${esc(d.lastName)}, ${esc(d.firstName)}${d.ahgLevel ? ` <span class="trk-muted">(${esc(d.ahgLevel)})</span>` : ""}<div class="trk-muted">inactive on the roster</div></td>
+            <td class="trk-muted">${esc(holds(d))}</td>
+            <td><div data-dup-host="${d.id}"></div>${d.candidates.length ? "" : '<div class="trk-muted">No current girl has this name. Pick one only if it is really her.</div>'}</td>
+            <td style="white-space:nowrap"><button class="btn btn-outline btn-sm" data-dup-merge="${d.id}">Merge</button>${d.ahgYouthId ? ` <button class="btn-link trk-muted" data-dup-release="${d.id}">Release ID</button>` : ""}</td>
+          </tr>`).join("")}</tbody></table></div>` : ""}
     `;
     // one searchable picker per unmapped girl, pre-filled with the
     // name-match suggestion (a leader still confirms every pair)
     const picked = new Map();
-    const free = m.youth.filter((y) => !y.girlId).map((y) => ({ value: y.id, label: y.name }));
+    const free = m.youth.filter((y) => !y.girlId).map((y) => ({
+      value: y.id, label: y.name, sub: y.heldByOldGirlId ? "held by an old record — merge or release it below" : "",
+    }));
     el.querySelectorAll("[data-map-host]").forEach((host) => {
       const girlId = Number(host.dataset.mapHost);
       const sug = m.suggestions.find((s) => s.girlId === girlId);
@@ -157,6 +190,43 @@
         onChange: (v) => picked.set(girlId, v),
       });
     });
+    // old records: one picker per row, pre-filled with the same-name
+    // current girl (a leader still confirms every merge)
+    const dupTarget = new Map();
+    const girlItems = activeGirls.map((g) => ({
+      value: String(g.id), label: `${g.lastName}, ${g.firstName}`,
+      sub: [g.ahgLevel, g.ahgYouthId ? "mapped" : "not mapped"].filter(Boolean).join(" · "),
+    }));
+    el.querySelectorAll("[data-dup-host]").forEach((host) => {
+      const d = dups.find((x) => x.id === Number(host.dataset.dupHost));
+      const first = d.candidates[0];
+      if (first) dupTarget.set(d.id, first.id);
+      combo(host, {
+        items: girlItems,
+        value: first ? String(first.id) : null,
+        placeholder: first ? "suggested — check it" : "Search current girls…",
+        onChange: (v) => dupTarget.set(d.id, Number(v)),
+      });
+    });
+    el.querySelectorAll("[data-dup-merge]").forEach((b) => b.addEventListener("click", guard(async () => {
+      const d = dups.find((x) => x.id === Number(b.dataset.dupMerge));
+      const intoId = dupTarget.get(d.id);
+      if (!intoId) { toast("Pick the girl's current record first"); return; }
+      const into = activeGirls.find((g) => g.id === intoId);
+      const intoName = into ? `${into.firstName} ${into.lastName}` : "the selected girl";
+      if (!window.confirm(`Merge the old record for ${d.firstName} ${d.lastName} into ${intoName}?\n\nIt holds ${holds(d)}. All of it moves to ${intoName}. Where both records have the same attendance or AHGFamily item, ${intoName}'s copy is kept. The old record stays in the tracker's history as merged.`)) return;
+      const r = await api("/admin/girls/merge", { body: { fromGirlId: d.id, intoGirlId: intoId } });
+      const movedRows = Object.values(r.moved || {}).reduce((a, n) => a + n, 0);
+      toast(`Merged into ${intoName}${r.youthIdMoved ? " — AHGFamily ID moved" : ""}${movedRows ? `, ${movedRows} history row${movedRows === 1 ? "" : "s"} moved` : ""}`);
+      mappingPanel();
+    })));
+    el.querySelectorAll("[data-dup-release]").forEach((b) => b.addEventListener("click", guard(async () => {
+      const d = dups.find((x) => x.id === Number(b.dataset.dupRelease));
+      if (!window.confirm(`Release the AHGFamily ID held by the old record for ${d.firstName} ${d.lastName}?\n\nThe ID becomes free to map to a current girl. The old record's other history stays where it is. Use Merge instead if she has a current record.`)) return;
+      await api(`/admin/girls/${d.id}/release-youth-id`, { method: "POST" });
+      toast("AHGFamily ID released");
+      mappingPanel();
+    })));
     $("trk-map-refresh").addEventListener("click", guard(async () => {
       toast("Signing in to AHGFamily…");
       await api("/admin/mapping/refresh", { method: "POST" });
