@@ -480,3 +480,7 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
   .trk-yr-row.arranging { grid-template-columns: auto 1fr; }
   .trk-yr-row.arranging .trk-bar, .trk-yr-row.arranging .trk-yr-nums { grid-column: 2; }
 }
+
+/* Service stars: the admin's "extra stars on record" choice */
+.trk-legacy { display: block; margin-top: 0.3rem; font-size: 0.8rem; white-space: normal; max-width: 220px; }
+.trk-legacy select { font: inherit; font-size: 0.8rem; margin-top: 0.15rem; max-width: 100%; }

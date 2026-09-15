@@ -522,7 +522,10 @@
     const body = $("trk-body");
     body.innerHTML = '<p class="trk-muted">Loading…</p>';
     let data; let props;
-    try { [data, props] = await Promise.all([api("/stars"), api("/stars/proposals")]); } catch (e) { toast(e.message, true); return; }
+    let me = { role: "leader" };
+    try {
+      [data, props, me] = await Promise.all([api("/stars"), api("/stars/proposals"), api("/me").catch(() => ({ role: "leader" }))]);
+    } catch (e) { toast(e.message, true); return; }
     const mapped = data.girls.filter((g) => g.mapped);
     const pull = data.lastPull;
     const conflicted = data.girls.filter((g) => g.levels.some((l) => l.conflict)).length;
@@ -565,13 +568,26 @@
       else if (l.hours) bits.push(`${h1(l.hours)} h`);
       else if (l.carryIn) bits.push(`<span title="no hours at this level yet">${h1(l.carryIn)} h carried in</span>`);
       if (l.pendingHours) bits.push(`<span title="submitted, not yet approved on AHGFamily">+${h1(l.pendingHours)} pending</span>`);
+      if (l.pathfinderCredit) bits.push(`<span title="Stars already awarded on Pathfinder hours stand. These Pathfinder hours count only to cover them, and the credit shrinks to nothing as her counted hours catch up.">incl. ${h1(l.pathfinderCredit)} h Pathfinder credit</span>`);
+      const extra = l.unexplainedExtras || 0;
+      const plural = extra === 1 ? "" : "s";
+      const legacyChoice = !extra ? ""
+        : me.role === "admin"
+          ? `<label class="trk-muted trk-legacy">${extra} extra star${plural} on record:
+              <select data-legacy-girl="${g.id}" data-legacy-level="${esc(l.level)}">
+                <option value="separate"${l.legacyMode === "hours" ? "" : " selected"}>earned separately, added on top</option>
+                <option value="hours"${l.legacyMode === "hours" ? " selected" : ""}>count against her hours</option>
+              </select></label>`
+          : `<div class="trk-muted trk-legacy">${extra} extra star${plural} on record · ${l.legacyMode === "hours" ? "counted against her hours" : "earned separately"}</div>`;
       return `<td class="trk-stars-cell ${l.current ? "current" : ""}">
         <div class="trk-stars-top">${starIcons(l.onRecord) || '<span class="trk-muted">no stars</span>'}
           ${l.proposedPending ? `<span class="trk-pill proposed" title="waiting on a leader">+${l.proposedPending}</span>` : ""}
           ${l.conflict ? `<span class="trk-pill err" title="${esc(conflictText(l.conflict, l.level))}">conflict</span>` : ""}
+          ${l.coveredStars && l.legacyMode !== "hours" ? `<span class="trk-pill mut" title="Awarded on Pathfinder hours before the troop stopped counting them. They stand; new stars need counted hours beyond them.">${l.coveredStars} on Pathfinder hours</span>` : ""}
         </div>
         <div class="trk-bar trk-stars-bar" title="${h1(l.carryOut)} of ${l.rate} h toward the next ${l.level} star"><span class="done" style="width:${pct}%"></span></div>
         <div class="trk-muted trk-stars-nums">${bits.join(" · ") || "&nbsp;"}</div>
+        ${legacyChoice}
       </td>`;
     };
 
@@ -595,12 +611,33 @@
       const rows = data.girls.filter((g) => matches(starFilter, g.lastName, g.firstName, g.nickname || "", g.ahgLevel || ""));
       $("trk-stars-rows").innerHTML = rows.length ? rows.map((g) => `<tr>
         <td style="white-space:nowrap"><strong>${esc(g.lastName)}, ${esc(g.firstName)}</strong><div class="trk-muted">${esc(g.ahgLevel || "")}${g.mapped ? "" : " · not mapped"}${g.mapped && g.totalApprovedHours ? ` · ${h1(g.totalApprovedHours)} h approved` : ""}</div>
-          ${g.pathfinderHours ? `<div class="trk-pf-note" title="Pathfinders don't earn service stars; these entries are usually an attendance artefact. Review or revise them on AHGFamily (Troop Activities). The tracker already leaves them out of every total above."><span class="trk-pill warn">Pathfinder hours</span> ${h1(g.pathfinderHours.approved + g.pathfinderHours.pending)} h in ${g.pathfinderHours.entries} entr${g.pathfinderHours.entries === 1 ? "y" : "ies"} logged as a Pathfinder — review/revise in AHGFamily; excluded here.</div>` : ""}</td>
+          ${g.pathfinderHours ? `<div class="trk-pf-note" title="Pathfinders don't earn service stars; these entries are usually an attendance artefact. Review or revise them on AHGFamily (Troop Activities). The tracker leaves them out, except to cover stars already awarded on them."><span class="trk-pill warn">Pathfinder hours</span> ${h1(g.pathfinderHours.approved + g.pathfinderHours.pending)} h in ${g.pathfinderHours.entries} entr${g.pathfinderHours.entries === 1 ? "y" : "ies"} logged as a Pathfinder — review/revise in AHGFamily. Not counted, except to cover stars already awarded on them.</div>` : ""}</td>
         ${g.levels.map((l) => (g.mapped ? levelCell(g, l) : '<td class="trk-stars-na">—</td>')).join("")}
       </tr>`).join("") : `<tr><td colspan="5" class="trk-muted">No girls match.</td></tr>`;
     };
     renderRows();
     $("trk-stars-filter").addEventListener("input", (e) => { starFilter = e.target.value; renderRows(); });
+    // admin: how a girl's extra stars at a level count (rows re-render on
+    // search, so listen on the table body)
+    $("trk-stars-rows").addEventListener("change", async (e) => {
+      const sel = e.target.closest("[data-legacy-girl]");
+      if (!sel) return;
+      const mode = sel.value;
+      const prev = mode === "hours" ? "separate" : "hours";
+      const msg = mode === "hours"
+        ? "Count this girl's extra stars at this level against her hours?\n\nNew stars will then need counted hours beyond the stars she already has. A proposal her hours no longer support is withdrawn now."
+        : "Treat this girl's extra stars at this level as earned separately?\n\nThey are then added on top of what her hours earn, which can propose new stars.";
+      if (!window.confirm(msg)) { sel.value = prev; return; }
+      try {
+        const r = await api("/admin/stars/legacy-mode", { body: { girlId: Number(sel.dataset.legacyGirl), level: sel.dataset.legacyLevel, mode } });
+        const bits = [];
+        if (r.withdrawn) bits.push(`${r.withdrawn} proposal${r.withdrawn === 1 ? "" : "s"} withdrawn`);
+        if (r.proposed) bits.push(`${r.proposed} new proposal${r.proposed === 1 ? "" : "s"}`);
+        toast(`Saved${bits.length ? ` — ${bits.join(", ")}` : ""}`);
+        starsView();
+        if (window.Tracker.refreshBanner) window.Tracker.refreshBanner();
+      } catch (err) { toast(err.message, true); sel.value = prev; }
+    });
 
     if (props.length) {
       const boxes = () => [...body.querySelectorAll(".trk-sp")];
