@@ -568,7 +568,7 @@
       else if (l.hours) bits.push(`${h1(l.hours)} h`);
       else if (l.carryIn) bits.push(`<span title="no hours at this level yet">${h1(l.carryIn)} h carried in</span>`);
       if (l.pendingHours) bits.push(`<span title="submitted, not yet approved on AHGFamily">+${h1(l.pendingHours)} pending</span>`);
-      if (l.pathfinderCredit) bits.push(`<span title="Stars already awarded on Pathfinder hours stand. These Pathfinder hours count only to cover them, and the credit shrinks to nothing as her counted hours catch up.">incl. ${h1(l.pathfinderCredit)} h Pathfinder credit</span>`);
+      if (l.pathfinderCredit) bits.push(`<span title="Stars already awarded on Pathfinder hours stand. The Pathfinder hours those stars needed stay counted, so every new counted hour goes toward her next star. No other Pathfinder hours count.">incl. ${h1(l.pathfinderCredit)} h Pathfinder credit</span>`);
       const extra = l.unexplainedExtras || 0;
       const plural = extra === 1 ? "" : "s";
       const legacyChoice = !extra ? ""
