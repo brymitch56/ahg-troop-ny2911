@@ -1,14 +1,14 @@
 // ============================================================
 //  Review (leaders area): everything waiting on a leader from
 //  meetings that have already ended — proposed requirement
-//  completions across all events (filter by unit; select and
-//  confirm/reject in bulk) and service-star proposals. The
+//  completions across all events (filter by unit; search; select
+//  and confirm/reject in bulk) and service-star proposals. The
 //  per-event "After the meeting" tab on Planning still works;
 //  this is the catch-up view.
 // ============================================================
 (function () {
   "use strict";
-  const { init, api, esc, toast, fmtDate, $ } = window.Tracker;
+  const { init, api, esc, toast, fmtDate, $, matches, searchBox } = window.Tracker;
   const root = () => $("pg-review");
 
   const UNITS = ["Tenderheart", "Explorer", "Pioneer/Patriot"];
@@ -17,6 +17,13 @@
   try { unit = localStorage.getItem(KEY) || ""; } catch (_) { /* storage blocked */ }
   if (unit && !UNITS.includes(unit)) unit = "";
   let undo = []; // rejected this session: [{ completionId, label }]
+
+  // The search narrows what is shown AND what the bulk buttons act on: a
+  // row hidden by the search is never confirmed or rejected by "…selected".
+  let query = "";
+  let filterQueue = () => {};
+  let filterStars = () => {};
+  const visible = (el) => !el.closest("[hidden]");
 
   async function view() {
     root().innerHTML = '<p class="trk-muted">Loading…</p>';
@@ -32,6 +39,7 @@
         ${UNITS.map((u) => `<button class="trk-chip ${unit === u ? "active" : ""}" data-unit="${esc(u)}">${esc(u)}${all[u] ? ` (${all[u]})` : ""}</button>`).join("")}
       </div>
       <p class="trk-muted">Items proposed by attendance at meetings that have ended, oldest first. The unit filter follows the plan the item came from and is remembered on this device. Confirming stamps the girl's current level; rejecting keeps the item from being proposed again for that meeting.</p>
+      <div class="trk-row-tools">${searchBox("trk-rv-q", query, "Search meetings, girls, badges, requirements…")}</div>
       <div id="trk-rv-body"></div>
       <div id="trk-rv-stars"></div>
     `;
@@ -40,6 +48,7 @@
       try { localStorage.setItem(KEY, unit); } catch (_) { /* storage blocked */ }
       view();
     }));
+    $("trk-rv-q").addEventListener("input", (e) => { query = e.target.value; filterQueue(); filterStars(); });
     renderQueue(q);
     renderStars(stars);
   }
@@ -61,17 +70,19 @@
   function renderQueue(q) {
     const body = $("trk-rv-body");
     if (!q.events.length) {
+      filterQueue = () => {};
       body.innerHTML = `<div class="trk-panel"><p class="trk-muted">Nothing waiting${unit ? ` for ${esc(unit)}` : ""}. Proposals appear after girls sign out of a planned meeting (the tracker re-checks 30 minutes after it ends and on every sign-out).</p>${undoBlock()}</div>`;
       wireUndo(body);
       return;
     }
     body.innerHTML = `
       <div class="trk-row-tools trk-rv-bar">
-        <label><input type="checkbox" id="trk-rv-all" checked> Select all (${q.total})</label>
+        <label><input type="checkbox" id="trk-rv-all" checked> Select all (<span id="trk-rv-total">${q.total}</span>)</label>
         <button class="btn btn-blue btn-sm" id="trk-rv-confirm">Confirm selected</button>
         <button class="btn btn-outline btn-sm" id="trk-rv-reject">Reject selected</button>
         <span class="trk-muted" id="trk-rv-count"></span>
       </div>
+      <p class="trk-muted" id="trk-rv-nomatch" hidden>No waiting items match the search. Clear it to see everything.</p>
       ${q.events.map((ev) => `
         <div class="trk-panel" data-ev="${ev.eventId}">
           <h3><label><input type="checkbox" class="trk-rv-ev" data-ev="${ev.eventId}" checked> ${fmtDate(ev.startAt)} · ${esc(ev.title)}</label> <span class="trk-pill proposed">${ev.count}</span>
@@ -81,7 +92,7 @@
               <div class="trk-rv-girlhead"><label><input type="checkbox" class="trk-rv-girl-all" data-ev="${ev.eventId}" data-girl="${g.girlId}" checked> <strong>${esc(g.lastName)}, ${esc(g.firstName)}</strong></label> <span class="trk-pill mut">${esc(g.ahgLevel || "")}</span></div>
               <div class="trk-wrap"><table class="trk-table"><tbody>
                 ${g.items.map((it) => `
-                  <tr>
+                  <tr data-q="${esc([fmtDate(ev.startAt), ev.title, g.firstName, g.lastName, g.ahgLevel || "", it.badgeName, `${it.number}${it.letter || ""}`, it.title || "", it.levelGroup || ""].join(" "))}">
                     <td style="width:2rem"><input type="checkbox" class="trk-rv" data-id="${it.completionId}" data-ev="${ev.eventId}" data-girl="${g.girlId}" checked></td>
                     <td><strong>${esc(it.badgeName)}</strong> ${it.number}${esc(it.letter || "")}${it.title ? " — " + esc(it.title) : ""}
                       ${it.levelGroup ? ` <span class="trk-pill mut">${esc(it.levelGroup)}</span>` : ""}
@@ -94,14 +105,27 @@
         </div>`).join("")}
       ${undoBlock()}
     `;
-    const boxes = () => [...body.querySelectorAll(".trk-rv")];
-    const count = () => { $("trk-rv-count").textContent = `${boxes().filter((b) => b.checked).length} of ${boxes().length} selected`; };
-    const setAll = (sel, on) => { body.querySelectorAll(sel).forEach((b) => { b.checked = on; }); count(); };
+    const allBoxes = () => [...body.querySelectorAll(".trk-rv")];
+    const boxes = () => allBoxes().filter(visible);
+    const count = () => {
+      const shown = boxes();
+      const hidden = allBoxes().length - shown.length;
+      $("trk-rv-total").textContent = String(shown.length);
+      $("trk-rv-count").textContent = `${shown.filter((b) => b.checked).length} of ${shown.length} selected${hidden ? ` · ${hidden} hidden by the search and left alone` : ""}`;
+    };
+    const setAll = (sel, on) => { body.querySelectorAll(sel).forEach((b) => { if (visible(b)) b.checked = on; }); count(); };
     $("trk-rv-all").addEventListener("change", (e) => setAll(".trk-rv, .trk-rv-ev, .trk-rv-girl-all", e.target.checked));
     body.querySelectorAll(".trk-rv-ev").forEach((b) => b.addEventListener("change", () => setAll(`.trk-rv[data-ev="${b.dataset.ev}"], .trk-rv-girl-all[data-ev="${b.dataset.ev}"]`, b.checked)));
     body.querySelectorAll(".trk-rv-girl-all").forEach((b) => b.addEventListener("change", () => setAll(`.trk-rv[data-ev="${b.dataset.ev}"][data-girl="${b.dataset.girl}"]`, b.checked)));
-    boxes().forEach((b) => b.addEventListener("change", count));
-    count();
+    allBoxes().forEach((b) => b.addEventListener("change", count));
+    filterQueue = () => {
+      body.querySelectorAll("tr[data-q]").forEach((tr) => { tr.hidden = !matches(query, tr.dataset.q); });
+      body.querySelectorAll(".trk-rv-girl").forEach((g) => { g.hidden = !g.querySelector("tr[data-q]:not([hidden])"); });
+      body.querySelectorAll(".trk-panel[data-ev]").forEach((p) => { p.hidden = !p.querySelector(".trk-rv-girl:not([hidden])"); });
+      $("trk-rv-nomatch").hidden = boxes().length > 0;
+      count();
+    };
+    filterQueue();
     const decide = (decision) => async () => {
       const chosen = boxes().filter((b) => b.checked);
       if (!chosen.length) { toast("Nothing selected", true); return; }
@@ -150,27 +174,33 @@
 
   function renderStars(props) {
     const host = $("trk-rv-stars");
-    if (!props.length) { host.innerHTML = ""; return; }
+    if (!props.length) { host.innerHTML = ""; filterStars = () => {}; return; }
     host.innerHTML = `
       <div class="trk-panel">
         <h3>Service stars ready to confirm <span class="trk-pill proposed">${props.length}</span></h3>
         <p class="trk-muted">Approved hours on AHGFamily cover these stars. Confirming records the star here (dated today) and lines it up for AHGFamily. Full detail is on Progress → Service stars.</p>
         <div class="trk-wrap"><table class="trk-table">
           <thead><tr><th><input type="checkbox" id="trk-rs-all" checked aria-label="Select all"></th><th>Girl</th><th>Star</th><th>Hours at level</th></tr></thead>
-          <tbody>${props.map((p) => `<tr>
+          <tbody>${props.map((p) => `<tr data-q="${esc([p.lastName, p.firstName, p.ahgLevel || "", p.level, "service star"].join(" "))}">
             <td><input type="checkbox" class="trk-rs" data-id="${p.id}" checked></td>
             <td>${esc(p.lastName)}, ${esc(p.firstName)} <span class="trk-muted">${esc(p.ahgLevel || "")}</span></td>
             <td><strong>${esc(p.level)}</strong> star #${p.ordinal}</td>
             <td class="trk-muted">${esc(p.hoursDisplay)} h of ${p.rate}</td>
           </tr>`).join("")}</tbody>
         </table></div>
+        <p class="trk-muted" id="trk-rs-nomatch" hidden>No proposed stars match the search.</p>
         <div class="trk-row-tools">
           <button class="btn btn-blue btn-sm" id="trk-rs-confirm">Confirm selected stars</button>
           <button class="btn btn-outline btn-sm" id="trk-rs-reject">Reject selected</button>
         </div>
       </div>`;
-    const boxes = () => [...host.querySelectorAll(".trk-rs")];
+    const boxes = () => [...host.querySelectorAll(".trk-rs")].filter(visible);
     $("trk-rs-all").addEventListener("change", (e) => boxes().forEach((b) => { b.checked = e.target.checked; }));
+    filterStars = () => {
+      host.querySelectorAll("tr[data-q]").forEach((tr) => { tr.hidden = !matches(query, tr.dataset.q); });
+      $("trk-rs-nomatch").hidden = boxes().length > 0;
+    };
+    filterStars();
     const decide = (decision) => async () => {
       const ids = boxes().filter((b) => b.checked).map((b) => Number(b.dataset.id));
       if (!ids.length) { toast("Nothing selected", true); return; }

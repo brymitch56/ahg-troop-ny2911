@@ -41,6 +41,11 @@
   ];
   const range = { preset: "default", from: addDays(new Date(), -14), to: addDays(new Date(), 60) };
 
+  // Search over the events in the current range (title, location, units
+  // planned, date); kept while the page is open, across range changes.
+  const { matches, searchBox } = window.Tracker;
+  let evQuery = "";
+
   async function listView() {
     const from = isoDay(range.from);
     const to = isoDay(range.to);
@@ -60,8 +65,21 @@
         <input type="date" id="trk-ev-to" value="${to}" aria-label="To">
         <button class="btn btn-outline btn-sm" id="trk-ev-apply">Apply</button>
       </div>
-      <p class="trk-muted">${events.length} event${events.length === 1 ? "" : "s"} in this range. Pick one to plan badgework or review the meeting afterward. History goes back to the tracker's install; the mirror looks about a year ahead.</p>`;
-    root().insertAdjacentHTML("beforeend", listTable(events));
+      ${events.length ? `<div class="trk-row-tools">${searchBox("trk-ev-q", evQuery, "Search events — title, location, unit…")}</div>` : ""}
+      <p class="trk-muted"><span id="trk-ev-count">${events.length} event${events.length === 1 ? "" : "s"}</span> in this range. Pick one to plan badgework or review the meeting afterward. History goes back to the tracker's install; the mirror looks about a year ahead.</p>
+      <div id="trk-ev-results"></div>`;
+    const renderEvents = () => {
+      const q = evQuery.trim();
+      const shown = events.filter((e) => matches(evQuery, e.title, e.location || "", (e.planLevelGroups || []).join(" "), fmtDate(e.startAt)));
+      $("trk-ev-count").textContent = q ? `${shown.length} of ${events.length} events` : `${events.length} event${events.length === 1 ? "" : "s"}`;
+      const host = $("trk-ev-results");
+      host.innerHTML = q && events.length && !shown.length
+        ? `<p class="trk-muted">No events in this range match “${esc(q)}”.</p>`
+        : listTable(shown);
+      host.querySelectorAll("a[data-ev]").forEach((a) => a.addEventListener("click", (ev) => { ev.preventDefault(); eventView(Number(a.dataset.ev)); }));
+    };
+    if (events.length) $("trk-ev-q").addEventListener("input", (e) => { evQuery = e.target.value; renderEvents(); });
+    renderEvents();
     root().querySelectorAll("[data-preset]").forEach((c) => c.addEventListener("click", () => {
       const pr = PRESETS.find((x) => x.key === c.dataset.preset);
       const [f, t] = pr.calc();
@@ -296,6 +314,9 @@
   }
 
   // ------------------------------------------------ proposals ------------
+  // The search narrows the girls and rows shown, and Save decisions only
+  // sends rows still shown — a choice hidden by the search is never saved.
+  let prQuery = "";
   async function proposalsTab() {
     const body = $("trk-tabbody");
     const p = await api(`/events/${cur.ev.id}/proposals`);
@@ -304,12 +325,14 @@
       return;
     }
     body.innerHTML = `
+      <div class="trk-row-tools">${searchBox("trk-pr-q", prQuery, "Search girls, badges, requirements…")}<span class="trk-muted" id="trk-pr-shown"></span></div>
+      <p class="trk-muted" id="trk-pr-nomatch" hidden>No proposals match the search.</p>
       ${p.girls.map((g) => `
-        <div class="trk-panel">
+        <div class="trk-panel" data-pr-girl>
           <h3>${esc(g.firstName)} ${esc(g.lastName)} <span class="trk-pill mut">${esc(g.ahgLevel || "")}</span></h3>
           <div class="trk-wrap"><table class="trk-table"><tbody>
             ${g.items.map((it) => `
-              <tr>
+              <tr data-q="${esc([g.firstName, g.lastName, g.ahgLevel || "", it.badgeName, `${it.number}${it.letter || ""}`, it.title || ""].join(" "))}">
                 <td><strong>${esc(it.badgeName)}</strong> ${it.number}${esc(it.letter || "")}${it.title ? " — " + esc(it.title) : ""}
                   ${it.needsReview ? `<div class="trk-pill err">needs review</div><div class="trk-muted">${esc(it.reviewReason || "")}</div>` : ""}
                   ${it.participation ? `<div class="trk-muted">present for ${it.participation.count} of ${it.participation.planned} planned session${it.participation.planned === 1 ? "" : "s"}</div>` : ""}</td>
@@ -323,12 +346,27 @@
         </div>`).join("")}
       <div class="trk-row-tools">
         <button class="btn btn-blue" id="trk-decide">Save decisions</button>
-        <span class="trk-muted">Only rows with confirm or reject selected are saved; the rest stay proposed.</span>
+        <span class="trk-muted">Only rows with confirm or reject selected are saved; the rest stay proposed. Rows hidden by the search are not saved.</span>
       </div>
     `;
+    const filterRows = () => {
+      let total = 0;
+      let shown = 0;
+      body.querySelectorAll("tr[data-q]").forEach((tr) => {
+        total += 1;
+        tr.hidden = !matches(prQuery, tr.dataset.q);
+        if (!tr.hidden) shown += 1;
+      });
+      body.querySelectorAll("[data-pr-girl]").forEach((panel) => { panel.hidden = !panel.querySelector("tr[data-q]:not([hidden])"); });
+      $("trk-pr-nomatch").hidden = shown > 0;
+      $("trk-pr-shown").textContent = prQuery.trim() ? `${shown} of ${total} shown` : "";
+    };
+    $("trk-pr-q").addEventListener("input", (e) => { prQuery = e.target.value; filterRows(); });
+    filterRows();
     $("trk-decide").addEventListener("click", async () => {
       const decisions = [];
       body.querySelectorAll("input[type=radio]:checked").forEach((r) => {
+        if (r.closest("[hidden]")) return; // hidden by the search: left alone
         const completionId = Number(r.name.slice(1));
         const d = { completionId, decision: r.value };
         const dateEl = body.querySelector(`[data-date="${completionId}"]`);

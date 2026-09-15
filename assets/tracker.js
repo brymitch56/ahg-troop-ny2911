@@ -288,5 +288,33 @@
     el.innerHTML = `<strong>Waiting on you:</strong> ${esc(parts.join(" and "))} to confirm &rarr; <span class="trk-banner-link">Review</span>`;
   }
 
-  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $, refreshBanner };
+  // ---------- list search + sort preferences ----------
+  // Search: every word typed must appear somewhere in the row's text, in
+  // any order, ignoring case and accents — "ex camp" finds "Explorer ·
+  // Camping". Sort choices and custom orders are remembered in this
+  // browser only (localStorage); nothing is sent to the tracker.
+  const fold = (s) => String(s == null ? "" : s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  function matches(query, ...fields) {
+    const words = fold(query).split(/\s+/).filter(Boolean);
+    if (!words.length) return true;
+    const hay = fold(fields.flat().join(" "));
+    return words.every((w) => hay.includes(w));
+  }
+  const PREF = "trk-pref-";
+  function getPref(key, fallback) {
+    try {
+      const v = localStorage.getItem(PREF + key);
+      return v == null ? fallback : JSON.parse(v);
+    } catch (_) { return fallback; } // storage blocked or a corrupt value
+  }
+  function setPref(key, value) {
+    try { localStorage.setItem(PREF + key, JSON.stringify(value)); } catch (_) { /* storage blocked */ }
+  }
+  const searchBox = (id, value, placeholder) =>
+    `<input type="search" id="${esc(id)}" class="trk-search" value="${esc(value || "")}" placeholder="${esc(placeholder)}" aria-label="${esc(placeholder)}" autocomplete="off" spellcheck="false">`;
+  const sortSelect = (id, options, value) =>
+    `<label class="trk-sort">Sort <select id="${esc(id)}">${options.map(([v, l]) => `<option value="${esc(v)}"${v === value ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></label>`;
+  const byText = (a, b) => String(a == null ? "" : a).localeCompare(String(b == null ? "" : b), undefined, { sensitivity: "base", numeric: true });
+
+  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $, refreshBanner, matches, getPref, setPref, searchBox, sortSelect, byText };
 })();

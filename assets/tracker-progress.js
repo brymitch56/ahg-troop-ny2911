@@ -1,22 +1,36 @@
 // ============================================================
-//  Progress (leaders area): per girl (every badge with
-//  per-requirement state, mark home completions) and per badge
-//  ("who is missing what" matrix). Badge complete is always
-//  derived by the tracker from the group rules — never set here.
+//  Progress (leaders area): program year (plan-based bars per
+//  badge), per girl (every badge with per-requirement state,
+//  mark home completions), per badge ("who is missing what"
+//  matrix), and service stars. Badge complete is always derived
+//  by the tracker from the group rules — never set here.
 // ============================================================
 (function () {
   "use strict";
-  const { init, api, esc, toast, fmtDate, combo, $ } = window.Tracker;
+  const { init, api, esc, toast, fmtDate, combo, $, matches, getPref, setPref, searchBox, sortSelect, byText } = window.Tracker;
   const root = () => $("pg-progress");
 
   let girls = [];
   let badges = [];
-  let mode = "year"; // year | girl | badge
+  let mode = "year"; // year | girl | badge | stars
   let selGirl = null;
   let selBadge = null;
 
   const STATUS_LABEL = { complete: "Complete", in_progress: "In progress", not_started: "Not started" };
   const statusPill = (s) => `<span class="trk-pill ${s}">${STATUS_LABEL[s] || s}</span>`;
+
+  // Searches last while the page is open; sort choices (and the program
+  // year's "My order") are remembered in this browser.
+  const choice = (list, v, def) => (list.some(([k]) => k === v) ? v : def);
+  const YR_SORTS = [["first", "First planned date"], ["name", "Badge name"], ["level", "Level"], ["custom", "My order"]];
+  const GIRL_SORTS = [["name", "Badge name"], ["level", "Level, then badge name"], ["status", "Status, then badge name"]];
+  const BADGE_SORTS = [["last", "Last name"], ["first", "First name"], ["level", "Level, then name"], ["status", "Status, then name"]];
+  let yrSort = choice(YR_SORTS, getPref("progress-year-sort", "first"), "first");
+  let girlSort = choice(GIRL_SORTS, getPref("progress-girl-sort", "name"), "name");
+  let badgeSort = choice(BADGE_SORTS, getPref("progress-badge-sort", "last"), "last");
+  let yrQuery = "";
+  let girlQuery = "";
+  let badgeQuery = "";
 
   function shell() {
     root().innerHTML = `
@@ -33,22 +47,31 @@
     const picker = $("trk-picker");
     if (mode === "year") { picker.innerHTML = ""; yearView(); return; }
     if (mode === "stars") { picker.innerHTML = ""; starsView(); return; }
-    picker.innerHTML = '<div id="trk-sel"></div>';
     if (mode === "girl") {
+      picker.innerHTML = `<div id="trk-sel"></div>
+        ${searchBox("trk-girl-q", girlQuery, "Search her badges — name, level, status…")}
+        ${sortSelect("trk-girl-sort", GIRL_SORTS, girlSort)}`;
       combo($("trk-sel"), {
         items: girls.map((g) => ({ value: String(g.id), label: `${g.lastName}, ${g.firstName}`, sub: g.ahgLevel || "" })),
         value: selGirl ? String(selGirl) : null,
         placeholder: "Search girls…",
         onChange: (v) => { selGirl = Number(v) || null; girlView(); },
       });
+      $("trk-girl-q").addEventListener("input", (e) => { girlQuery = e.target.value; renderGirl(); });
+      $("trk-girl-sort").addEventListener("change", (e) => { girlSort = e.target.value; setPref("progress-girl-sort", girlSort); renderGirl(); });
       girlView();
     } else {
+      picker.innerHTML = `<div id="trk-sel"></div>
+        ${searchBox("trk-bdg-q", badgeQuery, "Search girls — name, level, status…")}
+        ${sortSelect("trk-bdg-sort", BADGE_SORTS, badgeSort)}`;
       combo($("trk-sel"), {
         items: badges.map((b) => ({ value: b.id, label: b.name, sub: b.levelGroup })),
         value: selBadge,
         placeholder: "Search badges…",
         onChange: (v) => { selBadge = v || null; badgeView(); },
       });
+      $("trk-bdg-q").addEventListener("input", (e) => { badgeQuery = e.target.value; renderBadge(); });
+      $("trk-bdg-sort").addEventListener("change", (e) => { badgeSort = e.target.value; setPref("progress-badge-sort", badgeSort); renderBadge(); });
       badgeView();
     }
   }
@@ -63,40 +86,199 @@
     const y = n.getMonth() >= 8 ? n.getFullYear() : n.getFullYear() - 1;
     return { from: localISO(new Date(y, 8, 1)), to: localISO(new Date(y + 1, 7, 31)), label: `${y}–${y + 1}` };
   }
+
+  // Sorting within each unit. "My order" is a saved list of badge ids per
+  // unit; badges planned after it was saved follow the arranged ones, by
+  // first planned date.
+  const cmpStr = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+  const firstKey = (b) => b.firstPlannedAt || "9999";
+  const YR_SORTERS = {
+    first: (a, b) => cmpStr(firstKey(a), firstKey(b)) || byText(a.name, b.name),
+    name: (a, b) => byText(a.name, b.name) || byText(a.levelGroup, b.levelGroup),
+    level: (a, b) => byText(a.levelGroup, b.levelGroup) || byText(a.name, b.name),
+  };
+  const ORDER_KEY = "progress-year-order"; // { [unit]: [badgeId, …] }
+  const savedOrder = () => { const o = getPref(ORDER_KEY, {}); return o && typeof o === "object" ? o : {}; };
+  function sortYear(u, key = yrSort) {
+    const list = [...u.badges];
+    if (key !== "custom") return list.sort(YR_SORTERS[key]);
+    const pos = new Map((savedOrder()[u.unit] || []).map((id, i) => [id, i]));
+    return list.sort((a, b) => {
+      const pa = pos.has(a.badgeId) ? pos.get(a.badgeId) : Infinity;
+      const pb = pos.has(b.badgeId) ? pos.get(b.badgeId) : Infinity;
+      return pa !== pb ? (pa < pb ? -1 : 1) : YR_SORTERS.first(a, b);
+    });
+  }
+
+  let yr = null; // { data, py } — the loaded program year
+  let arranging = false;
+  // Off by default: the view is the current program year. On (remembered in
+  // this browser): also badges planned in earlier years whose planned
+  // sessions aren't all held yet, so they can be continued.
+  let yrUnfinished = getPref("progress-year-unfinished", false) === true;
+
   async function yearView() {
     const body = $("trk-body");
     const py = programYear();
-    const data = await api(`/progress/year?from=${py.from}&to=${py.to}`);
-    if (!data.units.length) {
-      body.innerHTML = `<p class="trk-muted">Nothing planned yet for the ${py.label} program year. Build a plan on the Planning tab and it appears here.</p>`;
-      return;
-    }
+    const data = await api(`/progress/year?from=${py.from}&to=${py.to}${yrUnfinished ? "&includeUnfinished=1" : ""}`);
+    yr = { data, py };
     body.innerHTML = `
       <p class="trk-muted">Program year ${py.label} (${fmtDate(py.from)} – ${fmtDate(py.to)}). Bars follow the plan:
         <span class="trk-pill mut">light = requirements scheduled</span> <span class="trk-pill ok">solid = sessions already held</span>.
-        Actual per-girl confirmations live under By girl / By badge.</p>
-      ${data.units.map((u) => `
+        Actual per-girl confirmations live under By girl / By badge.${yrUnfinished ? ` Also showing badges started in an earlier year that aren't finished (<span class="trk-pill warn">earlier year</span>); their bars count every plan since they started.` : ""}</p>
+      <div class="trk-row-tools">
+        ${searchBox("trk-yr-q", yrQuery, "Search badges — name, frontier, level…")}
+        ${sortSelect("trk-yr-sort", YR_SORTS, yrSort)}
+        <label class="trk-sort"><input type="checkbox" id="trk-yr-unfinished"${yrUnfinished ? " checked" : ""}> Include unfinished badges from earlier years</label>
+        <button class="btn btn-outline btn-sm" id="trk-yr-arrange" hidden>Arrange</button>
+        <button class="btn-link trk-muted" id="trk-yr-reset" hidden>Reset my order</button>
+      </div>
+      <p class="trk-muted" id="trk-yr-help" hidden>Drag a badge, or use ▲ ▼, to put each unit's badges in the order you want to see them. Every move is saved in this browser. Press <b>Done</b> when you're finished.</p>
+      <div id="trk-yr-results"></div>
+    `;
+    $("trk-yr-q").addEventListener("input", (e) => { yrQuery = e.target.value; renderYear(); });
+    $("trk-yr-unfinished").addEventListener("change", (e) => {
+      yrUnfinished = e.target.checked;
+      setPref("progress-year-unfinished", yrUnfinished);
+      arranging = false;
+      yearView(); // a different set of badges — fetch again
+    });
+    $("trk-yr-sort").addEventListener("change", (e) => {
+      const prev = yrSort;
+      yrSort = e.target.value;
+      setPref("progress-year-sort", yrSort);
+      arranging = false;
+      if (yrSort === "custom") {
+        // first time for a unit: start "My order" from what was on screen
+        // and open the arranger
+        const saved = savedOrder();
+        const fresh = data.units.filter((u) => !saved[u.unit]);
+        fresh.forEach((u) => { saved[u.unit] = sortYear(u, prev === "custom" ? "first" : prev).map((b) => b.badgeId); });
+        if (fresh.length) { setPref(ORDER_KEY, saved); arranging = true; }
+      }
+      renderYear();
+    });
+    $("trk-yr-arrange").addEventListener("click", () => {
+      arranging = !arranging;
+      if (arranging) yrQuery = ""; // arrange the whole list, not a search result
+      renderYear();
+    });
+    $("trk-yr-reset").addEventListener("click", () => {
+      if (!window.confirm("Forget your saved badge order in this browser? Badges go back to first planned date until you arrange them again.")) return;
+      setPref(ORDER_KEY, {});
+      renderYear();
+    });
+    renderYear();
+  }
+
+  const yearRowInner = (b) => {
+    const plannedPct = b.needed ? Math.round((b.planned / b.needed) * 100) : 0;
+    const donePct = b.needed ? Math.round((b.done / b.needed) * 100) : 0;
+    return `
+      <div class="trk-yr-name"><strong>${esc(b.name)}</strong>${b.frontier ? ` <span class="trk-muted">· ${esc(b.frontier)}</span>` : ""}${b.carriedOver ? ' <span class="trk-pill warn" title="Started in an earlier program year and not finished yet">earlier year</span>' : ""}</div>
+      <div class="trk-bar" title="${b.planned} of ${b.needed} requirements scheduled; ${b.done} already held">
+        <span class="plan" style="width:${plannedPct}%"></span>
+        <span class="done" style="width:${donePct}%"></span>
+      </div>
+      <div class="trk-yr-nums trk-muted">held ${b.done} · planned ${b.planned} / ${b.needed}${b.startedOnly ? ` · ${b.startedOnly} started, no finish scheduled` : ""}${b.firstPlannedAt ? ` · first ${fmtDate(b.firstPlannedAt)}` : ""}</div>`;
+  };
+
+  function renderYear() {
+    const { data, py } = yr;
+    const custom = yrSort === "custom";
+    const arrangeBtn = $("trk-yr-arrange");
+    arrangeBtn.hidden = !custom;
+    arrangeBtn.textContent = arranging ? "Done" : "Arrange";
+    $("trk-yr-reset").hidden = !custom;
+    $("trk-yr-help").hidden = !arranging;
+    const qBox = $("trk-yr-q");
+    qBox.disabled = arranging;
+    if (arranging) qBox.value = "";
+    const q = yrQuery.trim();
+    const host = $("trk-yr-results");
+    if (!data.units.length) {
+      host.innerHTML = yrUnfinished
+        ? `<p class="trk-muted">Nothing planned for the ${py.label} program year, and no unfinished badges from earlier years.</p>`
+        : `<p class="trk-muted">Nothing planned yet for the ${py.label} program year. Build a plan on the Planning tab, or tick <b>Include unfinished badges from earlier years</b> to continue one started before.</p>`;
+      return;
+    }
+    host.innerHTML = data.units.map((u) => {
+      const list = sortYear(u).filter((b) => arranging || matches(yrQuery, b.name, b.frontier || "", b.levelGroup || ""));
+      if (!list.length) return "";
+      return `
         <div class="trk-panel">
           <h3>${esc(u.unit)}</h3>
-          ${u.badges.map((b) => {
-            const plannedPct = b.needed ? Math.round((b.planned / b.needed) * 100) : 0;
-            const donePct = b.needed ? Math.round((b.done / b.needed) * 100) : 0;
-            return `
-            <div class="trk-yr-row trk-yr-click" role="button" tabindex="0" data-yr-badge="${esc(b.badgeId)}" data-yr-unit="${esc(u.unit)}" title="Show the full plan">
-              <div class="trk-yr-name"><strong>${esc(b.name)}</strong>${b.frontier ? ` <span class="trk-muted">· ${esc(b.frontier)}</span>` : ""}</div>
-              <div class="trk-bar" title="${b.planned} of ${b.needed} requirements scheduled; ${b.done} already held">
-                <span class="plan" style="width:${plannedPct}%"></span>
-                <span class="done" style="width:${donePct}%"></span>
-              </div>
-              <div class="trk-yr-nums trk-muted">held ${b.done} · planned ${b.planned} / ${b.needed}${b.startedOnly ? ` · ${b.startedOnly} started, no finish scheduled` : ""}</div>
-            </div>`;
-          }).join("")}
-        </div>`).join("")}
-    `;
-    body.querySelectorAll("[data-yr-badge]").forEach((row) => {
-      const open = () => badgeModal(row.dataset.yrBadge, row.dataset.yrUnit, py);
+          ${list.map((b, i) => (arranging
+            ? `<div class="trk-yr-row arranging" draggable="true" data-arr-badge="${esc(b.badgeId)}" data-arr-unit="${esc(u.unit)}">
+                <div class="trk-yr-move">
+                  <button type="button" data-mv="-1" aria-label="Move ${esc(b.name)} up"${i === 0 ? " disabled" : ""}>▲</button>
+                  <button type="button" data-mv="1" aria-label="Move ${esc(b.name)} down"${i === list.length - 1 ? " disabled" : ""}>▼</button>
+                </div>${yearRowInner(b)}
+              </div>`
+            : `<div class="trk-yr-row trk-yr-click" role="button" tabindex="0" data-yr-badge="${esc(b.badgeId)}" data-yr-unit="${esc(u.unit)}" data-yr-from="${b.carriedOver && b.firstPlannedAt ? esc(b.firstPlannedAt.slice(0, 10)) : ""}" title="Show the full plan">${yearRowInner(b)}</div>`)).join("")}
+        </div>`;
+    }).join("") || `<p class="trk-muted">No badges in this program year match “${esc(q)}”.</p>`;
+
+    if (arranging) { wireArrange(host); return; }
+    host.querySelectorAll("[data-yr-badge]").forEach((row) => {
+      // a badge carried over from an earlier year shows its plan from its
+      // first planned meeting, not just this program year's part of it
+      const open = () => badgeModal(row.dataset.yrBadge, row.dataset.yrUnit, row.dataset.yrFrom ? { ...py, from: row.dataset.yrFrom } : py);
       row.addEventListener("click", open);
       row.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
+  }
+
+  function moveBadge(unit, badgeId, toIndex) {
+    const u = yr.data.units.find((x) => x.unit === unit);
+    if (!u) return;
+    const ids = sortYear(u).map((b) => b.badgeId);
+    const from = ids.indexOf(badgeId);
+    if (from < 0 || toIndex < 0 || toIndex >= ids.length || from === toIndex) return;
+    ids.splice(toIndex, 0, ids.splice(from, 1)[0]);
+    const all = savedOrder();
+    all[unit] = ids;
+    setPref(ORDER_KEY, all);
+    renderYear();
+  }
+
+  // ▲ ▼ for touch and keyboard; drag and drop for a mouse. Dropping on a
+  // row puts the dragged badge in that row's place.
+  function wireArrange(host) {
+    let dragged = null;
+    const rowsOf = (row) => [...row.parentNode.querySelectorAll("[data-arr-badge]")];
+    const clearMarks = () => host.querySelectorAll(".drop-target").forEach((r) => r.classList.remove("drop-target", "drop-after"));
+    host.querySelectorAll("[data-arr-badge]").forEach((row) => {
+      const unit = row.dataset.arrUnit;
+      const id = row.dataset.arrBadge;
+      row.querySelectorAll("[data-mv]").forEach((btn) => btn.addEventListener("click", () => {
+        moveBadge(unit, id, rowsOf(row).indexOf(row) + Number(btn.dataset.mv));
+        // keep focus on the moved badge so repeated presses keep moving it
+        const again = [...host.querySelectorAll("[data-arr-badge]")]
+          .find((r) => r.dataset.arrBadge === id && r.dataset.arrUnit === unit);
+        const same = again && again.querySelector(`[data-mv="${btn.dataset.mv}"]`);
+        if (same && !same.disabled) same.focus();
+      }));
+      row.addEventListener("dragstart", (e) => {
+        dragged = row;
+        row.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+        try { e.dataTransfer.setData("text/plain", id); } catch (_) { /* some browsers refuse */ }
+      });
+      row.addEventListener("dragend", () => { row.classList.remove("dragging"); clearMarks(); dragged = null; });
+      row.addEventListener("dragover", (e) => {
+        if (!dragged || dragged === row || dragged.dataset.arrUnit !== unit) return;
+        e.preventDefault();
+        clearMarks();
+        const list = rowsOf(row);
+        row.classList.add("drop-target");
+        if (list.indexOf(dragged) < list.indexOf(row)) row.classList.add("drop-after");
+      });
+      row.addEventListener("drop", (e) => {
+        if (!dragged || dragged === row || dragged.dataset.arrUnit !== unit) return;
+        e.preventDefault();
+        moveBadge(unit, dragged.dataset.arrBadge, rowsOf(row).indexOf(row));
+      });
     });
   }
 
@@ -168,15 +350,36 @@
   }
 
   // ------------------------------------------------ by girl --------------
+  const GIRL_STATUS_ORDER = { in_progress: 0, complete: 1, not_started: 2 };
+  const GIRL_SORTERS = {
+    name: (a, b) => byText(a.name, b.name),
+    level: (a, b) => byText(a.levelGroup, b.levelGroup) || byText(a.name, b.name),
+    status: (a, b) => ((GIRL_STATUS_ORDER[a.status] ?? 9) - (GIRL_STATUS_ORDER[b.status] ?? 9)) || byText(a.name, b.name),
+  };
+  let girlData = null; // { id, p } — last loaded girl, so search/sort don't refetch
+
   async function girlView() {
     const body = $("trk-body");
-    if (!selGirl) { body.innerHTML = `<p class="trk-muted">${girls.length ? "Pick a girl to see her badge progress." : "The roster is empty — run a check-in sync from the Admin page."}</p>`; return; }
-    const p = await api(`/girls/${selGirl}/progress`);
+    if (!selGirl) { girlData = null; body.innerHTML = `<p class="trk-muted">${girls.length ? "Pick a girl to see her badge progress." : "The roster is empty — run a check-in sync from the Admin page."}</p>`; return; }
+    const id = selGirl;
+    const p = await api(`/girls/${id}/progress`);
+    if (id !== selGirl) return; // another girl was picked while this loaded
+    girlData = { id, p };
+    renderGirl();
+  }
+
+  function renderGirl() {
+    if (!girlData || girlData.id !== selGirl) return;
+    const body = $("trk-body");
+    const p = girlData.p;
+    const q = girlQuery.trim();
+    const hit = (b) => matches(girlQuery, b.name, b.levelGroup, b.frontier || "", STATUS_LABEL[b.status] || b.status);
+    const sorter = GIRL_SORTERS[girlSort];
     // Badges with activity always show (including ones from an earlier
     // level — earned or started before she moved up); "not started" is
     // limited to badges she can earn at her CURRENT level.
-    const active = p.badges.filter((b) => b.status !== "not_started");
-    const untouched = p.badges.filter((b) => b.status === "not_started" && b.eligible !== false);
+    const active = p.badges.filter((b) => b.status !== "not_started").filter(hit).sort(sorter);
+    const untouched = p.badges.filter((b) => b.status === "not_started" && b.eligible !== false).filter(hit).sort(sorter);
     const priorLevel = (b) => b.eligible === false;
     const badgePanel = (b) => `
       <div class="trk-panel${priorLevel(b) ? " trk-prior" : ""}">
@@ -196,9 +399,13 @@
           </tbody></table></div>`).join("")}
         ${priorLevel(b) ? "" : manualAdd(b)}
       </div>`;
+    let lead;
+    if (active.length) lead = active.map(badgePanel).join("");
+    else if (!q) lead = `<p class="trk-muted">No badge activity yet for ${esc(p.girl.firstName)}.</p>`;
+    else lead = untouched.length ? "" : `<p class="trk-muted">None of ${esc(p.girl.firstName)}'s badges match “${esc(q)}”.</p>`;
     body.innerHTML = `
-      ${active.length ? active.map(badgePanel).join("") : `<p class="trk-muted">No badge activity yet for ${esc(p.girl.firstName)}.</p>`}
-      ${untouched.length ? `<details style="margin-top:0.6rem"><summary class="trk-muted">Badges not started (${untouched.length})</summary>${untouched.map(badgePanel).join("")}</details>` : ""}
+      ${lead}
+      ${untouched.length ? `<details style="margin-top:0.6rem"${q ? " open" : ""}><summary class="trk-muted">Badges not started (${untouched.length})</summary>${untouched.map(badgePanel).join("")}</details>` : ""}
     `;
     wireManualAdd(body);
   }
@@ -246,17 +453,43 @@
   }
 
   // ------------------------------------------------ by badge -------------
+  const LEVEL_ORDER = ["Pathfinder", "Tenderheart", "Explorer", "Pioneer", "Patriot"];
+  const levelRank = (l) => { const i = LEVEL_ORDER.indexOf(l); return i < 0 ? LEVEL_ORDER.length : i; };
+  const BADGE_STATUS_ORDER = { in_progress: 0, not_started: 1, complete: 2 };
+  const lastFirst = (a, b) => byText(a.lastName, b.lastName) || byText(a.firstName, b.firstName);
+  const BADGE_SORTERS = {
+    last: lastFirst,
+    first: (a, b) => byText(a.firstName, b.firstName) || byText(a.lastName, b.lastName),
+    level: (a, b) => (levelRank(a.ahgLevel) - levelRank(b.ahgLevel)) || byText(a.ahgLevel, b.ahgLevel) || lastFirst(a, b),
+    status: (a, b) => ((BADGE_STATUS_ORDER[a.status] ?? 9) - (BADGE_STATUS_ORDER[b.status] ?? 9)) || lastFirst(a, b),
+  };
+  let badgeData = null; // { id, p }
+
   async function badgeView() {
     const body = $("trk-body");
-    if (!selBadge) { body.innerHTML = `<p class="trk-muted">Pick a badge to see who is missing what.</p>`; return; }
-    const p = await api(`/badges/${encodeURIComponent(selBadge)}/progress`);
-    const shown = p.girls.filter((g) => !g.ahgLevel || badgeCovers(p.levelGroup, g.ahgLevel));
+    if (!selBadge) { badgeData = null; body.innerHTML = `<p class="trk-muted">Pick a badge to see who is missing what.</p>`; return; }
+    const id = selBadge;
+    const p = await api(`/badges/${encodeURIComponent(id)}/progress`);
+    if (id !== selBadge) return;
+    badgeData = { id, p };
+    renderBadge();
+  }
+
+  function renderBadge() {
+    if (!badgeData || badgeData.id !== selBadge) return;
+    const body = $("trk-body");
+    const p = badgeData.p;
+    const q = badgeQuery.trim();
+    const atLevel = p.girls.filter((g) => !g.ahgLevel || badgeCovers(p.levelGroup, g.ahgLevel));
+    const shown = atLevel
+      .filter((g) => matches(badgeQuery, g.lastName, g.firstName, g.ahgLevel || "", STATUS_LABEL[g.status] || g.status))
+      .sort(BADGE_SORTERS[badgeSort]);
     body.innerHTML = `
       <div class="trk-panel">
         <h3>${esc(p.name)} <span class="trk-pill mut">${esc(p.levelGroup)}</span></h3>
         <div class="trk-wrap"><table class="trk-table trk-grid-x">
           <thead><tr><th>Girl</th><th>Status</th>${p.requirements.map((r) => `<th title="${esc(r.title || "")}">${r.number}${esc(r.letter || "")}</th>`).join("")}</tr></thead>
-          <tbody>${shown.map((g) => `
+          <tbody>${shown.length ? shown.map((g) => `
             <tr>
               <td style="white-space:nowrap">${esc(g.lastName)}, ${esc(g.firstName)}<div class="trk-muted">${esc(g.ahgLevel || "")}</div></td>
               <td>${statusPill(g.status)}</td>
@@ -266,9 +499,9 @@
                   : st.state === "confirmed" ? `<td class="done" title="${esc(st.completedOn || "")}">✓</td>`
                     : `<td class="prop" title="proposed">○</td>`;
               }).join("")}
-            </tr>`).join("")}</tbody>
+            </tr>`).join("") : `<tr><td colspan="${p.requirements.length + 2}" class="trk-muted">${q ? `No girls match “${esc(q)}”.` : "No girls at this badge's level."}</td></tr>`}</tbody>
         </table></div>
-        <p class="trk-muted">✓ confirmed · ○ proposed (waiting on a leader) · rows are limited to girls at this badge's level.</p>
+        <p class="trk-muted">✓ confirmed · ○ proposed (waiting on a leader) · rows are limited to girls at this badge's level${q ? ` · showing ${shown.length} of ${atLevel.length}` : ""}.</p>
       </div>`;
   }
   const badgeCovers = (badgeLevelGroup, girlLevel) => badgeLevelGroup === "All" || badgeLevelGroup === girlLevel
@@ -350,7 +583,7 @@
         <p class="trk-muted">Rates: ${LEVELS.map((l) => `${SHORT[l]} ${data.rates[l]} h`).join(" · ")} per star. Unused hours carry forward to the next level; Pathfinder hours never count.
           ★ = on record at AHGFamily · bar = progress toward the next star · <span class="trk-pill proposed">+n</span> waiting to confirm${conflicted ? ` · <span class="trk-pill err">conflict</span> needs a look on the Admin page` : ""}.
           ${pull ? `Last pull ${fmtDate(pull.startedAt)}${pull.ok ? "" : " (failed)"}.` : ""}</p>
-        <div class="trk-row-tools"><input type="search" id="trk-stars-filter" placeholder="Filter girls…" value="${esc(starFilter)}" style="max-width:240px"></div>
+        <div class="trk-row-tools">${searchBox("trk-stars-filter", starFilter, "Search girls — name, level…")}</div>
         <div class="trk-wrap"><table class="trk-table trk-stars">
           <thead><tr><th>Girl</th>${LEVELS.map((l) => `<th>${l}</th>`).join("")}</tr></thead>
           <tbody id="trk-stars-rows"></tbody>
@@ -359,8 +592,7 @@
       </div>`;
 
     const renderRows = () => {
-      const q = starFilter.trim().toLowerCase();
-      const rows = data.girls.filter((g) => !q || `${g.lastName}, ${g.firstName} ${g.nickname || ""} ${g.ahgLevel || ""}`.toLowerCase().includes(q));
+      const rows = data.girls.filter((g) => matches(starFilter, g.lastName, g.firstName, g.nickname || "", g.ahgLevel || ""));
       $("trk-stars-rows").innerHTML = rows.length ? rows.map((g) => `<tr>
         <td style="white-space:nowrap"><strong>${esc(g.lastName)}, ${esc(g.firstName)}</strong><div class="trk-muted">${esc(g.ahgLevel || "")}${g.mapped ? "" : " · not mapped"}${g.mapped && g.totalApprovedHours ? ` · ${h1(g.totalApprovedHours)} h approved` : ""}</div>
           ${g.pathfinderHours ? `<div class="trk-pf-note" title="Pathfinders don't earn service stars; these entries are usually an attendance artefact. Review or revise them on AHGFamily (Troop Activities). The tracker already leaves them out of every total above."><span class="trk-pill warn">Pathfinder hours</span> ${h1(g.pathfinderHours.approved + g.pathfinderHours.pending)} h in ${g.pathfinderHours.entries} entr${g.pathfinderHours.entries === 1 ? "y" : "ies"} logged as a Pathfinder — review/revise in AHGFamily; excluded here.</div>` : ""}</td>

@@ -200,9 +200,10 @@
     const lastReport = rep ? `<details class="trk-muted" style="margin-top:0.6rem"><summary>Last run report — ${fmtDate(rep.at)} (${esc(rep.trigger)}${rep.sent ? ", e-mailed" : rep.wanted ? ", not e-mailed" : ", no mail needed"})</summary><pre style="white-space:pre-wrap">${esc(rep.text)}</pre></details>` : "";
     el.innerHTML = `
       <h3>Push queue</h3>
-      ${rows.length ? `<div class="trk-wrap"><table class="trk-table">
+      ${rows.length ? `<div class="trk-row-tools">${window.Tracker.searchBox("trk-queue-q", queuePanel.query || "", "Search the queue — girl, item, status…")}<span class="trk-muted" id="trk-queue-shown"></span></div>
+      <div class="trk-wrap"><table class="trk-table">
         <thead><tr><th>Girl</th><th>Item</th><th>Date</th><th>Status</th></tr></thead>
-        <tbody>${rows.slice(0, 50).map((q) => `<tr>
+        <tbody>${rows.map((q) => `<tr data-q="${esc([q.firstName, q.lastName, q.action === "add_instance" ? `Service Star ${(q.detail || {}).level || ""} #${(q.detail || {}).ordinal || ""}` : `${q.badgeName || ""} ${q.number != null ? q.number + (q.letter || "") : ""}`, q.action, q.status, q.lastError || "", q.date ? fmtDate(q.date) : ""].join(" "))}">
           <td>${esc(q.firstName)} ${esc(q.lastName)}</td>
           <td>${q.action === "add_instance" ? `Service Star (${esc((q.detail || {}).level || "")}) #${(q.detail || {}).ordinal || ""}` : `${esc(q.badgeName || "")} ${q.number != null ? q.number + esc(q.letter || "") : ""}`} <span class="trk-muted">${esc(q.action)}</span></td>
           <td class="trk-muted">${q.date ? fmtDate(q.date) : ""}</td>
@@ -213,6 +214,25 @@
       <p class="trk-muted">${queued} queued, ${held} held. ${on ? "Pushing is <b>enabled</b>." : "Pushing is <b>off</b> — confirmed items wait here and nothing is sent."} A <b>held</b> row needs a look on AHGFamily before it can be cleared.</p>
       ${lastReport}
     `;
+    // Queue search: hides rows (their re-queue buttons stay wired) and shows
+    // at most 50. The query lives on the function so it survives the panel
+    // re-rendering after every action.
+    const filterRows = () => {
+      const query = queuePanel.query || "";
+      let hits = 0;
+      el.querySelectorAll("tr[data-q]").forEach((tr) => {
+        const ok = window.Tracker.matches(query, tr.dataset.q);
+        tr.hidden = !ok || hits >= 50;
+        if (ok) hits += 1;
+      });
+      const shown = $("trk-queue-shown");
+      if (shown) shown.textContent = hits > 50 ? `showing the first 50 of ${hits}` : query.trim() ? `${hits} of ${rows.length} match` : "";
+    };
+    const qBox = $("trk-queue-q");
+    if (qBox) {
+      qBox.addEventListener("input", (e) => { queuePanel.query = e.target.value; filterRows(); });
+      filterRows();
+    }
     if (me.role === "admin") {
       $("trk-push-flag").addEventListener("change", guard(async (e) => {
         await api("/admin/push-enabled", { body: { enabled: e.target.checked } });
