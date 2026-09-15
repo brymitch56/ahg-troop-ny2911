@@ -564,7 +564,8 @@
       if (!l.reachable) return '<td class="trk-stars-na" title="not at this level yet">·</td>';
       const pct = Math.max(0, Math.min(100, l.toNextPct));
       const bits = [];
-      if (l.hours && l.carryIn) bits.push(`<span title="${h1(l.hours)} h at this level plus ${h1(l.carryIn)} h carried from the level below">${h1(l.available)} h (incl. ${h1(l.carryIn)} carried)</span>`);
+      if (l.legacyMode === "fresh") bits.push(`<span title="Stars on record from before this program year stand. Only hours logged since then count toward her next star; nothing carries in.">${h1(l.freshHours || 0)} h since ${fmtDate(l.freshFrom)}</span>`);
+      else if (l.hours && l.carryIn) bits.push(`<span title="${h1(l.hours)} h at this level plus ${h1(l.carryIn)} h carried from the level below">${h1(l.available)} h (incl. ${h1(l.carryIn)} carried)</span>`);
       else if (l.hours) bits.push(`${h1(l.hours)} h`);
       else if (l.carryIn) bits.push(`<span title="no hours at this level yet">${h1(l.carryIn)} h carried in</span>`);
       if (l.pendingHours) bits.push(`<span title="submitted, not yet approved on AHGFamily">+${h1(l.pendingHours)} pending</span>`);
@@ -575,15 +576,15 @@
         : me.role === "admin"
           ? `<label class="trk-muted trk-legacy">${extra} extra star${plural} on record:
               <select data-legacy-girl="${g.id}" data-legacy-level="${esc(l.level)}">
-                <option value="separate"${l.legacyMode === "hours" ? "" : " selected"}>earned separately, added on top</option>
-                <option value="hours"${l.legacyMode === "hours" ? " selected" : ""}>count against her hours</option>
+                <option value="separate"${l.legacyMode === "fresh" ? "" : " selected"}>earned separately, added on top</option>
+                <option value="fresh"${l.legacyMode === "fresh" ? " selected" : ""}>stands; only this program year's hours count toward the next</option>
               </select></label>`
-          : `<div class="trk-muted trk-legacy">${extra} extra star${plural} on record · ${l.legacyMode === "hours" ? "counted against her hours" : "earned separately"}</div>`;
+          : `<div class="trk-muted trk-legacy">${extra} extra star${plural} on record · ${l.legacyMode === "fresh" ? `stands; hours since ${fmtDate(l.freshFrom)} count toward the next` : "earned separately"}</div>`;
       return `<td class="trk-stars-cell ${l.current ? "current" : ""}">
         <div class="trk-stars-top">${starIcons(l.onRecord) || '<span class="trk-muted">no stars</span>'}
           ${l.proposedPending ? `<span class="trk-pill proposed" title="waiting on a leader">+${l.proposedPending}</span>` : ""}
           ${l.conflict ? `<span class="trk-pill err" title="${esc(conflictText(l.conflict, l.level))}">conflict</span>` : ""}
-          ${l.coveredStars && l.legacyMode !== "hours" ? `<span class="trk-pill mut" title="Awarded on Pathfinder hours before the troop stopped counting them. They stand; new stars need counted hours beyond them.">${l.coveredStars} on Pathfinder hours</span>` : ""}
+          ${l.coveredStars ? `<span class="trk-pill mut" title="Awarded on Pathfinder hours before the troop stopped counting them. They stand; new stars need counted hours beyond them.">${l.coveredStars} on Pathfinder hours</span>` : ""}
         </div>
         <div class="trk-bar trk-stars-bar" title="${h1(l.carryOut)} of ${l.rate} h toward the next ${l.level} star"><span class="done" style="width:${pct}%"></span></div>
         <div class="trk-muted trk-stars-nums">${bits.join(" · ") || "&nbsp;"}</div>
@@ -623,9 +624,9 @@
       const sel = e.target.closest("[data-legacy-girl]");
       if (!sel) return;
       const mode = sel.value;
-      const prev = mode === "hours" ? "separate" : "hours";
-      const msg = mode === "hours"
-        ? "Count this girl's extra stars at this level against her hours?\n\nNew stars will then need counted hours beyond the stars she already has. A proposal her hours no longer support is withdrawn now."
+      const prev = mode === "fresh" ? "separate" : "fresh";
+      const msg = mode === "fresh"
+        ? "Let this girl's stars at this level stand, and count only hours from this program year on toward her next star?\n\nHours from before the program year, and anything carried in from the level below, stop counting at this level. A proposal those hours no longer support is withdrawn now."
         : "Treat this girl's extra stars at this level as earned separately?\n\nThey are then added on top of what her hours earn, which can propose new stars.";
       if (!window.confirm(msg)) { sel.value = prev; return; }
       try {
