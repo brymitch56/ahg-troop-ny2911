@@ -8,6 +8,8 @@ Website for American Heritage Girls Troop NY2911 — Rochester, NY. Hosted on Gi
 - `calendar.html` — public calendar fed by an iCal (.ics) feed
 - `leaders.html` — leaders sign in with their Microsoft account and manage the troop SharePoint libraries (badge plans, accounting, planning): browse, search, upload, folders, rename, move, delete, download
 - `giving.html` — embedded Zeffy payment/fundraiser form
+- `leaders-badges.html`, `leaders-planning.html`, `leaders-review.html`, `leaders-progress.html`, `leaders-admin.html` — the badge tracker's leaders pages (same Microsoft sign-in), talking to the troop's badge tracker service over its API. Every list has a search box; sort choices and the Progress "My order" are remembered per browser
+- `sms/` — the SMS notification program's privacy policy, terms and consent form (required by the carriers for the troop's A2P registration)
 
 ## Updating the site
 
