@@ -385,6 +385,12 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-grid-x td.done { background: #e2f4e5; text-align: center; }
 .trk-grid-x td.prop { background: #fdf1dc; text-align: center; }
 .trk-grid-x td.blank { text-align: center; color: #c3ccd6; }
+.trk-grid-x td.started { background: #e8f1fa; text-align: center; white-space: nowrap; }
+.trk-started { display: inline-flex; align-items: center; gap: 0.25rem; vertical-align: middle; font-size: 0.8rem; font-weight: 600; color: var(--ahg-blue); }
+.trk-ring { width: 1.1rem; height: 1.1rem; flex: none; }
+.trk-ring circle { fill: none; stroke-width: 3; }
+.trk-ring .bg { stroke: #d5e3f1; }
+.trk-ring .fg { stroke: var(--ahg-blue); stroke-linecap: round; }
 .trk-statusline { display: flex; gap: 1rem; flex-wrap: wrap; align-items: baseline; margin-bottom: 0.8rem; }
 .trk-muted { color: #5a6675; font-size: 0.88rem; }
 .trk-danger { color: var(--ahg-red-dark); }
