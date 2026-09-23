@@ -381,7 +381,10 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 .trk-row-tools { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.6rem 0; }
 .trk-row-tools select, .trk-row-tools input[type="date"], .trk-row-tools input[type="text"] {
   padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; font: inherit; }
-.trk-grid-x { border: 1px solid var(--border); }
+.trk-grid-x { border: 1px solid var(--border); font-variant-numeric: lining-nums tabular-nums; }
+/* requirement columns (after Girl and Status): equal, narrow, centered —
+   the name and status columns take the spare width */
+.trk-grid-x th:nth-child(n+3), .trk-grid-x td:nth-child(n+3) { width: 3.8rem; padding-left: 0.3rem; padding-right: 0.3rem; text-align: center; vertical-align: middle; }
 .trk-grid-x td.done { background: #e2f4e5; text-align: center; }
 .trk-grid-x td.prop { background: #fdf1dc; text-align: center; }
 .trk-grid-x td.blank { text-align: center; color: #c3ccd6; }

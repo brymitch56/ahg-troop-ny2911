@@ -21,14 +21,20 @@
 
   // A requirement she has begun (attended a start/continue meeting) but not
   // finished: a ring that fills with the planned meetings she attended.
+  // With no finish meeting planned yet the count is a floor ("1/1+"), so the
+  // ring leaves room for at least one more meeting instead of looking full.
   const RING_C = 2 * Math.PI * 7;
-  const ring = (s) => `<svg class="trk-ring" viewBox="0 0 18 18" aria-hidden="true">
+  const openEnded = (s) => s.finishPlanned === false;
+  const ring = (s) => {
+    const of = s.planned + (openEnded(s) ? 1 : 0);
+    return `<svg class="trk-ring" viewBox="0 0 18 18" aria-hidden="true">
       <circle cx="9" cy="9" r="7" class="bg"/>
       <circle cx="9" cy="9" r="7" class="fg" transform="rotate(-90 9 9)"
-        stroke-dasharray="${(s.planned ? (s.attended / s.planned) * RING_C : 0).toFixed(2)} ${RING_C.toFixed(2)}"/>
+        stroke-dasharray="${(of ? (s.attended / of) * RING_C : 0).toFixed(2)} ${RING_C.toFixed(2)}"/>
     </svg>`;
-  const startedTip = (s) => `Started ${fmtDate(s.startedOn)} — at ${s.attended} of ${s.planned} planned meeting${s.planned === 1 ? "" : "s"}${s.nextOn ? `; next planned ${fmtDate(s.nextOn)}` : ""}`;
-  const startedBadge = (s) => `<span class="trk-started" title="${esc(startedTip(s))}">${ring(s)}<span class="trk-frac">${s.attended}/${s.planned}</span></span>`;
+  };
+  const startedTip = (s) => `Started ${fmtDate(s.startedOn)} — at ${s.attended} of ${s.planned} planned meeting${s.planned === 1 ? "" : "s"}${s.nextOn ? `; next planned ${fmtDate(s.nextOn)}` : ""}${openEnded(s) ? "; no finish meeting planned yet" : ""}`;
+  const startedBadge = (s) => `<span class="trk-started" title="${esc(startedTip(s))}">${ring(s)}<span class="trk-frac">${s.attended}/${s.planned}${openEnded(s) ? "+" : ""}</span></span>`;
 
   // Searches last while the page is open; sort choices (and the program
   // year's "My order") are remembered in this browser.
@@ -404,7 +410,7 @@
                 <td style="width:60%"><span class="trk-num">${r.number}${esc(r.letter || "")}</span>${esc(r.title || "")}</td>
                 <td>${r.state === "none" ? (r.started ? startedBadge(r.started) : '<span class="trk-pill none">—</span>')
                   : `<span class="trk-pill ${r.state}">${r.state}</span>${r.needsReview ? ' <span class="trk-pill err">review</span>' : ""}`}</td>
-                <td class="trk-muted">${r.state === "none" && r.started ? `started ${fmtDate(r.started.startedOn)}${r.started.nextOn ? ` · next ${fmtDate(r.started.nextOn)}` : ""}` : ""}${r.completedOn ? fmtDate(r.completedOn) : ""}${r.source && r.state !== "none" ? ` · ${r.source === "ahgfamily" ? "AHGFamily" : r.source}` : ""}${r.notes ? ` · <span title="${esc(r.notes)}">note</span>` : ""}${r.pushed ? ' · <span class="trk-pill ok" title="marked on AHGFamily by the tracker">pushed</span>' : ""}
+                <td class="trk-muted">${r.state === "none" && r.started ? `started ${fmtDate(r.started.startedOn)}${r.started.nextOn ? ` · next ${fmtDate(r.started.nextOn)}` : ""}${openEnded(r.started) ? " · no finish planned yet" : ""}` : ""}${r.completedOn ? fmtDate(r.completedOn) : ""}${r.source && r.state !== "none" ? ` · ${r.source === "ahgfamily" ? "AHGFamily" : r.source}` : ""}${r.notes ? ` · <span title="${esc(r.notes)}">note</span>` : ""}${r.pushed ? ' · <span class="trk-pill ok" title="marked on AHGFamily by the tracker">pushed</span>' : ""}
                   ${r.completionId && r.source === "manual" && !priorLevel(b) ? ` <button class="btn-link trk-muted" data-mdel="${r.completionId}" data-mdel-pushed="${r.pushed ? 1 : 0}" title="Remove this home completion">remove</button>` : ""}</td>
               </tr>`).join("")}
           </tbody></table></div>`).join("")}
@@ -514,7 +520,7 @@
               }).join("")}
             </tr>`).join("") : `<tr><td colspan="${p.requirements.length + 2}" class="trk-muted">${q ? `No girls match “${esc(q)}”.` : "No girls at this badge's level."}</td></tr>`}</tbody>
         </table></div>
-        <p class="trk-muted">✓ confirmed · ○ proposed (waiting on a leader) · <span class="trk-started">${ring({ attended: 1, planned: 3 })}<span class="trk-frac">1/3</span></span> started — planned meetings attended of those planned (hover for dates) · rows are limited to girls at this badge's level${q ? ` · showing ${shown.length} of ${atLevel.length}` : ""}.</p>
+        <p class="trk-muted">✓ confirmed · ○ proposed (waiting on a leader) · <span class="trk-started">${ring({ attended: 1, planned: 3 })}<span class="trk-frac">1/3</span></span> started — planned meetings attended of those planned; + means no finish meeting is planned yet (hover for dates) · rows are limited to girls at this badge's level${q ? ` · showing ${shown.length} of ${atLevel.length}` : ""}.</p>
       </div>`;
   }
   const badgeCovers = (badgeLevelGroup, girlLevel) => badgeLevelGroup === "All" || badgeLevelGroup === girlLevel
