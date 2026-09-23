@@ -47,6 +47,7 @@
   let evQuery = "";
 
   async function listView() {
+    if (cur) cur.dirty = false; // left the event; its edits were given up
     const from = isoDay(range.from);
     const to = isoDay(range.to);
     const events = await api(`/events?from=${from}&to=${to}`);
@@ -119,19 +120,44 @@
   }
 
   // ------------------------------------------------ event detail ---------
-  let cur = null; // { ev, plans: Map(levelGroup → plan|null), tab }
+  let cur = null; // { ev, plans: Map(levelGroup → plan|null), tab, prev, next, dirty }
+
+  // Previous/next event on the calendar (not just the list's range): the
+  // neighbours within half a year either side, skipping events the
+  // check-in app no longer lists.
+  const NEIGHBOUR_DAYS = 180;
+  async function neighbours(ev) {
+    const day = new Date(ev.startAt);
+    const list = (await api(`/events?from=${isoDay(addDays(day, -NEIGHBOUR_DAYS))}&to=${isoDay(addDays(day, NEIGHBOUR_DAYS))}`))
+      .filter((e) => e.id === ev.id || !e.removedFromFeed)
+      .sort((a, b) => a.startAt.localeCompare(b.startAt) || a.id - b.id);
+    const i = list.findIndex((e) => e.id === ev.id);
+    return i < 0 ? { prev: null, next: null } : { prev: list[i - 1] || null, next: list[i + 1] || null };
+  }
+
+  // Leaving the event (or the unit tab) drops unsaved plan edits — ask first.
+  const leaveOk = () => !cur || !cur.dirty || window.confirm("You have unsaved changes to this plan. Leave without saving?");
+  window.addEventListener("beforeunload", (e) => { if (cur && cur.dirty) { e.preventDefault(); e.returnValue = ""; } });
 
   async function eventView(id, tab) {
     const [ev, plans] = await Promise.all([api("/events/" + id), api(`/events/${id}/plans`)]);
-    cur = { ev, plans: new Map(plans.map((p) => [p.levelGroup, p])), tab: tab || (plans[0] ? plans[0].levelGroup : UNITS[2]) };
+    const nb = await neighbours(ev).catch(() => ({ prev: null, next: null }));
+    cur = { ev, plans: new Map(plans.map((p) => [p.levelGroup, p])), tab: tab || (plans[0] ? plans[0].levelGroup : UNITS[2]), ...nb, dirty: false };
     render();
     window.scrollTo(0, 0);
   }
 
+  const navBtn = (e, dir) => (e
+    ? `<button class="btn btn-outline btn-sm" id="trk-ev-${dir}" title="${esc(`${e.title} — ${fmtDate(e.startAt)}, ${fmtTime(e.startAt)}`)}">${dir === "prev" ? `&larr; ${fmtDate(e.startAt)}` : `${fmtDate(e.startAt)} &rarr;`}</button>`
+    : `<button class="btn btn-outline btn-sm" disabled title="No ${dir === "prev" ? "earlier" : "later"} event within ${NEIGHBOUR_DAYS} days">${dir === "prev" ? "&larr; Previous" : "Next &rarr;"}</button>`);
+
   function render() {
     const { ev, tab } = cur;
     root().innerHTML = `
-      <p><button class="btn btn-outline btn-sm" id="trk-back">&larr; All events</button></p>
+      <div class="trk-row-tools trk-ev-nav">
+        <button class="btn btn-outline btn-sm" id="trk-back">All events</button>
+        <span class="trk-ev-nav-step">${navBtn(cur.prev, "prev")}${navBtn(cur.next, "next")}</span>
+      </div>
       <div class="trk-panel">
         <h3>${esc(ev.title)}</h3>
         <p class="trk-muted">${fmtDate(ev.startAt)}, ${fmtTime(ev.startAt)}${ev.endAt ? "–" + fmtTime(ev.endAt) : ""}${ev.location ? " · " + esc(ev.location) : ""}
@@ -144,8 +170,14 @@
       </div>
       <div id="trk-tabbody"></div>
     `;
-    $("trk-back").addEventListener("click", listView);
-    root().querySelectorAll(".trk-chip").forEach((c) => c.addEventListener("click", () => { cur.tab = c.dataset.tab; render(); }));
+    $("trk-back").addEventListener("click", () => { if (leaveOk()) listView(); });
+    // stay on the same unit tab, so one unit's plans can be entered meeting by meeting
+    if (cur.prev) $("trk-ev-prev").addEventListener("click", () => { if (leaveOk()) eventView(cur.prev.id, cur.tab); });
+    if (cur.next) $("trk-ev-next").addEventListener("click", () => { if (leaveOk()) eventView(cur.next.id, cur.tab); });
+    root().querySelectorAll(".trk-chip").forEach((c) => c.addEventListener("click", () => {
+      if (c.dataset.tab === cur.tab || !leaveOk()) return;
+      cur.tab = c.dataset.tab; cur.dirty = false; render();
+    }));
     if (tab === "after") proposalsTab();
     else planTab(tab);
     if (ev.removedFromFeed) movePanel();
@@ -222,9 +254,10 @@
 
       body.querySelectorAll("[data-role]").forEach((s) => s.addEventListener("change", () => {
         items[Number(s.dataset.role)].role = s.value;
+        cur.dirty = true;
         body.querySelector(`[data-rolehelp="${s.dataset.role}"]`).textContent = ROLE_HELP[s.value];
       }));
-      body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => { items.splice(Number(b.dataset.del), 1); draw(); }));
+      body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => { items.splice(Number(b.dataset.del), 1); cur.dirty = true; draw(); }));
 
       const reqSel = $("trk-add-req");
       const addBtn = $("trk-add-btn");
@@ -265,6 +298,7 @@
         const r = b.groups.flatMap((g) => g.requirements).find((x) => x.trackerId === reqSel.value);
         if (!r) return;
         items.push({ requirementId: r.trackerId, badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, text: r.text, subItems: r.subItems || [], role: "session" });
+        cur.dirty = true;
         draw();
       });
       // full handbook text of the highlighted requirement, before it's added
@@ -288,6 +322,7 @@
       const notesEl = $("trk-plan-notes");
       const growNotes = () => { notesEl.style.height = "auto"; notesEl.style.height = notesEl.scrollHeight + 2 + "px"; };
       notesEl.addEventListener("input", growNotes);
+      notesEl.addEventListener("input", () => { cur.dirty = true; });
       growNotes();
 
       $("trk-plan-save").addEventListener("click", async () => {
