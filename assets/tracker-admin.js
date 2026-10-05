@@ -21,7 +21,7 @@
       <div class="trk-panel" id="trk-mapping"><h3>Girl ↔ AHGFamily mapping</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-queue"><h3>Push queue</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-access"><h3>Leaders &amp; admins</h3><p class="trk-muted">Loading…</p></div>
-      <div class="trk-panel" id="trk-signin"><h3>AHGFamily sign-in</h3><p class="trk-muted">Loading…</p></div>
+      <div class="trk-panel" id="trk-ahg-signin"><h3>AHGFamily sign-in</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-creds"><h3>AHGFamily credentials</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-catalog"><h3>Badge catalog</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-audit"><h3>Recent activity</h3><p class="trk-muted">Loading…</p></div>
@@ -395,7 +395,7 @@
   // signs in once; if a code is texted it is entered here, which earns
   // "trust this browser" for ~30 days so the weekly pulls need no code.
   async function signinPanel() {
-    const el = $("trk-signin");
+    const el = $("trk-ahg-signin"); // NOT "trk-signin": that id is the Microsoft sign-in button on every leaders page
     if (me.role !== "admin") { el.innerHTML = `<h3>AHGFamily sign-in</h3><p class="trk-muted">Admins only.</p>`; return; }
     let s;
     try { s = await api("/admin/ahgfamily/signin"); } catch (e) {
