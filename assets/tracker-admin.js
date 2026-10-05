@@ -282,7 +282,7 @@
         </tr>`).join("")}</tbody></table></div>`
         : `<p class="trk-muted">The queue is empty.</p>`}
       ${controls}
-      <p class="trk-muted">${queued} queued, ${held} held. ${on ? "Pushing is <b>enabled</b>." : "Pushing is <b>off</b> — confirmed items wait here and nothing is sent."} A <b>held</b> row needs a look on AHGFamily before it can be cleared.</p>
+      <p class="trk-muted">${queued} queued, ${held} held.${s.awaitingQueue ? ` <b>${s.awaitingQueue} confirmed requirement${s.awaitingQueue === 1 ? "" : "s"}</b> not in the queue yet — Push now pulls from AHGFamily first, which queues ${s.awaitingQueue === 1 ? "it" : "them"} (anything already ticked there is skipped).` : ""} ${on ? "Pushing is <b>enabled</b>." : "Pushing is <b>off</b> — confirmed items wait here and nothing is sent."} A <b>held</b> row needs a look on AHGFamily before it can be cleared.</p>
       ${lastReport}
     `;
     // Queue search: hides rows (their re-queue buttons stay wired) and shows
@@ -329,8 +329,16 @@
       $("trk-push-now").addEventListener("click", guard(async () => {
         if (!window.confirm("Push queued Service Star instances to AHGFamily now?")) return;
         toast("Pushing to AHGFamily…");
+        toast("Pulling from AHGFamily, then pushing — this can take a minute…");
         const r = await api("/sync/push", { method: "POST" });
-        toast(r.skipped ? `Nothing pushed (${r.skipped})` : `Push finished: ${r.pushed} sent, ${r.held} held, ${r.failed} failed`);
+        // stars are the top-level counts; requirement marks are r.requirements; r.pull is the pre-push pull
+        const q = r.requirements && !r.requirements.skipped ? r.requirements : null;
+        const sent = (r.pushed || 0) + (q ? q.pushed || 0 : 0);
+        const heldN = (r.held || 0) + (q ? q.held || 0 : 0);
+        const failed = (r.failed || 0) + (q ? q.failed || 0 : 0);
+        const pulled = r.pull && r.pull.queued != null ? ` (the pull queued ${r.pull.queued})` : "";
+        toast(`Push finished: ${sent} sent, ${heldN} held, ${failed} failed${pulled}`, heldN + failed > 0);
+        statusPanel();
         queuePanel();
       }));
     }
