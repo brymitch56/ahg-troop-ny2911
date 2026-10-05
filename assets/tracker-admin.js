@@ -21,11 +21,12 @@
       <div class="trk-panel" id="trk-mapping"><h3>Girl ↔ AHGFamily mapping</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-queue"><h3>Push queue</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-access"><h3>Leaders &amp; admins</h3><p class="trk-muted">Loading…</p></div>
+      <div class="trk-panel" id="trk-signin"><h3>AHGFamily sign-in</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-creds"><h3>AHGFamily credentials</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-catalog"><h3>Badge catalog</h3><p class="trk-muted">Loading…</p></div>
       <div class="trk-panel" id="trk-audit"><h3>Recent activity</h3><p class="trk-muted">Loading…</p></div>
     `;
-    statusPanel(); conflictsPanel(); mappingPanel(); queuePanel(); accessPanel(); credsPanel(); catalogPanel(); auditPanel();
+    statusPanel(); conflictsPanel(); mappingPanel(); queuePanel(); accessPanel(); signinPanel(); credsPanel(); catalogPanel(); auditPanel();
   }
   const guard = (fn) => async (...args) => { try { await fn(...args); } catch (e) { toast(e.message, true); } };
 
@@ -52,7 +53,7 @@
         <button class="btn btn-blue btn-sm" id="trk-sync-checkin">Sync check-in now</button>
         <button class="btn btn-blue btn-sm" id="trk-sync-pull">Pull from AHGFamily now</button>
         <button class="btn btn-blue btn-sm" id="trk-sync-service">Pull service hours</button>
-        <span class="trk-muted">Both pulls sign in to AHGFamily (read-only). One failed login latches everything until credentials are re-entered.</span>
+        <span class="trk-muted">Both pulls sign in to AHGFamily (read-only). One failed login (or a texted-code prompt) pauses everything until an admin presses Connect below.</span>
       </div>` : ""}
     `;
     if (me.role === "admin") {
@@ -387,6 +388,55 @@
       }));
     };
     draw();
+  }
+
+  // ---------------------------------------------------- AHGFamily sign-in ---
+  // AHGFamily texts a code unless this server is a trusted browser. Connect
+  // signs in once; if a code is texted it is entered here, which earns
+  // "trust this browser" for ~30 days so the weekly pulls need no code.
+  async function signinPanel() {
+    const el = $("trk-signin");
+    if (me.role !== "admin") { el.innerHTML = `<h3>AHGFamily sign-in</h3><p class="trk-muted">Admins only.</p>`; return; }
+    let s;
+    try { s = await api("/admin/ahgfamily/signin"); } catch (e) {
+      el.innerHTML = `<h3>AHGFamily sign-in</h3><p class="trk-muted">${esc(e.message)}</p>`; return;
+    }
+    const trusted = s.trustedUntil ? `Trusted until <b>${fmtDate(s.trustedUntil)}</b> — the weekly pulls sign in without a code until then.` : "Not trusted yet — the next sign-in will text a code.";
+    const latched = s.latched ? `<p class="placeholder-note">AHGFamily is paused: ${esc(s.latched.error || "")}</p>` : "";
+    const pending = s.pending ? `
+      <p><b>Waiting for the code.</b> ${esc(s.pending.prompt || "AHGFamily texted a sign-in code.")} <span class="trk-muted">(good until ${new Date(s.pending.expiresAt).toLocaleTimeString()})</span></p>
+      <div class="trk-row-tools">
+        <input type="text" id="trk-si-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Code from the text">
+        <button class="btn btn-blue btn-sm" id="trk-si-submit">Submit code</button>
+      </div>` : "";
+    el.innerHTML = `
+      <h3>AHGFamily sign-in</h3>
+      <p class="trk-muted">AHGFamily texts a sign-in code to the account's phone unless this server is a trusted browser. ${trusted}</p>
+      ${latched}${pending}
+      <div class="trk-row-tools">
+        <button class="btn btn-outline btn-sm" id="trk-si-connect">Connect</button>
+        <span class="trk-muted">Have the account holder's phone ready — each press may send a new text. A code that arrived on its own (a weekly pull ran) can be typed above instead.</span>
+      </div>
+    `;
+    $("trk-si-connect").addEventListener("click", guard(async () => {
+      try {
+        const r = await api("/admin/ahgfamily/connect", { method: "POST" });
+        toast(r.codeRequired ? "Code sent — type it in when it arrives" : "Connected — AHGFamily signed in without a code");
+      } finally { signinPanel(); statusPanel(); }
+    }));
+    if (s.pending) {
+      const submit = guard(async () => {
+        const code = $("trk-si-code").value.trim();
+        if (!code) { toast("Type the code from the text first", true); return; }
+        try {
+          const r = await api("/admin/ahgfamily/code", { body: { code } });
+          toast(r.trustedUntil ? `Connected — trusted until ${fmtDate(r.trustedUntil)}` : "Connected");
+        } finally { signinPanel(); statusPanel(); }
+      });
+      $("trk-si-submit").addEventListener("click", submit);
+      $("trk-si-code").addEventListener("keydown", (e) => { if (e.key === "Enter") submit(); });
+      $("trk-si-code").focus();
+    }
   }
 
   // ------------------------------------------------------ credentials ---
