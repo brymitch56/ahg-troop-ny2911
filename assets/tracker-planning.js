@@ -157,6 +157,7 @@
       <div class="trk-row-tools trk-ev-nav">
         <button class="btn btn-outline btn-sm" id="trk-back">All events</button>
         <span class="trk-ev-nav-step">${navBtn(cur.prev, "prev")}${navBtn(cur.next, "next")}</span>
+        <button class="btn btn-outline btn-sm" id="trk-ev-print" title="Print every unit's plan for this event (or save it as a PDF)">Print plan</button>
       </div>
       <div class="trk-panel">
         <h3>${esc(ev.title)}</h3>
@@ -171,6 +172,7 @@
       <div id="trk-tabbody"></div>
     `;
     $("trk-back").addEventListener("click", () => { if (leaveOk()) listView(); });
+    $("trk-ev-print").addEventListener("click", printEventPlans);
     // stay on the same unit tab, so one unit's plans can be entered meeting by meeting
     if (cur.prev) $("trk-ev-prev").addEventListener("click", () => { if (leaveOk()) eventView(cur.prev.id, cur.tab); });
     if (cur.next) $("trk-ev-next").addEventListener("click", () => { if (leaveOk()) eventView(cur.next.id, cur.tab); });
@@ -213,6 +215,38 @@
         eventView(r.skipped.length ? ev.id : toEventId);
       } catch (e) { toast(e.message, true); }
     });
+  }
+
+  // Print every unit's SAVED plan for this event — the full requirement text,
+  // sub-items, roles, per-item and plan notes — as a clean page (Tracker.printPage).
+  // Unsaved edits on screen are not in it, so say so rather than surprise.
+  // on paper, the role in plain words (the screen's help mentions what the
+  // tracker does with it, which means nothing to a leader holding the sheet)
+  const PRINT_ROLE = { session: "done at this meeting", start: "first of several sessions", continue: "middle session", finish: "last session" };
+  function printEventPlans() {
+    const { ev } = cur;
+    const units = UNITS.filter((u) => cur.plans.get(u));
+    if (!units.length) { toast("No plans saved for this event yet", true); return; }
+    if (cur.dirty) toast("Printing the SAVED plans — your unsaved changes on this tab are not included", true);
+    const sec = (u) => {
+      const p = cur.plans.get(u);
+      const rows = p.items.map((it) => `<tr>
+        <td><div><strong>${esc(it.badgeName)}</strong> <span class="num">${it.number}${esc(it.letter || "")}</span>${it.title ? " — " + esc(it.title) : ""}</div>
+          ${it.text ? `<p class="text">${esc(it.text)}</p>` : ""}
+          ${it.subItems && it.subItems.length ? `<ul class="text">${it.subItems.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : ""}
+          ${it.notes ? `<p class="text"><em>Note:</em> ${esc(it.notes)}</p>` : ""}</td>
+        <td class="role">${esc(it.role)}<div class="muted" style="text-transform:none;letter-spacing:0">${esc(PRINT_ROLE[it.role] || "")}</div></td>
+      </tr>`).join("");
+      return `<div class="section"><h2>${esc(u)}</h2>
+        ${p.notes ? `<div class="notes">${esc(p.notes)}</div>` : ""}
+        ${p.items.length ? `<table><thead><tr><th>Requirement</th><th style="width:22%">Role</th></tr></thead><tbody>${rows}</tbody></table>`
+          : '<p class="muted">Notes only — no requirements on this plan.</p>'}</div>`;
+    };
+    window.Tracker.printPage(`${ev.title} — plan`, `
+      <h1>${esc(ev.title)}</h1>
+      <p class="meta">${fmtDate(ev.startAt)}, ${fmtTime(ev.startAt)}${ev.endAt ? "–" + fmtTime(ev.endAt) : ""}${ev.location ? " · " + esc(ev.location) : ""}
+        · ${units.length === 1 ? "1 unit" : units.length + " units"}: ${units.map(esc).join(", ")}</p>
+      ${units.map(sec).join("")}`);
   }
 
   // What saving/moving a plan for a meeting that ALREADY happened did to the

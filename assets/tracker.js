@@ -316,5 +316,50 @@
     `<label class="trk-sort">Sort <select id="${esc(id)}">${options.map(([v, l]) => `<option value="${esc(v)}"${v === value ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></label>`;
   const byText = (a, b) => String(a == null ? "" : a).localeCompare(String(b == null ? "" : b), undefined, { sensitivity: "base", numeric: true });
 
-  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $, refreshBanner, matches, getPref, setPref, searchBox, sortSelect, byText };
+  // ---------- printing ----------
+  // A clean page built from data, not the screen: the screen has buttons,
+  // selects and pills that print badly. Rendered into a hidden iframe so no
+  // pop-up blocker gets involved, then the browser's print dialog opens
+  // (which also offers Save as PDF). `bodyHtml` must be escaped by the caller.
+  const PRINT_CSS = `
+    @page { margin: 0.6in; }
+    body { font: 11pt/1.4 Georgia, "Times New Roman", serif; color: #111; margin: 0; }
+    h1 { font-size: 17pt; margin: 0 0 2pt; }
+    h2 { font-size: 13pt; margin: 16pt 0 4pt; padding-bottom: 2pt; border-bottom: 1.5pt solid #333; break-after: avoid; }
+    h3 { font-size: 11.5pt; margin: 10pt 0 3pt; break-after: avoid; }
+    .meta { color: #444; font-size: 10pt; margin: 0 0 8pt; }
+    .notes { margin: 4pt 0 8pt; padding: 5pt 8pt; border-left: 3pt solid #999; background: #f4f4f4; white-space: pre-wrap; }
+    table { width: 100%; border-collapse: collapse; margin: 4pt 0; }
+    th { text-align: left; font-size: 9pt; text-transform: uppercase; letter-spacing: .04em; color: #555; border-bottom: 1pt solid #999; padding: 3pt 5pt; }
+    td { vertical-align: top; padding: 4pt 5pt; border-bottom: .5pt solid #ccc; }
+    tr { break-inside: avoid; }
+    .num { font-weight: bold; white-space: nowrap; }
+    .text { color: #333; font-size: 10pt; margin: 2pt 0 0; }
+    ul { margin: 2pt 0 0 14pt; padding: 0; }
+    .role { font-size: 9pt; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+    .muted { color: #666; }
+    .section { break-inside: avoid-page; }
+    .foot { margin-top: 18pt; font-size: 8.5pt; color: #777; border-top: .5pt solid #ccc; padding-top: 4pt; }`;
+  function printPage(title, bodyHtml) {
+    const old = document.getElementById("trk-print-frame");
+    if (old) old.remove();
+    const f = document.createElement("iframe");
+    f.id = "trk-print-frame";
+    f.setAttribute("aria-hidden", "true");
+    f.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";
+    document.body.appendChild(f);
+    const d = f.contentDocument;
+    d.open();
+    d.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title><style>${PRINT_CSS}</style></head>` +
+      `<body>${bodyHtml}<div class="foot">Printed ${esc(new Date().toLocaleString())} from the troop badge tracker</div></body></html>`);
+    d.close();
+    // let the frame lay out before printing; remove it after the dialog closes
+    setTimeout(() => {
+      f.contentWindow.focus();
+      f.contentWindow.print();
+      setTimeout(() => f.remove(), 1000);
+    }, 50);
+  }
+
+  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $, refreshBanner, matches, getPref, setPref, searchBox, sortSelect, byText, printPage };
 })();

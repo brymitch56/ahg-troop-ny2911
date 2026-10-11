@@ -356,13 +356,35 @@
           ${optionalGaps.map((g) => `
             <p class="trk-muted" style="margin:0.6rem 0 0.2rem">${esc(g.label || "Options")} — plan <strong>${g.remaining}</strong> more of these:</p>
             <ul class="trk-yr-gaps">${g.reqs.map((r) => `<li>${reqLine(r)}</li>`).join("")}</ul>`).join("")}`}
-        <div class="ldr-dialog-btns"><button type="button" class="btn btn-blue btn-sm" id="trk-yr-modal-close">Close</button></div>
+        <div class="ldr-dialog-btns">
+          <button type="button" class="btn btn-outline btn-sm" id="trk-yr-modal-print" title="Print this badge's plan (or save it as a PDF)">Print</button>
+          <button type="button" class="btn btn-blue btn-sm" id="trk-yr-modal-close">Close</button>
+        </div>
       </div>`;
     overlay.classList.add("open");
     const close = () => { overlay.classList.remove("open"); document.removeEventListener("keydown", onKey); };
     const onKey = (e) => { if (e.key === "Escape") close(); };
     overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
     $("trk-yr-modal-close").addEventListener("click", close);
+    // The badge's whole program-year plan as a clean page: every meeting with
+    // its requirements and roles, then what still needs planning.
+    $("trk-yr-modal-print").addEventListener("click", () => {
+      const num = (r) => `<span class="num">${r.number}${esc(r.letter || "")}</span> ${esc(r.title || "")}`;
+      const gapList = (list) => `<ul>${list.map((r) => `<li>${num(r)}${r.startedOnly ? ' <span class="muted">(started — no finish scheduled)</span>' : ""}</li>`).join("")}</ul>`;
+      window.Tracker.printPage(`${d.name} — plan`, `
+        <h1>${esc(d.name)}</h1>
+        <p class="meta">${esc(unit)}${d.frontier ? " · " + esc(d.frontier) : ""} · program year ${esc(py.label)} (${fmtDate(py.from)} – ${fmtDate(py.to)})</p>
+        <h2>On the calendar</h2>
+        ${events.length ? `<table><thead><tr><th style="width:24%">Meeting</th><th>Requirements</th></tr></thead><tbody>
+          ${events.map((ev) => `<tr>
+            <td><strong>${fmtDate(ev.startAt)}</strong><div>${esc(ev.title)}</div>${ev.past ? '<div class="muted">held</div>' : ""}</td>
+            <td>${ev.items.map((it) => `<div>${num(it)} <span class="role">· ${esc(it.role)}</span></div>`).join("")}</td>
+          </tr>`).join("")}</tbody></table>` : '<p class="muted">Nothing on the calendar for this badge yet.</p>'}
+        <h2>${complete ? "Complete" : "Still needs planning"}</h2>
+        ${complete ? "<p>This plan completes the badge.</p>" : `
+          ${requiredGaps.length ? `<h3>Required</h3>${gapList(requiredGaps)}` : ""}
+          ${optionalGaps.map((g) => `<h3>${esc(g.label || "Options")} — plan ${g.remaining} more of these</h3>${gapList(g.reqs)}`).join("")}`}`);
+    });
     document.addEventListener("keydown", onKey);
   }
 
