@@ -209,10 +209,23 @@
       const toEventId = Number($("trk-move-to").value);
       try {
         const r = await api(`/events/${ev.id}/plans/move`, { body: { toEventId } });
-        toast(`Moved ${r.moved.length} plan(s)${r.skipped.length ? `; ${r.skipped.join(", ")} left here because the target already has that plan` : ""}`);
+        toast(`Moved ${r.moved.length} plan(s)${r.skipped.length ? `; ${r.skipped.join(", ")} left here because the target already has that plan` : ""}${proposalNote(r.proposals)}`);
         eventView(r.skipped.length ? ev.id : toEventId);
       } catch (e) { toast(e.message, true); }
     });
+  }
+
+  // What saving/moving a plan for a meeting that ALREADY happened did to the
+  // review queue (tracker v0.2.2: a past event proposes at once for the girls
+  // who attended). Empty for a future event or when nothing changed.
+  function proposalNote(p) {
+    if (!p || p.skipped) return "";
+    const parts = [];
+    if (p.proposed) parts.push(`${p.proposed} completion${p.proposed === 1 ? "" : "s"} now ready to review`);
+    if (p.withdrawn) parts.push(`${p.withdrawn} unreviewed proposal${p.withdrawn === 1 ? "" : "s"} withdrawn`);
+    if (p.flagged) parts.push(`${p.flagged} confirmed completion${p.flagged === 1 ? "" : "s"} flagged for review`);
+    if (p.warning) parts.push("check-in attendance could not be refreshed — used what was already on file");
+    return parts.length ? ` — ${parts.join("; ")}` : "";
   }
 
   // ------------------------------------------------ plan editor ----------
@@ -327,11 +340,11 @@
 
       $("trk-plan-save").addEventListener("click", async () => {
         try {
-          await api(`/events/${cur.ev.id}/plans/${encodeURIComponent(unit)}`, {
+          const r = await api(`/events/${cur.ev.id}/plans/${encodeURIComponent(unit)}`, {
             method: "PUT",
             body: { notes: $("trk-plan-notes").value, items: items.map((i) => ({ requirementId: i.requirementId, role: i.role, notes: i.notes || undefined })) },
           });
-          toast("Plan saved");
+          toast("Plan saved" + proposalNote(r && r.proposals));
           eventView(cur.ev.id, unit);
         } catch (e) { toast(e.message, true); }
       });
