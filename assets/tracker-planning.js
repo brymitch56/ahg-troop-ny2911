@@ -157,7 +157,11 @@
       <div class="trk-row-tools trk-ev-nav">
         <button class="btn btn-outline btn-sm" id="trk-back">All events</button>
         <span class="trk-ev-nav-step">${navBtn(cur.prev, "prev")}${navBtn(cur.next, "next")}</span>
-        <button class="btn btn-outline btn-sm" id="trk-ev-print" title="Print every unit's plan for this event (or save it as a PDF)">Print plan</button>
+        <span class="trk-ev-print" style="display:inline-flex;gap:0.5rem">
+          ${UNITS.includes(tab) ? `<button class="btn btn-outline btn-sm" id="trk-ev-print-unit"${cur.plans.get(tab) ? "" : ` disabled title="No ${esc(tab)} plan saved for this event yet"`}
+            ${cur.plans.get(tab) ? `title="Print just the ${esc(tab)} plan (or save it as a PDF)"` : ""}>Print ${esc(tab)}</button>` : ""}
+          <button class="btn btn-outline btn-sm" id="trk-ev-print" title="Print every unit's plan for this event (or save it as a PDF)">Print all units</button>
+        </span>
       </div>
       <div class="trk-panel">
         <h3>${esc(ev.title)}</h3>
@@ -172,7 +176,8 @@
       <div id="trk-tabbody"></div>
     `;
     $("trk-back").addEventListener("click", () => { if (leaveOk()) listView(); });
-    $("trk-ev-print").addEventListener("click", printEventPlans);
+    $("trk-ev-print").addEventListener("click", () => printEventPlans(null));
+    if ($("trk-ev-print-unit")) $("trk-ev-print-unit").addEventListener("click", () => printEventPlans(tab));
     // stay on the same unit tab, so one unit's plans can be entered meeting by meeting
     if (cur.prev) $("trk-ev-prev").addEventListener("click", () => { if (leaveOk()) eventView(cur.prev.id, cur.tab); });
     if (cur.next) $("trk-ev-next").addEventListener("click", () => { if (leaveOk()) eventView(cur.next.id, cur.tab); });
@@ -217,16 +222,17 @@
     });
   }
 
-  // Print every unit's SAVED plan for this event — the full requirement text,
-  // sub-items, roles, per-item and plan notes — as a clean page (Tracker.printPage).
+  // Print this event's SAVED plans — every unit, or just one (a leader often
+  // wants only their own level) — with the full requirement text, sub-items,
+  // roles, per-item and plan notes, as a clean page (Tracker.printPage).
   // Unsaved edits on screen are not in it, so say so rather than surprise.
-  // on paper, the role in plain words (the screen's help mentions what the
-  // tracker does with it, which means nothing to a leader holding the sheet)
+  // On paper the role is in plain words (the screen's help mentions what the
+  // tracker does with it, which means nothing to a leader holding the sheet).
   const PRINT_ROLE = { session: "done at this meeting", start: "first of several sessions", continue: "middle session", finish: "last session" };
-  function printEventPlans() {
+  function printEventPlans(only) {
     const { ev } = cur;
-    const units = UNITS.filter((u) => cur.plans.get(u));
-    if (!units.length) { toast("No plans saved for this event yet", true); return; }
+    const units = only ? [only].filter((u) => cur.plans.get(u)) : UNITS.filter((u) => cur.plans.get(u));
+    if (!units.length) { toast(only ? `No ${only} plan saved for this event yet` : "No plans saved for this event yet", true); return; }
     if (cur.dirty) toast("Printing the SAVED plans — your unsaved changes on this tab are not included", true);
     const sec = (u) => {
       const p = cur.plans.get(u);
@@ -242,7 +248,7 @@
         ${p.items.length ? `<table><thead><tr><th>Requirement</th><th style="width:22%">Role</th></tr></thead><tbody>${rows}</tbody></table>`
           : '<p class="muted">Notes only — no requirements on this plan.</p>'}</div>`;
     };
-    window.Tracker.printPage(`${ev.title} — plan`, `
+    window.Tracker.printPage(only ? `${ev.title} — ${only} plan` : `${ev.title} — plan`, `
       <h1>${esc(ev.title)}</h1>
       <p class="meta">${fmtDate(ev.startAt)}, ${fmtTime(ev.startAt)}${ev.endAt ? "–" + fmtTime(ev.endAt) : ""}${ev.location ? " · " + esc(ev.location) : ""}
         · ${units.length === 1 ? "1 unit" : units.length + " units"}: ${units.map(esc).join(", ")}</p>
