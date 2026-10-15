@@ -116,6 +116,15 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 }
 .meeting-box strong { color: var(--ahg-blue); }
 
+/* brother troop (Trail Life) callout on the home page */
+.sister-troop {
+  display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap;
+  background: var(--ahg-blue-darker); color: #fff;
+  border-radius: 12px; padding: 1.4rem 1.6rem; margin-top: 1.5rem;
+}
+.sister-troop > div { flex: 1 1 320px; }
+.sister-troop h3 { color: #cfe3f5; margin-bottom: 0.35rem; }
+
 /* ---------- Calendar ---------- */
 #calendar { max-width: 1000px; margin: 0 auto; }
 .cal-note { text-align: center; color: #5a6a7a; font-size: 0.95rem; margin-top: 1rem; font-family: "Segoe UI", Arial, sans-serif; }
