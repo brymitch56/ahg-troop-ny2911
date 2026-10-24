@@ -193,8 +193,13 @@
     const from = isoDay(mtgRange.from);
     const to = isoDay(mtgRange.to);
     const events = await api(`/events?from=${from}&to=${to}`);
+    const spanDays = Math.round((mtgRange.to - mtgRange.from) / 864e5);
     $("fa-body").innerHTML = `
       <div class="trk-row-tools">
+        <button class="btn btn-outline btn-sm" id="fa-ev-prev" title="Back ${spanDays + 1} days">&larr; Earlier</button>
+        <strong>${fmtDate(from)} – ${fmtDate(to)}</strong>
+        <button class="btn btn-outline btn-sm" id="fa-ev-next" title="Forward ${spanDays + 1} days">Later &rarr;</button>
+        <span class="trk-muted">·</span>
         <input type="date" id="fa-ev-from" value="${from}" aria-label="From"><span class="trk-muted">to</span>
         <input type="date" id="fa-ev-to" value="${to}" aria-label="To">
         <button class="btn btn-outline btn-sm" id="fa-ev-apply">Apply</button>
@@ -214,6 +219,14 @@
       $("fa-ev-results").querySelectorAll("a[data-ev]").forEach((a) => a.addEventListener("click", (ev) => { ev.preventDefault(); show("meetings", { eventId: Number(a.dataset.ev) }); }));
     };
     $("fa-ev-q").addEventListener("input", (e) => { mtgQuery = e.target.value; render(); });
+    // page by the window's own size, like the Planning page
+    const shift = (dir) => {
+      const step = (spanDays + 1) * dir;
+      mtgRange = { from: addDays(mtgRange.from, step), to: addDays(mtgRange.to, step) };
+      show("meetings");
+    };
+    $("fa-ev-prev").addEventListener("click", () => shift(-1));
+    $("fa-ev-next").addEventListener("click", () => shift(1));
     $("fa-ev-apply").addEventListener("click", () => {
       const f = $("fa-ev-from").value; const t = $("fa-ev-to").value;
       if (!f || !t || f > t) { toast("Pick a start date before the end date"); return; }
@@ -223,12 +236,30 @@
     render();
   }
 
+  // Previous/next meeting on the calendar (not just the list's range): the
+  // neighbours within half a year either side, skipping events the check-in
+  // app no longer lists — same as the Planning page.
+  const NEIGHBOUR_DAYS = 180;
+  async function neighbours(ev) {
+    const day = new Date(ev.startAt);
+    const list = (await api(`/events?from=${isoDay(addDays(day, -NEIGHBOUR_DAYS))}&to=${isoDay(addDays(day, NEIGHBOUR_DAYS))}`))
+      .filter((e) => e.id === ev.id || !e.removedFromFeed)
+      .sort((a, b) => a.startAt.localeCompare(b.startAt) || a.id - b.id);
+    const i = list.findIndex((e) => e.id === ev.id);
+    return i < 0 ? { prev: null, next: null } : { prev: list[i - 1] || null, next: list[i + 1] || null };
+  }
+  const navBtn = (e, dir) => (e
+    ? `<button class="btn btn-outline btn-sm" id="fa-ev-${dir}" title="${esc(`${e.title} — ${fmtDate(e.startAt)}, ${fmtTime(e.startAt)}`)}">${dir === "prev" ? `&larr; ${fmtDate(e.startAt)}` : `${fmtDate(e.startAt)} &rarr;`}</button>`
+    : `<button class="btn btn-outline btn-sm" disabled title="No ${dir === "prev" ? "earlier" : "later"} meeting within ${NEIGHBOUR_DAYS} days">${dir === "prev" ? "&larr; Previous" : "Next &rarr;"}</button>`);
+
   async function meetingView(eventId, unitArg) {
     const [ev, plans] = await Promise.all([api("/events/" + eventId), api(`/events/${eventId}/faith-plans`)]);
+    const nb = await neighbours(ev).catch(() => ({ prev: null, next: null }));
     const byUnit = new Map(plans.map((p) => [p.levelGroup, p]));
     const unit = unitArg || (plans[0] ? plans[0].levelGroup : UNITS[0]);
     $("fa-body").innerHTML = `
-      <div class="trk-row-tools"><button class="btn btn-outline btn-sm" id="fa-back">All meetings</button>
+      <div class="trk-row-tools trk-ev-nav"><button class="btn btn-outline btn-sm" id="fa-back">All meetings</button>
+        <span class="trk-ev-nav-step">${navBtn(nb.prev, "prev")}${navBtn(nb.next, "next")}</span>
         <button class="btn btn-outline btn-sm" id="fa-to-year">Year plan</button></div>
       <div class="trk-panel"><h3>${esc(ev.title)}</h3>
         <p class="trk-muted">${fmtDate(ev.startAt)}, ${fmtTime(ev.startAt)}${ev.location ? " · " + esc(ev.location) : ""}</p></div>
@@ -236,6 +267,9 @@
       <div id="fa-plan"></div>`;
     $("fa-back").addEventListener("click", () => { if (leaveOk()) { dirty = false; show("meetings"); } });
     $("fa-to-year").addEventListener("click", () => { if (leaveOk()) { dirty = false; show("year"); } });
+    // stay on the same unit, so one unit's year can be entered meeting by meeting
+    if (nb.prev) $("fa-ev-prev").addEventListener("click", () => { if (leaveOk()) { dirty = false; meetingView(nb.prev.id, unit); window.scrollTo(0, 0); } });
+    if (nb.next) $("fa-ev-next").addEventListener("click", () => { if (leaveOk()) { dirty = false; meetingView(nb.next.id, unit); window.scrollTo(0, 0); } });
     $("fa-body").querySelectorAll("[data-unit]").forEach((c) => c.addEventListener("click", () => {
       if (c.dataset.unit === unit || !leaveOk()) return;
       dirty = false;
