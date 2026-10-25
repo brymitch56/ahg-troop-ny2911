@@ -123,6 +123,7 @@
       ev.preventDefault();
       show("meetings", { eventId: Number(a.dataset.ev), unit: a.dataset.unit });
     }));
+    $("fa-body").querySelectorAll("[data-print-ev]").forEach((b) => b.addEventListener("click", () => printMeeting(Number(b.dataset.printEv), b.dataset.unit)));
   }
 
   function unitYear(u, nowIso) {
@@ -134,7 +135,8 @@
           <tr${m.past ? ' class="trk-muted"' : ""}>
             <td style="white-space:nowrap"><a href="#" data-ev="${m.eventId}" data-unit="${esc(u.unit)}">${fmtDate(m.startAt)}</a>
               <div class="trk-muted">${esc(m.title)}</div>
-              ${i === nextIdx ? '<span class="trk-pill warn">next up</span>' : m.past ? '<span class="trk-pill mut">held</span>' : ""}</td>
+              ${i === nextIdx ? '<span class="trk-pill warn">next up</span>' : m.past ? '<span class="trk-pill mut">held</span>' : ""}
+              <div><button class="btn-link" data-print-ev="${m.eventId}" data-unit="${esc(u.unit)}" title="Print ${esc(u.unit)}'s faith plan for this meeting (or save it as a PDF)">Print</button></div></td>
             <td>${m.notes ? `<div class="trk-text">${esc(m.notes)}</div>` : ""}
               ${m.studies.map((s) => `<div>📖 <strong>${esc(s.title)}</strong>${s.lesson ? " — " + esc(s.lesson) : ""}${s.notes ? ` <span class="trk-muted">(${esc(s.notes)})</span>` : ""}</div>`).join("")}
               ${groupAwardItems(m.items).map((it) => `<div>${itemLabel(it)} <span class="trk-pill mut">${esc(it.role)}</span>${it.notes ? ` <span class="trk-muted">— ${esc(it.notes)}</span>` : ""}</div>`).join("")}</td>
@@ -214,9 +216,11 @@
         <tbody>${shown.map((e) => `<tr>
           <td style="white-space:nowrap">${fmtDate(e.startAt)}<div class="trk-muted">${fmtTime(e.startAt)}</div></td>
           <td><a href="#" data-ev="${e.id}"><strong>${esc(e.title)}</strong></a>${e.location ? `<div class="trk-muted">${esc(e.location)}</div>` : ""}</td>
-          <td>${(e.faithLevelGroups || []).map((g) => `<span class="trk-pill ok">${esc(g)}</span>`).join(" ") || '<span class="trk-muted">—</span>'}</td>
+          <td>${(e.faithLevelGroups || []).map((g) => `<span class="trk-pill ok">${esc(g)}</span>`).join(" ") || '<span class="trk-muted">—</span>'}
+            ${(e.faithLevelGroups || []).length ? `<button class="btn-link" data-print-ev="${e.id}" title="Print this meeting's faith plans (or save it as a PDF)">Print</button>` : ""}</td>
         </tr>`).join("")}</tbody></table></div>` : '<p class="trk-muted">No meetings in this range.</p>';
       $("fa-ev-results").querySelectorAll("a[data-ev]").forEach((a) => a.addEventListener("click", (ev) => { ev.preventDefault(); show("meetings", { eventId: Number(a.dataset.ev) }); }));
+      $("fa-ev-results").querySelectorAll("[data-print-ev]").forEach((b) => b.addEventListener("click", () => printMeeting(Number(b.dataset.printEv), null)));
     };
     $("fa-ev-q").addEventListener("input", (e) => { mtgQuery = e.target.value; render(); });
     // page by the window's own size, like the Planning page
@@ -284,6 +288,15 @@
       meetingView(eventId, c.dataset.unit);
     }));
     planEditor(ev, unit, byUnit.get(unit) || null);
+  }
+
+  // Print a meeting straight from a list (Year plan / Meetings) without
+  // opening it: one unit's plan, or every unit's.
+  async function printMeeting(eventId, unit) {
+    try {
+      const [ev, plans] = await Promise.all([api("/events/" + eventId), api(`/events/${eventId}/faith-plans`)]);
+      printMeetingPlans(ev, new Map(plans.map((p) => [p.levelGroup, p])), unit);
+    } catch (e) { toast(e.message, true); }
   }
 
   // Print this meeting's SAVED faith plans — every unit, or just one — the
