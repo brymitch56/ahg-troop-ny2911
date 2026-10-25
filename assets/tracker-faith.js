@@ -258,15 +258,23 @@
     const byUnit = new Map(plans.map((p) => [p.levelGroup, p]));
     const unit = unitArg || (plans[0] ? plans[0].levelGroup : UNITS[0]);
     $("fa-body").innerHTML = `
-      <div class="trk-row-tools trk-ev-nav"><button class="btn btn-outline btn-sm" id="fa-back">All meetings</button>
+      <div class="trk-row-tools trk-ev-nav">
+        <span style="display:inline-flex;gap:0.5rem"><button class="btn btn-outline btn-sm" id="fa-back">All meetings</button>
+          <button class="btn btn-outline btn-sm" id="fa-to-year">Year plan</button></span>
         <span class="trk-ev-nav-step">${navBtn(nb.prev, "prev")}${navBtn(nb.next, "next")}</span>
-        <button class="btn btn-outline btn-sm" id="fa-to-year">Year plan</button></div>
+        <span class="trk-ev-print" style="display:inline-flex;gap:0.5rem">
+          <button class="btn btn-outline btn-sm" id="fa-ev-print-unit"${byUnit.get(unit) ? ` title="Print just the ${esc(unit)} faith plan (or save it as a PDF)"` : ` disabled title="No ${esc(unit)} faith plan saved for this meeting yet"`}>Print ${esc(unit)}</button>
+          <button class="btn btn-outline btn-sm" id="fa-ev-print" title="Print every unit's faith plan for this meeting (or save it as a PDF)">Print all units</button>
+        </span>
+      </div>
       <div class="trk-panel"><h3>${esc(ev.title)}</h3>
         <p class="trk-muted">${fmtDate(ev.startAt)}, ${fmtTime(ev.startAt)}${ev.location ? " · " + esc(ev.location) : ""}</p></div>
       <div class="trk-chips">${UNITS.map((u) => `<button class="trk-chip ${u === unit ? "active" : ""}" data-unit="${esc(u)}">${esc(u)}${byUnit.get(u) ? " ●" : ""}</button>`).join("")}</div>
       <div id="fa-plan"></div>`;
     $("fa-back").addEventListener("click", () => { if (leaveOk()) { dirty = false; show("meetings"); } });
     $("fa-to-year").addEventListener("click", () => { if (leaveOk()) { dirty = false; show("year"); } });
+    $("fa-ev-print").addEventListener("click", () => printMeetingPlans(ev, byUnit, null));
+    $("fa-ev-print-unit").addEventListener("click", () => printMeetingPlans(ev, byUnit, unit));
     // stay on the same unit, so one unit's year can be entered meeting by meeting
     if (nb.prev) $("fa-ev-prev").addEventListener("click", () => { if (leaveOk()) { dirty = false; meetingView(nb.prev.id, unit); window.scrollTo(0, 0); } });
     if (nb.next) $("fa-ev-next").addEventListener("click", () => { if (leaveOk()) { dirty = false; meetingView(nb.next.id, unit); window.scrollTo(0, 0); } });
@@ -276,6 +284,41 @@
       meetingView(eventId, c.dataset.unit);
     }));
     planEditor(ev, unit, byUnit.get(unit) || null);
+  }
+
+  // Print this meeting's SAVED faith plans — every unit, or just one — the
+  // way the Planning page prints badge plans: studies with their lesson,
+  // steps with full wording and the role in plain words.
+  const PRINT_ROLE = { session: "done at this meeting", start: "first of several sessions", continue: "middle session", finish: "last session" };
+  function printMeetingPlans(ev, byUnit, only) {
+    const units = (only ? [only] : UNITS).filter((u) => byUnit.get(u));
+    if (!units.length) { toast(only ? `No ${only} faith plan saved for this meeting yet` : "No faith plans saved for this meeting yet", true); return; }
+    if (dirty) toast("Printing the SAVED plans — your unsaved changes on this tab are not included", true);
+    const sec = (u) => {
+      const p = byUnit.get(u);
+      const rows = [
+        ...groupAwardItems(p.items).map((it) => ({ ...it, kind: "item" })),
+        ...p.studies.map((s) => ({ ...s, kind: "study" })),
+      ].sort((a, b) => a.position - b.position).map((r) => (r.kind === "study"
+        ? `<tr><td><div><strong>${esc(r.title)}</strong></div>
+            ${r.lesson ? `<p class="text">${esc(r.lesson)}</p>` : ""}
+            ${r.notes ? `<p class="text"><em>Note:</em> ${esc(r.notes)}</p>` : ""}</td>
+          <td class="role">Bible study</td></tr>`
+        : `<tr><td><div>${itemLabel(r)}${r.levels && r.levels.length > 1 ? ` <span class="muted">(${esc(levelsLabel(r.levels))})</span>` : ""}</div>
+            ${r.text && r.text !== r.title ? `<p class="text">${esc(r.text)}</p>` : ""}
+            ${r.subItems && r.subItems.length ? `<ul class="text">${r.subItems.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : ""}
+            ${r.notes ? `<p class="text"><em>Note:</em> ${esc(r.notes)}</p>` : ""}</td>
+          <td class="role">${esc(r.role)}<div class="muted" style="text-transform:none;letter-spacing:0">${esc(PRINT_ROLE[r.role] || "")}</div></td></tr>`)).join("");
+      return `<div class="section"><h2>${esc(u)}</h2>
+        ${p.notes ? `<div class="notes">${esc(p.notes)}</div>` : ""}
+        ${rows ? `<table><thead><tr><th>Planned</th><th style="width:22%">Role</th></tr></thead><tbody>${rows}</tbody></table>`
+          : '<p class="muted">Notes only — nothing else on this plan.</p>'}</div>`;
+    };
+    window.Tracker.printPage(only ? `${ev.title} — ${only} faith plan` : `${ev.title} — faith plan`, `
+      <h1>${esc(ev.title)} — faith</h1>
+      <p class="meta">${fmtDate(ev.startAt)}, ${fmtTime(ev.startAt)}${ev.endAt ? "–" + fmtTime(ev.endAt) : ""}${ev.location ? " · " + esc(ev.location) : ""}
+        · ${units.length === 1 ? "1 unit" : units.length + " units"}: ${units.map(esc).join(", ")}</p>
+      ${units.map(sec).join("")}`);
   }
 
   function planEditor(ev, unit, plan) {
@@ -448,11 +491,13 @@
       <p class="trk-muted">One Faith Award per level — a different pin each — earned by completing any one approved study at that level.
         A finished faith badge counts: it shows here as <em>ready to record</em> until a leader records it.</p>
       <div class="trk-row-tools">${searchBox("fa-aw-q", awQuery, "Search girls…")}
-        ${ready.length ? `<button class="btn btn-blue btn-sm" id="fa-aw-all">Record all ${ready.length} ready</button>` : ""}</div>
+        ${ready.length ? `<button class="btn btn-blue btn-sm" id="fa-aw-all">Record all ${ready.length} ready</button>` : ""}
+        <button class="btn btn-outline btn-sm" id="fa-aw-print" title="Print each girl's Faith Award status (or save it as a PDF)">Print</button></div>
       <div id="fa-aw-results"></div>`;
+    const girlsIn = (u) => st.girls.filter((g) => g.unit === u && matches(awQuery, g.firstName, g.lastName, g.nickname || "", g.ahgLevel));
     const render = () => {
       $("fa-aw-results").innerHTML = UNITS.map((u) => {
-        const girls = st.girls.filter((g) => g.unit === u && matches(awQuery, g.firstName, g.lastName, g.nickname || "", g.ahgLevel));
+        const girls = girlsIn(u);
         if (!girls.length) return "";
         return `<div class="trk-panel"><h3>${esc(u)}</h3><div class="trk-wrap"><table class="trk-table">
           <thead><tr><th>Girl</th><th>This level's award</th><th>Earlier levels</th></tr></thead>
@@ -466,15 +511,38 @@
       }).join("") || '<p class="trk-muted">No girls match.</p>';
       $("fa-aw-results").querySelectorAll("[data-record]").forEach((b) => b.addEventListener("click", () => record([JSON.parse(b.dataset.record)])));
     };
+    // the lines under a girl's award status; `paper` drops the buttons, links
+    // and pills that mean nothing printed
+    function awardLines(g, a, paper) {
+      const mut = paper ? "muted" : "trk-muted";
+      const lines = [];
+      for (const e of a.earned) lines.push(`${esc(e.title)} <span class="${mut}">${fmtDate(e.completedOn)}${e.source === "ahgfamily" ? " · from AHGFamily" : ""}</span>`);
+      for (const p of a.pending) lines.push(`${esc(p.title)} <span class="${mut}">proposed — ${paper ? "waiting on Review" : 'confirm on <a href="leaders-review.html">Review</a>'}</span>`);
+      for (const o of a.offline || []) lines.push(`${esc(o.viaBadgeName)} study finished ${fmtDate(o.completedOn)} ${paper ? '<span class="muted">— mark on AHGFamily by hand</span>' : '<span class="trk-pill warn" title="AHGFamily doesn\'t list this study on its Faith Award yet">mark on AHGFamily by hand</span>'}`);
+      for (const r of a.ready) lines.push(`${esc(r.viaBadgeName)} ${r.viaKind === "study" ? "study" : "badge"} finished ${fmtDate(r.completedOn)} ${paper ? '<span class="muted">— ready to record</span>' : `<button class="btn btn-blue btn-sm" data-record='${esc(JSON.stringify({ girlId: g.girlId, requirementId: r.requirementId }))}'>Record</button>`}`);
+      if (a.status === "in_progress") for (const u of a.underway) lines.push(`${esc(u.viaBadgeName)} ${u.viaKind === "study" ? "study" : "badge"} — ${plural(u.confirmedCount, u.viaKind === "study" ? "step" : "requirement")} done`);
+      return lines.map((l) => `<div>${l}</div>`).join("");
+    }
     function awardCell(g, a) {
       const [cls, label] = STATUS[a.status];
-      const lines = [];
-      for (const e of a.earned) lines.push(`${esc(e.title)} <span class="trk-muted">${fmtDate(e.completedOn)}${e.source === "ahgfamily" ? " · from AHGFamily" : ""}</span>`);
-      for (const p of a.pending) lines.push(`${esc(p.title)} <span class="trk-muted">proposed — confirm on <a href="leaders-review.html">Review</a></span>`);
-      for (const o of a.offline || []) lines.push(`${esc(o.viaBadgeName)} study finished ${fmtDate(o.completedOn)} <span class="trk-pill warn" title="AHGFamily doesn't list this study on its Faith Award yet">mark on AHGFamily by hand</span>`);
-      for (const r of a.ready) lines.push(`${esc(r.viaBadgeName)} ${r.viaKind === "study" ? "study" : "badge"} finished ${fmtDate(r.completedOn)} <button class="btn btn-blue btn-sm" data-record='${esc(JSON.stringify({ girlId: g.girlId, requirementId: r.requirementId }))}'>Record</button>`);
-      if (a.status === "in_progress") for (const u of a.underway) lines.push(`${esc(u.viaBadgeName)} ${u.viaKind === "study" ? "study" : "badge"} — ${plural(u.confirmedCount, u.viaKind === "study" ? "step" : "requirement")} done`);
-      return `<span class="trk-pill ${cls}">${esc(label)}</span>${lines.map((l) => `<div>${l}</div>`).join("")}`;
+      return `<span class="trk-pill ${cls}">${esc(label)}</span>${awardLines(g, a, false)}`;
+    }
+    // the girls shown (search applies), one table per unit
+    function printAwards() {
+      const units = UNITS.filter((u) => girlsIn(u).length);
+      if (!units.length) { toast("No girls to print", true); return; }
+      const sec = (u) => `<div class="section"><h2>${esc(u)}</h2><table>
+        <thead><tr><th style="width:24%">Girl</th><th>This level's award</th><th style="width:24%">Earlier levels</th></tr></thead>
+        <tbody>${girlsIn(u).map((g) => {
+          const cur = g.awards.find((a) => a.level === g.ahgLevel);
+          const earlier = g.awards.filter((a) => a.level !== g.ahgLevel);
+          return `<tr><td><strong>${esc(g.firstName)} ${esc(g.lastName)}</strong><div class="muted">${esc(g.ahgLevel)}</div></td>
+            <td>${cur ? `<div class="role">${esc(STATUS[cur.status][1])}</div>${awardLines(g, cur, true)}` : '<span class="muted">award not imported</span>'}</td>
+            <td>${earlier.map((a) => `<div>${esc(a.level)}: ${a.status === "earned" ? "earned" : `<span class="muted">${esc(STATUS[a.status][1])}</span>`}</div>`).join("") || '<span class="muted">—</span>'}</td></tr>`;
+        }).join("")}</tbody></table></div>`;
+      window.Tracker.printPage("Faith Award status", `<h1>Faith Award status</h1>
+        <p class="meta">${units.map(esc).join(", ")}${awQuery.trim() ? ` · girls matching “${esc(awQuery.trim())}”` : ""}</p>
+        ${units.map(sec).join("")}`);
     }
     async function record(rows) {
       try {
@@ -484,6 +552,7 @@
       } catch (e) { toast(e.message, true); }
     }
     $("fa-aw-q").addEventListener("input", (e) => { awQuery = e.target.value; render(); });
+    $("fa-aw-print").addEventListener("click", printAwards);
     if ($("fa-aw-all")) $("fa-aw-all").addEventListener("click", () => {
       if (!window.confirm(`Record the Faith Award for ${plural(ready.length, "girl")} whose faith badge is finished?`)) return;
       // one item per girl per level is enough — the award needs one study
@@ -576,7 +645,8 @@
               <span class="trk-muted">${plural(s.stepCount, "step")}</span>${s.placeholders ? ` <span class="trk-pill warn">${s.placeholders} to be chosen</span>` : ""}</div>`).join("")}</td></tr>
             ${list.map((s) => `<tr hidden data-steps-row="${esc(s.badgeId)}"><td colspan="2"><h4 class="trk-yr-h4">${esc(name)} — ${esc(s.levelGroup)}</h4></td></tr>`).join("")}`).join("")}</tbody></table></div>`
           : '<p class="trk-muted">No study steps loaded yet. An admin loads them from the tracker\'s <code>data/faith-studies/</code>.</p>'}
-        <div class="trk-row-tools"><button class="btn btn-outline btn-sm" id="fa-load-studies" title="Admins: add any studies in data/faith-studies/ that aren't loaded yet (loaded ones are never changed)">Load study steps</button></div>
+        <div class="trk-row-tools">${cat.awardStudies.length ? '<button class="btn btn-outline btn-sm" id="fa-steps-print" title="Print every study\'s steps, level by level (or save it as a PDF)">Print study steps</button>' : ""}
+          <button class="btn btn-outline btn-sm" id="fa-load-studies" title="Admins: add any studies in data/faith-studies/ that aren't loaded yet (loaded ones are never changed)">Load study steps</button></div>
       </div>
       <div class="trk-panel" style="margin-top:1rem"><h3>Faith badges</h3>
         <p class="trk-muted">Handbook badges tagged as faith badges. The ones marked <span class="trk-pill ok">counts</span> are on the Faith Award list. <em>Short titles</em> means the handbook wording hasn't been entered yet — the tracker shows AHGFamily's short titles until it is.</p>
@@ -599,6 +669,26 @@
       } catch (e) { toast(e.status === 403 ? "Only an admin can load study steps" : e.message, true); }
     });
     body.querySelectorAll("[data-steps]").forEach((btn) => btn.addEventListener("click", () => stepEditor(btn.dataset.steps)));
+    if ($("fa-steps-print")) $("fa-steps-print").addEventListener("click", printSteps);
+  }
+
+  // Every Faith Award study's steps, level by level, for a leader to work
+  // from on paper ("to be chosen" slots stay marked).
+  async function printSteps() {
+    const groups = [...studyGroups()];
+    let detail;
+    try {
+      detail = await Promise.all(groups.map(([, list]) => Promise.all(list.map((s) =>
+        badgeCache[s.badgeId] || api("/badges/" + encodeURIComponent(s.badgeId)).then((b) => (badgeCache[s.badgeId] = b))))));
+    } catch (e) { toast(e.message, true); return; }
+    const body = groups.map(([name, list], gi) => `<div class="section"><h2>${esc(name)}</h2>
+      <p class="meta">${list[0].awardItem ? `On AHGFamily as “${esc(list[0].awardItem)}”` : "Not on AHGFamily yet — record the award by hand"}${list[0].about ? ` · ${esc(list[0].about)}` : ""}</p>
+      ${detail[gi].map((b) => `<h3>${esc(b.levelGroup)}</h3>${b.groups.map((g) => `${g.label ? `<div class="muted">${esc(g.label)}</div>` : ""}
+        <table><tbody>${g.requirements.map((r) => `<tr><td class="num" style="width:2.5em">${r.number}${esc(r.letter || "")}</td>
+          <td>${esc(r.title || "")}${(r.flags || []).includes("placeholder") ? ' <span class="role">to be chosen</span>' : ""}
+            ${r.text && r.text !== r.title ? `<p class="text">${esc(r.text)}</p>` : ""}</td></tr>`).join("")}</tbody></table>`).join("")}`).join("")}</div>`).join("");
+    window.Tracker.printPage("Faith Award study steps", `<h1>Faith Award studies, step by step</h1>
+      <p class="meta">${groups.length} ${groups.length === 1 ? "study" : "studies"} · any one completes the Faith Award for her level</p>${body}`);
   }
 
   // Rename a study's steps — chiefly the "to be chosen" slots, once the unit
