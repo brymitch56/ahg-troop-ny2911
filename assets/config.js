@@ -53,10 +53,15 @@ window.TROOP_CONFIG = {
   // show a "not connected" note.
   //   baseUrl — https://badges.<the troop domain>
   //   scope   — api://<tracker-client-id>/access_as_leader
+  //   resourceFolder — where the Planning page's "Upload file"
+  //                puts files on the SharePoint site above:
+  //                <library>/<path>/<badge name>/. Folders are
+  //                made on the first upload.
   // -----------------------------------------------------------
   tracker: {
     baseUrl: "https://badges.ahg2911.org",
-    scope: "api://1bfb9f44-a625-4869-b9ca-49321d8b9ddd/access_as_leader"
+    scope: "api://1bfb9f44-a625-4869-b9ca-49321d8b9ddd/access_as_leader",
+    resourceFolder: { library: "Documents", path: "Badge Resources" }
   },
 
   // -----------------------------------------------------------

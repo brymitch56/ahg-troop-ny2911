@@ -52,10 +52,13 @@
   let account = null;
   const pageUrl = window.location.origin + window.location.pathname;
 
-  async function getToken() {
+  // The tracker API's token; tokenFor(GRAPH_SCOPES) is the SharePoint one
+  // (same app registration and consent as the Documents page).
+  const getToken = () => tokenFor([trk.scope]);
+  async function tokenFor(scopes) {
     if (DEV) return null;
     try {
-      const r = await msalApp.acquireTokenSilent({ scopes: [trk.scope], account });
+      const r = await msalApp.acquireTokenSilent({ scopes, account });
       return r.accessToken;
     } catch (e) {
       // Silent renewal fails for more reasons than "interaction required":
@@ -76,9 +79,42 @@
         throw err;
       }
       try { sessionStorage.setItem(key, String(Date.now())); } catch (_) { /* storage blocked */ }
-      await msalApp.acquireTokenRedirect({ scopes: [trk.scope], account, loginHint: account && account.username });
+      await msalApp.acquireTokenRedirect({ scopes, account, loginHint: account && account.username });
       return new Promise(() => {}); // navigating away
     }
+  }
+
+  // ---------- Microsoft Graph (the troop SharePoint site) ----------
+  // For the planner's SharePoint upload and file picker. Delegated, so a
+  // leader can only reach what SharePoint already lets them reach.
+  const GRAPH = "https://graph.microsoft.com/v1.0";
+  const GRAPH_SCOPES = ["Sites.ReadWrite.All"];
+  const graphReady = () => !DEV && !isPlaceholder(cfg.siteUrl);
+  async function graph(path, opts) {
+    const o = opts || {};
+    if (!graphReady()) throw new Error("SharePoint isn't set up for this site (leaders.siteUrl in config.js).");
+    const token = await tokenFor(GRAPH_SCOPES);
+    const headers = { Authorization: "Bearer " + token, ...(o.headers || {}) };
+    let body = o.body;
+    if (body !== undefined && !o.raw) { headers["Content-Type"] = "application/json"; body = JSON.stringify(body); }
+    let res;
+    try {
+      res = await fetch(path.startsWith("https://") ? path : GRAPH + path, { method: o.method || "GET", headers, body });
+    } catch (e) {
+      throw new Error("SharePoint isn't reachable (" + e.message + ").");
+    }
+    if (!res.ok) {
+      let msg = "SharePoint request failed (" + res.status + ")";
+      let code = "";
+      try { const err = await res.json(); if (err.error) { msg = err.error.message || msg; code = err.error.code || ""; } } catch (_) { /* non-JSON */ }
+      const e = new Error(res.status === 403 ? "SharePoint says you don't have permission for that." : msg);
+      e.status = res.status;
+      e.code = code;
+      throw e;
+    }
+    if (res.status === 204) return null;
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
   }
 
   // ---------- API ----------
@@ -361,5 +397,5 @@
     }, 50);
   }
 
-  window.Tracker = { init, api, esc, toast, fmtDate, fmtTime, combo, $, refreshBanner, matches, getPref, setPref, searchBox, sortSelect, byText, printPage };
+  window.Tracker = { init, api, graph, graphReady, esc, toast, fmtDate, fmtTime, combo, $, refreshBanner, matches, getPref, setPref, searchBox, sortSelect, byText, printPage };
 })();

@@ -504,3 +504,16 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 /* Service stars: the admin's "extra stars on record" choice */
 .trk-legacy { display: block; margin-top: 0.3rem; font-size: 0.8rem; white-space: normal; max-width: 220px; }
 .trk-legacy select { font: inherit; font-size: 0.8rem; margin-top: 0.15rem; max-width: 100%; }
+
+/* Planner: links & files per badge, and the SharePoint picker */
+.trk-links-h { color: var(--ahg-blue); margin: 1rem 0 0.4rem; font-size: 1.05rem; }
+.trk-links-badge { border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.8rem; margin-bottom: 0.6rem; }
+.trk-links { list-style: none; margin: 0.3rem 0; padding: 0; }
+.trk-links li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; padding: 0.2rem 0; overflow-wrap: anywhere; }
+.trk-links-add { margin-top: 0.3rem; }
+.trk-links-add input[type=url], .trk-links-add input[type=text] { padding: 0.35rem 0.55rem; border: 1px solid var(--border); border-radius: 6px; font: inherit; }
+.trk-sp-modal { max-width: 640px; width: 100%; }
+.trk-sp-list { max-height: 50vh; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.3rem 0.6rem; }
+.trk-sp-row { display: flex; justify-content: space-between; gap: 0.8rem; padding: 0.3rem 0; border-bottom: 1px solid var(--border); cursor: pointer; overflow-wrap: anywhere; }
+.trk-sp-row:last-child { border-bottom: 0; }
+.trk-sp-crumbs { overflow-wrap: anywhere; }
