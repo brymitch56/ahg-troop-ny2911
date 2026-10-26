@@ -20,7 +20,6 @@
 
   let badgeList = [];
   const badgeCache = {}; // id → full badge
-  const linkLibrary = {}; // badge id → its previously used links (refetched after a save)
 
   const badgeFits = (badgeLevelGroup, unit) => badgeLevelGroup === "All" || badgeLevelGroup === unit
     || (unit === "Pioneer/Patriot" && (badgeLevelGroup === "Pioneer" || badgeLevelGroup === "Patriot"));
@@ -246,10 +245,7 @@
       </tr>`).join("");
       // links on paper: the name and the full address, grouped by badge
       const names = new Map(p.items.map((it) => [it.badgeId, it.badgeName]));
-      const linkBadges = [...new Set((p.links || []).map((l) => l.badgeId))];
-      const linkHtml = linkBadges.length ? `<h3>Links &amp; files</h3>${linkBadges.map((bid) => `
-        <p><strong>${esc(names.get(bid) || bid)}</strong></p>
-        <ul class="text">${p.links.filter((l) => l.badgeId === bid).map((l) => `<li>${esc(l.title)} — <span class="muted">${esc(l.url)}</span></li>`).join("")}</ul>`).join("")}` : "";
+      const linkHtml = window.TrackerLinks.printHtml(p.links, (o) => names.get(o.badgeId) || o.badgeId);
       return `<div class="section"><h2>${esc(u)}</h2>
         ${p.notes ? `<div class="notes">${esc(p.notes)}</div>` : ""}
         ${p.items.length ? `<table><thead><tr><th>Requirement</th><th style="width:22%">Role</th></tr></thead><tbody>${rows}</tbody></table>`
@@ -285,120 +281,19 @@
     const links = (plan ? plan.links || [] : []).map((l) => ({ ...l }));
     const body = $("trk-tabbody");
 
-    // ---- links & files, per badge on the plan ----
-    // Pasted web links, SharePoint files picked or uploaded here, and the
-    // badge's "previously used" links from other plans (its link library —
-    // the tracker files every saved link there; nothing to do by hand).
-    const SP = window.TrackerSP;
-    const spOk = !!(SP && SP.available());
-    const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (_) { return ""; } };
-    const addLink = (l) => {
-      if (links.some((x) => x.badgeId === l.badgeId && x.url === l.url)) { toast(`“${l.title}” is already on this plan`); return false; }
-      links.push(l); cur.dirty = true; return true;
+    // ---- links & files, one block per badge on the plan (tracker-links.js) ----
+    const linkGroups = () => {
+      const out = [];
+      for (const it of items) {
+        if (it.badgeId && !out.some((g) => g.owner.badgeId === it.badgeId)) {
+          out.push({ owner: { badgeId: it.badgeId }, name: it.badgeName, folder: window.TrackerSP ? window.TrackerSP.badgeFolder(it.badgeName) : null });
+        }
+      }
+      return out;
     };
     const drawLinks = () => {
       const host = $("trk-links");
-      if (!host) return;
-      const badges = [];
-      for (const it of items) if (it.badgeId && !badges.some((b) => b.id === it.badgeId)) badges.push({ id: it.badgeId, name: it.badgeName });
-      if (!badges.length) { host.innerHTML = ""; return; }
-      host.innerHTML = `<h4 class="trk-links-h">Links &amp; files</h4>${badges.map((b) => {
-        const mine = links.map((l, i) => ({ l, i })).filter(({ l }) => l.badgeId === b.id);
-        return `<div class="trk-links-badge" data-lbadge="${esc(b.id)}">
-          <div class="trk-links-title"><strong>${esc(b.name)}</strong></div>
-          ${mine.length ? `<ul class="trk-links">${mine.map(({ l, i }) => `<li>
-              <span class="trk-pill ${l.kind === "sharepoint" ? "ok" : "mut"}">${l.kind === "sharepoint" ? "SharePoint" : "Web"}</span>
-              <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.title)}</a>
-              <span class="trk-muted">${esc(l.kind === "sharepoint" ? "" : hostOf(l.url))}</span>
-              <button class="btn-link trk-danger" data-ldel="${i}">remove</button></li>`).join("")}</ul>` : '<p class="trk-muted" style="margin:0.2rem 0">No links yet.</p>'}
-          <div class="trk-row-tools trk-links-add">
-            <input type="url" data-lurl placeholder="Paste a web address (https://…)" style="flex:2;min-width:12rem">
-            <input type="text" data-ltitle placeholder="Name (optional)" style="flex:1;min-width:8rem">
-            <button class="btn btn-outline btn-sm" data-ladd>Add link</button>
-            ${spOk ? `<button class="btn btn-outline btn-sm" data-lup title="Upload into ${esc(SP.folderLabel(b.name))} on the troop SharePoint">Upload file…</button>
-            <input type="file" data-lfile multiple hidden>
-            <button class="btn btn-outline btn-sm" data-lpick>Choose from SharePoint…</button>` : ""}
-          </div>
-          <div class="trk-muted" data-lstatus></div>
-          <div class="trk-links-sugg" data-lsugg></div>
-        </div>`;
-      }).join("")}`;
-      host.querySelectorAll("[data-ldel]").forEach((btn) => btn.addEventListener("click", () => { links.splice(Number(btn.dataset.ldel), 1); cur.dirty = true; drawLinks(); }));
-      host.querySelectorAll("[data-lbadge]").forEach((blk) => {
-        const badgeId = blk.dataset.lbadge;
-        const badgeName = (badges.find((b) => b.id === badgeId) || {}).name || "";
-        const status = blk.querySelector("[data-lstatus]");
-        blk.querySelector("[data-ladd]").addEventListener("click", () => {
-          const raw = blk.querySelector("[data-lurl]").value.trim();
-          if (!raw) { toast("Paste a web address first"); return; }
-          let url;
-          try { url = new URL(/^[a-z][a-z0-9+.-]*:/i.test(raw) ? raw : "https://" + raw); } catch (_) { toast("That isn't a web address", true); return; }
-          if (!/^https?:$/.test(url.protocol)) { toast("Only http and https links can be saved", true); return; }
-          const title = blk.querySelector("[data-ltitle]").value.trim() || decodeURIComponent(url.pathname.split("/").filter(Boolean).pop() || url.hostname);
-          if (addLink({ badgeId, url: url.href, title, kind: "web" })) drawLinks();
-        });
-        if (spOk) {
-          const fileIn = blk.querySelector("[data-lfile]");
-          blk.querySelector("[data-lup]").addEventListener("click", () => fileIn.click());
-          fileIn.addEventListener("change", async () => {
-            const files = Array.from(fileIn.files || []);
-            fileIn.value = "";
-            let added = 0;
-            for (const f of files) {
-              status.textContent = `Uploading ${f.name}…`;
-              try {
-                const it = await SP.upload(f, badgeName, (p) => { status.textContent = `Uploading ${f.name}… ${Math.round(p * 100)}%`; });
-                if (it && addLink(SP.asLink(badgeId, it))) added += 1;
-              } catch (e) { toast(`${f.name}: ${e.message}`, true); }
-            }
-            status.textContent = "";
-            if (added) { toast(`Uploaded ${added} file${added === 1 ? "" : "s"} to SharePoint — save the plan to keep the link${added === 1 ? "" : "s"} on it`); drawLinks(); }
-          });
-          blk.querySelector("[data-lpick]").addEventListener("click", async () => {
-            const picked = await SP.pick(badgeName);
-            let added = 0;
-            for (const it of picked) if (it.webUrl && addLink(SP.asLink(badgeId, it))) added += 1;
-            if (added) drawLinks();
-          });
-        }
-        drawSuggestions(blk, badgeId);
-      });
-    };
-    // the badge's library, minus what's already on this plan
-    const drawSuggestions = async (blk, badgeId, fresh) => {
-      const host = blk.querySelector("[data-lsugg]");
-      let lib;
-      try {
-        if (fresh || !linkLibrary[badgeId]) linkLibrary[badgeId] = await api(`/badges/${encodeURIComponent(badgeId)}/links`);
-        lib = linkLibrary[badgeId];
-      } catch (e) { host.innerHTML = `<p class="trk-muted">Previously used links couldn't be loaded (${esc(e.message)}).</p>`; return; }
-      const on = new Set(links.filter((l) => l.badgeId === badgeId).map((l) => l.url));
-      const offer = lib.filter((l) => !on.has(l.url));
-      if (!offer.length) { host.innerHTML = ""; return; }
-      const usedOn = (l) => {
-        if (!l.uses.length) return "not on any plan now";
-        const u = l.uses[0];
-        return `used ${fmtDate(u.date)}${u.unit !== unit ? ` (${u.unit})` : ""}${l.uses.length > 1 ? ` + ${l.uses.length - 1} more` : ""}`;
-      };
-      host.innerHTML = `<div class="trk-muted" style="margin-top:0.4rem">Previously used for this badge:</div>
-        <ul class="trk-links">${offer.map((l) => `<li>
-          <button class="btn btn-outline btn-sm" data-sadd="${l.id}" title="Put this link on the plan">+ Add</button>
-          <span class="trk-pill ${l.kind === "sharepoint" ? "ok" : "mut"}">${l.kind === "sharepoint" ? "SharePoint" : "Web"}</span>
-          <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.title)}</a>
-          <span class="trk-muted">${esc(usedOn(l))}</span>
-          <button class="btn-link trk-muted" data-shide="${l.id}" title="Stop suggesting this link for this badge">hide</button></li>`).join("")}</ul>`;
-      host.querySelectorAll("[data-sadd]").forEach((btn) => btn.addEventListener("click", () => {
-        const l = offer.find((x) => String(x.id) === btn.dataset.sadd);
-        if (addLink({ badgeId, url: l.url, title: l.title, kind: l.kind, driveId: l.driveId, itemId: l.itemId })) drawLinks();
-      }));
-      host.querySelectorAll("[data-shide]").forEach((btn) => btn.addEventListener("click", async () => {
-        const l = offer.find((x) => String(x.id) === btn.dataset.shide);
-        if (!window.confirm(`Stop suggesting “${l.title}” for this badge? Plans that already use it keep it, and adding it to a plan again brings it back.`)) return;
-        try {
-          await api(`/badges/${encodeURIComponent(badgeId)}/links/${l.id}/hidden`, { body: { hidden: true } });
-          drawSuggestions(blk, badgeId, true);
-        } catch (e) { toast(e.message, true); }
-      }));
+      if (host) window.TrackerLinks.panel(host, { groups: linkGroups(), links, unit, onChange: () => { cur.dirty = true; } });
     };
 
     const draw = () => {
@@ -439,12 +334,10 @@
         body.querySelector(`[data-rolehelp="${s.dataset.role}"]`).textContent = ROLE_HELP[s.value];
       }));
       body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => {
-        const [gone] = items.splice(Number(b.dataset.del), 1);
+        items.splice(Number(b.dataset.del), 1);
         // a badge's links go with its last requirement (they're kept in the
         // badge's library, so they come back as suggestions)
-        if (!items.some((i) => i.badgeId === gone.badgeId)) {
-          for (let k = links.length - 1; k >= 0; k--) if (links[k].badgeId === gone.badgeId) links.splice(k, 1);
-        }
+        window.TrackerLinks.prune(links, linkGroups());
         cur.dirty = true; draw();
       }));
       drawLinks();
@@ -522,10 +415,10 @@
             body: {
               notes: $("trk-plan-notes").value,
               items: items.map((i) => ({ requirementId: i.requirementId, role: i.role, notes: i.notes || undefined })),
-              links: links.map((l) => ({ badgeId: l.badgeId, url: l.url, title: l.title, kind: l.kind, driveId: l.driveId || undefined, itemId: l.itemId || undefined })),
+              links: window.TrackerLinks.toBody(links),
             },
           });
-          for (const k of Object.keys(linkLibrary)) delete linkLibrary[k]; // the save filed its links
+          window.TrackerLinks.forget(); // the save filed its links
           toast("Plan saved" + proposalNote(r && r.proposals));
           eventView(cur.ev.id, unit);
         } catch (e) { toast(e.message, true); }

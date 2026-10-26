@@ -57,11 +57,15 @@ window.TROOP_CONFIG = {
   //                puts files on the SharePoint site above:
   //                <library>/<path>/<badge name>/. Folders are
   //                made on the first upload.
+  //   faithFolder — where the Faith page's uploads go for Bible
+  //                studies and Faith Award studies (faith badges
+  //                use resourceFolder, like the Planning page).
   // -----------------------------------------------------------
   tracker: {
     baseUrl: "https://badges.ahg2911.org",
     scope: "api://1bfb9f44-a625-4869-b9ca-49321d8b9ddd/access_as_leader",
-    resourceFolder: { library: "Documents", path: "Badge Resources" }
+    resourceFolder: { library: "Documents", path: "Badge Resources" },
+    faithFolder: { library: "Board", path: "Bible Studies/Bible Studies" }
   },
 
   // -----------------------------------------------------------

@@ -1,22 +1,28 @@
 // ============================================================
-//  SharePoint for the planner: upload a file into the badge's
+//  SharePoint for the planners: upload a file into the right
 //  folder, or pick files already on the troop site. Talks to
 //  Microsoft Graph with the leader's own sign-in (Tracker.graph);
 //  the tracker only ever stores the resulting link.
 //
-//  Where uploads go: config.js → tracker.resourceFolder
-//    { library: "Documents", path: "Badge Resources" }
-//  → <library>/<path>/<badge name>/<file>. Folders are created on
-//  the first upload; the picker opens in the badge's folder when
-//  it exists and can browse every library from there.
+//  Where uploads go (config.js → tracker):
+//    resourceFolder { library: "Documents", path: "Badge Resources" }
+//      → <library>/<path>/<badge name>/ — badges, faith badges
+//    faithFolder { library: "Board", path: "Bible Studies/Bible Studies" }
+//      → Bible studies and Faith Award studies
+//  Folders are created on the first upload; the picker opens in
+//  the upload folder when it exists and can browse every library.
 // ============================================================
 (function () {
   "use strict";
   const { graph, graphReady, esc, fmtDate, $ } = window.Tracker;
   const cfg = (window.TROOP_CONFIG && window.TROOP_CONFIG.leaders) || {};
-  const rf = ((window.TROOP_CONFIG && window.TROOP_CONFIG.tracker) || {}).resourceFolder || {};
-  const LIBRARY = rf.library || "Documents";
-  const BASE_PATH = String(rf.path == null ? "Badge Resources" : rf.path).replace(/^\/+|\/+$/g, "");
+  const trk = (window.TROOP_CONFIG && window.TROOP_CONFIG.tracker) || {};
+  const trimPath = (p, dflt) => String(p == null ? dflt : p).replace(/^\/+|\/+$/g, "");
+  const rf = trk.resourceFolder || {};
+  const ff = trk.faithFolder || {};
+  const BADGE_LIBRARY = rf.library || "Documents";
+  const BASE_PATH = trimPath(rf.path, "Badge Resources");
+  const STUDY_FOLDER = { library: ff.library || "Board", path: trimPath(ff.path, "Bible Studies/Bible Studies") };
 
   const SIMPLE_UPLOAD_LIMIT = 4 * 1024 * 1024; // Graph's cap for one-request uploads
   const CHUNK_SIZE = 10 * 1024 * 1024;         // a multiple of 320 KiB
@@ -44,13 +50,16 @@
     drives = out.filter((d) => d.driveType === "documentLibrary" && !isSystemLibrary(d.name)).sort((a, b) => a.name.localeCompare(b.name));
     return drives;
   }
-  async function uploadLibrary() {
-    const list = await libraries();
-    const d = list.find((x) => x.name.toLowerCase() === LIBRARY.toLowerCase()) || list[0];
-    if (!d) throw new Error("The troop SharePoint site has no document library you can use.");
+  // the library a folder lives in, by name
+  async function libraryOf(folder) {
+    const d = (await libraries()).find((x) => x.name.toLowerCase() === folder.library.toLowerCase());
+    if (!d) throw new Error(`There's no "${folder.library}" library on the troop SharePoint site that you can reach (config.js → tracker).`);
     return d;
   }
-  const badgePath = (badgeName) => [BASE_PATH, safeName(badgeName)].filter(Boolean).join("/");
+  // upload folders: { library, path }
+  const badgeFolder = (badgeName) => ({ library: BADGE_LIBRARY, path: [BASE_PATH, safeName(badgeName)].filter(Boolean).join("/") });
+  const studyFolder = () => ({ ...STUDY_FOLDER });
+  const folderLabel = (f) => [f.library, ...f.path.split("/").filter(Boolean)].join(" › ");
 
   // the badge's folder (made on demand), as { driveId, id }
   async function ensureFolder(driveId, path) {
@@ -75,13 +84,13 @@
   }
 
   /**
-   * Upload one file into the badge's folder. A file of the same name there
-   * is kept: SharePoint adds a number to the new one. Resolves to the
-   * driveItem ({ id, name, webUrl, parentReference }).
+   * Upload one file into a folder ({ library, path }). A file of the same
+   * name there is kept: SharePoint adds a number to the new one. Resolves
+   * to the driveItem ({ id, name, webUrl, parentReference }).
    */
-  async function upload(file, badgeName, onProgress) {
-    const lib = await uploadLibrary();
-    const folder = await ensureFolder(lib.id, badgePath(badgeName));
+  async function upload(file, target, onProgress) {
+    const lib = await libraryOf(target);
+    const folder = await ensureFolder(lib.id, target.path);
     const ref = folder.id ? "/drives/" + lib.id + "/items/" + folder.id : "/drives/" + lib.id + "/root";
     const name = encodeURIComponent(file.name);
     if (file.size <= SIMPLE_UPLOAD_LIMIT) {
@@ -130,10 +139,11 @@
   const fmtSize = (n) => (n == null ? "" : n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB");
 
   /**
-   * Browse the troop site and tick files. Resolves to the chosen driveItems
-   * (possibly []); opens in the badge's folder when there is one.
+   * Browse the troop site and tick files for `forName` (what they're for).
+   * Resolves to the chosen driveItems (possibly []); opens in `target`
+   * ({ library, path }), or as far down that path as already exists.
    */
-  function pick(badgeName) {
+  function pick(forName, target) {
     return new Promise((resolve) => {
       const overlay = overlayEl();
       const chosen = new Map(); // id → item
@@ -173,7 +183,7 @@
         overlay.innerHTML = `
           <div class="evt-modal trk-sp-modal" role="dialog" aria-modal="true" aria-labelledby="trk-sp-title">
             <h3 id="trk-sp-title">Choose files from SharePoint</h3>
-            <p class="evt-meta">For <strong>${esc(badgeName)}</strong>. Tick one or more files, then <em>Add to plan</em>.</p>
+            <p class="evt-meta">For <strong>${esc(forName)}</strong>. Tick one or more files, then <em>Add to plan</em>.</p>
             ${libs.length > 1 ? `<div class="trk-chips">${libs.map((d) => `<button class="trk-chip ${st.drive && d.id === st.drive.id ? "active" : ""}" data-sp-drive="${esc(d.id)}">${esc(d.name)}</button>`).join("")}</div>` : ""}
             <div class="trk-row-tools">
               <span class="trk-sp-crumbs">${st.drive ? `<a href="#" data-sp-crumb="-1">${esc(st.drive.name)}</a>${st.trail.map((f, i) => ` / <a href="#" data-sp-crumb="${i}">${esc(f.name)}</a>`).join("")}` : ""}</span>
@@ -222,14 +232,14 @@
       draw();
       (async () => {
         try {
-          const lib = await uploadLibrary();
+          const lib = await libraryOf(target);
           st.drive = lib;
-          // open in the badge's folder, else the resource folder, else the library root
+          // open in the upload folder, else as far down its path as exists
           const tryPath = async (p) => {
             if (!p) return null;
             try { return await graph("/drives/" + lib.id + "/root:/" + encPath(p) + "?$select=id,name,folder"); } catch (e) { if (e.status === 404) return null; throw e; }
           };
-          const parts = badgePath(badgeName).split("/");
+          const parts = target.path.split("/").filter(Boolean);
           for (let n = parts.length; n > 0; n--) {
             const f = await tryPath(parts.slice(0, n).join("/"));
             if (f && f.folder) {
@@ -249,15 +259,11 @@
     });
   }
 
-  // a driveItem as the link the tracker stores
-  const asLink = (badgeId, it) => ({
-    badgeId, url: it.webUrl, title: it.name, kind: "sharepoint",
+  // a driveItem as the link the tracker stores; owner = { badgeId } | { studyId }
+  const asLink = (owner, it) => ({
+    ...owner, url: it.webUrl, title: it.name, kind: "sharepoint",
     driveId: (it.parentReference && it.parentReference.driveId) || null, itemId: it.id,
   });
 
-  window.TrackerSP = {
-    available: graphReady,
-    upload, pick, asLink,
-    folderLabel: (badgeName) => `${LIBRARY}/${badgePath(badgeName)}`,
-  };
+  window.TrackerSP = { available: graphReady, upload, pick, asLink, badgeFolder, studyFolder, folderLabel };
 })();
