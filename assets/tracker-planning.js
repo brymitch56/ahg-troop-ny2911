@@ -243,10 +243,14 @@
           ${it.notes ? `<p class="text"><em>Note:</em> ${esc(it.notes)}</p>` : ""}</td>
         <td class="role">${esc(it.role)}<div class="muted" style="text-transform:none;letter-spacing:0">${esc(PRINT_ROLE[it.role] || "")}</div></td>
       </tr>`).join("");
+      // links on paper: the name and the full address, grouped by badge
+      const names = new Map(p.items.map((it) => [it.badgeId, it.badgeName]));
+      const linkHtml = window.TrackerLinks.printHtml(p.links, (o) => names.get(o.badgeId) || o.badgeId);
       return `<div class="section"><h2>${esc(u)}</h2>
         ${p.notes ? `<div class="notes">${esc(p.notes)}</div>` : ""}
         ${p.items.length ? `<table><thead><tr><th>Requirement</th><th style="width:22%">Role</th></tr></thead><tbody>${rows}</tbody></table>`
-          : '<p class="muted">Notes only — no requirements on this plan.</p>'}</div>`;
+          : '<p class="muted">Notes only — no requirements on this plan.</p>'}
+        ${linkHtml}</div>`;
     };
     window.Tracker.printPage(only ? `${ev.title} — ${only} plan` : `${ev.title} — plan`, `
       <h1>${esc(ev.title)}</h1>
@@ -273,7 +277,24 @@
     const plan = cur.plans.get(unit);
     // working copy of items for this render
     const items = (plan ? plan.items : []).map((i) => ({ ...i }));
+    // links per badge on this plan: { badgeId, url, title, kind, driveId, itemId }
+    const links = (plan ? plan.links || [] : []).map((l) => ({ ...l }));
     const body = $("trk-tabbody");
+
+    // ---- links & files, one block per badge on the plan (tracker-links.js) ----
+    const linkGroups = () => {
+      const out = [];
+      for (const it of items) {
+        if (it.badgeId && !out.some((g) => g.owner.badgeId === it.badgeId)) {
+          out.push({ owner: { badgeId: it.badgeId }, name: it.badgeName, folder: window.TrackerSP ? window.TrackerSP.badgeFolder(it.badgeName) : null });
+        }
+      }
+      return out;
+    };
+    const drawLinks = () => {
+      const host = $("trk-links");
+      if (host) window.TrackerLinks.panel(host, { groups: linkGroups(), links, unit, onChange: () => { cur.dirty = true; } });
+    };
 
     const draw = () => {
       body.innerHTML = `
@@ -291,6 +312,8 @@
                 <td><button class="btn-link trk-danger" data-del="${idx}">remove</button></td>
               </tr>`).join("")}</tbody>
           </table></div>` : `<p class="trk-muted">Nothing planned for ${esc(unit)} yet.</p>`}
+
+          <div id="trk-links"></div>
 
           <div class="trk-row-tools">
             <div id="trk-add-badge"></div>
@@ -310,7 +333,14 @@
         cur.dirty = true;
         body.querySelector(`[data-rolehelp="${s.dataset.role}"]`).textContent = ROLE_HELP[s.value];
       }));
-      body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => { items.splice(Number(b.dataset.del), 1); cur.dirty = true; draw(); }));
+      body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => {
+        items.splice(Number(b.dataset.del), 1);
+        // a badge's links go with its last requirement (they're kept in the
+        // badge's library, so they come back as suggestions)
+        window.TrackerLinks.prune(links, linkGroups());
+        cur.dirty = true; draw();
+      }));
+      drawLinks();
 
       const reqSel = $("trk-add-req");
       const addBtn = $("trk-add-btn");
@@ -350,7 +380,7 @@
         const b = badgeCache[pickedBadge];
         const r = b.groups.flatMap((g) => g.requirements).find((x) => x.trackerId === reqSel.value);
         if (!r) return;
-        items.push({ requirementId: r.trackerId, badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, text: r.text, subItems: r.subItems || [], role: "session" });
+        items.push({ requirementId: r.trackerId, badgeId: b.id, badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, text: r.text, subItems: r.subItems || [], role: "session" });
         cur.dirty = true;
         draw();
       });
@@ -382,8 +412,13 @@
         try {
           const r = await api(`/events/${cur.ev.id}/plans/${encodeURIComponent(unit)}`, {
             method: "PUT",
-            body: { notes: $("trk-plan-notes").value, items: items.map((i) => ({ requirementId: i.requirementId, role: i.role, notes: i.notes || undefined })) },
+            body: {
+              notes: $("trk-plan-notes").value,
+              items: items.map((i) => ({ requirementId: i.requirementId, role: i.role, notes: i.notes || undefined })),
+              links: window.TrackerLinks.toBody(links),
+            },
           });
+          window.TrackerLinks.forget(); // the save filed its links
           toast("Plan saved" + proposalNote(r && r.proposals));
           eventView(cur.ev.id, unit);
         } catch (e) { toast(e.message, true); }

@@ -322,10 +322,14 @@
             ${r.subItems && r.subItems.length ? `<ul class="text">${r.subItems.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : ""}
             ${r.notes ? `<p class="text"><em>Note:</em> ${esc(r.notes)}</p>` : ""}</td>
           <td class="role">${esc(r.role)}<div class="muted" style="text-transform:none;letter-spacing:0">${esc(PRINT_ROLE[r.role] || "")}</div></td></tr>`)).join("");
+      const nameOf = (o) => (o.studyId != null
+        ? ((p.studies.find((s) => s.studyId === o.studyId) || {}).title || "Bible study")
+        : ((p.items.find((it) => it.badgeId === o.badgeId) || {}).badgeName || o.badgeId));
       return `<div class="section"><h2>${esc(u)}</h2>
         ${p.notes ? `<div class="notes">${esc(p.notes)}</div>` : ""}
         ${rows ? `<table><thead><tr><th>Planned</th><th style="width:22%">Role</th></tr></thead><tbody>${rows}</tbody></table>`
-          : '<p class="muted">Notes only — nothing else on this plan.</p>'}</div>`;
+          : '<p class="muted">Notes only — nothing else on this plan.</p>'}
+        ${window.TrackerLinks.printHtml(p.links, nameOf)}</div>`;
     };
     window.Tracker.printPage(only ? `${ev.title} — ${only} faith plan` : `${ev.title} — faith plan`, `
       <h1>${esc(ev.title)} — faith</h1>
@@ -357,6 +361,38 @@
     }
     const studies = cat.studies.filter((s) => s.active && (!s.units.length || s.units.includes(unit)));
     const body = $("fa-plan");
+
+    // ---- links & files (tracker-links.js) ----
+    // A Bible study's links are its own; a faith badge's, Faith Award
+    // study's or Faith Award's are its badge's. Uploads: faith badges go to
+    // their badge folder like the Planning page; everything else to the
+    // Bible studies folder.
+    const links = (plan ? plan.links || [] : []).map((l) => ({ ...l }));
+    const SP = window.TrackerSP;
+    const isFaithBadge = (badgeId) => cat.badges.some((b) => b.badgeId === badgeId);
+    const awardOf = (reqId) => cat.awards.find((a) => a.items.some((it) => it.requirementId === reqId));
+    const linkGroups = () => {
+      const out = [];
+      const add = (owner, name, folder) => {
+        const k = owner.badgeId != null ? "b:" + owner.badgeId : "s:" + owner.studyId;
+        if (!out.some((g) => g.key === k)) out.push({ key: k, owner, name, folder: SP ? folder() : null });
+      };
+      for (const r of rows) {
+        if (r.kind === "study") add({ studyId: r.studyId }, r.title, () => SP.studyFolder());
+        else if (r.kind === "award") {
+          const a = r.badgeId ? null : awardOf(r.ids[0]);
+          const badgeId = r.badgeId || (a && a.badgeId);
+          if (badgeId) add({ badgeId }, r.badgeName || (a && a.name) || "Faith Award", () => SP.studyFolder());
+        } else if (r.badgeId) {
+          add({ badgeId: r.badgeId }, r.badgeName, () => (isFaithBadge(r.badgeId) ? SP.badgeFolder(r.badgeName) : SP.studyFolder()));
+        }
+      }
+      return out;
+    };
+    const drawLinks = () => {
+      const host = $("fa-links");
+      if (host) window.TrackerLinks.panel(host, { groups: linkGroups(), links, unit, onChange: () => { dirty = true; } });
+    };
 
     const rowHtml = (r, idx) => {
       if (r.kind === "study") {
@@ -403,6 +439,8 @@
         </div>
         <p class="trk-muted" style="margin-top:0">Studies the tracker has no steps for — planned as one item on the Faith Award.</p>` : ""}
 
+        <div id="fa-links"></div>
+
         <div class="trk-row-tools" style="margin-top:1rem">
           <textarea id="fa-notes" class="trk-notes" rows="1" placeholder="Notes for whoever leads this (optional)" style="flex:1;min-width:200px">${esc(plan ? plan.notes || "" : "")}</textarea>
           <button class="btn btn-blue btn-sm" id="fa-save">Save faith plan</button>
@@ -416,7 +454,12 @@
         body.querySelector(`[data-rolehelp="${s.dataset.role}"]`).textContent = ROLE_HELP[s.value];
       }));
       body.querySelectorAll("[data-lesson]").forEach((i) => i.addEventListener("input", () => { rows[Number(i.dataset.lesson)].lesson = i.value; dirty = true; }));
-      body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => { rows.splice(Number(b.dataset.del), 1); dirty = true; draw(); }));
+      body.querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => {
+        rows.splice(Number(b.dataset.del), 1);
+        window.TrackerLinks.prune(links, linkGroups()); // kept in the library as suggestions
+        dirty = true; draw();
+      }));
+      drawLinks();
       if ($("fa-add-study-btn")) $("fa-add-study-btn").addEventListener("click", () => {
         const s = studies.find((x) => x.id === Number($("fa-add-study").value));
         rows.push({ kind: "study", studyId: s.id, title: s.title, lesson: "" }); dirty = true; draw();
@@ -459,7 +502,7 @@
         const b = badgeCache[picked];
         const r = b.groups.flatMap((g) => g.requirements).find((x) => x.trackerId === reqSel.value);
         if (!r) return;
-        rows.push({ kind: "badge", ids: [r.trackerId], badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, text: r.text, role: "session" });
+        rows.push({ kind: "badge", ids: [r.trackerId], badgeId: b.id, badgeName: b.name, number: r.number, letter: r.letter || "", title: r.title, text: r.text, role: "session" });
         dirty = true; draw();
       });
 
@@ -473,8 +516,9 @@
           ? [{ studyId: r.studyId, lesson: r.lesson || undefined, notes: r.notes || undefined }]
           : r.ids.map((id) => ({ requirementId: id, role: r.role, notes: r.notes || undefined }))));
         try {
-          const res = await api(`/events/${ev.id}/faith-plans/${encodeURIComponent(unit)}`, { method: "PUT", body: { notes: notesEl.value, items } });
+          const res = await api(`/events/${ev.id}/faith-plans/${encodeURIComponent(unit)}`, { method: "PUT", body: { notes: notesEl.value, items, links: window.TrackerLinks.toBody(links) } });
           dirty = false;
+          window.TrackerLinks.forget(); // the save filed its links
           const p = res && res.proposals;
           toast("Faith plan saved" + (p && p.proposed ? ` — ${plural(p.proposed, "completion")} now ready to review` : ""));
           meetingView(ev.id, unit);
