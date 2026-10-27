@@ -253,6 +253,7 @@
     const held = rows.filter((q) => q.status === "held").length;
     const on = !!s.pushEnabled;
     const reqOn = !!s.pushRequirementsEnabled;
+    const pfOn = !!s.pushPathfinderEnabled;
     const rep = await api("/sync/push-report").catch(() => null);
     const controls = me.role === "admin" ? `
       <div class="trk-row-tools">
@@ -265,6 +266,10 @@
         <span class="trk-muted">Marks each confirmed requirement on AHGFamily and writes the note (meeting dates she attended, plan notes, and any leader verification). Leave off until the step-5b check has been run — see the tracker docs.</span>
       </div>
       <div class="trk-row-tools">
+        <label><input type="checkbox" id="trk-push-pf-flag"${pfOn ? " checked" : ""}${on ? "" : " disabled"}> Also push Pathfinder beads</label>
+        <span class="trk-muted">AHGFamily keeps one record per bead; each bead confirmed on the Pathfinder page adds one line (her count to date and the bead's date) to that record's comment, sent right away. Nothing already written there is changed. Leave off until it has been watched once on AHGFamily.</span>
+      </div>
+      <div class="trk-row-tools">
         <label>Run report e-mail <select id="trk-report-mode"><option value="always"${s.reportMode === "always" ? " selected" : ""}>after every run</option><option value="errors_only"${s.reportMode === "errors_only" ? " selected" : ""}>only when something is held/failed</option></select></label>
         <span class="trk-muted">${s.mailConfigured ? "Mail is configured on the server." : "Mail is <b>not configured</b> on the server (SMTP_URL / REPORT_FROM / REPORT_EMAILS) — reports are kept here only."}</span>
       </div>` : "";
@@ -274,9 +279,9 @@
       ${rows.length ? `<div class="trk-row-tools">${window.Tracker.searchBox("trk-queue-q", queuePanel.query || "", "Search the queue — girl, item, status…")}<span class="trk-muted" id="trk-queue-shown"></span></div>
       <div class="trk-wrap"><table class="trk-table">
         <thead><tr><th>Girl</th><th>Item</th><th>Date</th><th>Status</th></tr></thead>
-        <tbody>${rows.map((q) => `<tr data-q="${esc([q.firstName, q.lastName, q.action === "add_instance" ? `Service Star ${(q.detail || {}).level || ""} #${(q.detail || {}).ordinal || ""}` : `${q.badgeName || ""} ${q.number != null ? q.number + (q.letter || "") : ""}`, q.action, q.status, q.lastError || "", q.date ? fmtDate(q.date) : ""].join(" "))}">
+        <tbody>${rows.map((q) => `<tr data-q="${esc([q.firstName, q.lastName, q.action === "bead" ? `Pathfinder bead ${(q.detail || {}).line || ""}` : q.action === "add_instance" ? `Service Star ${(q.detail || {}).level || ""} #${(q.detail || {}).ordinal || ""}` : `${q.badgeName || ""} ${q.number != null ? q.number + (q.letter || "") : ""}`, q.action, q.status, q.lastError || "", q.date ? fmtDate(q.date) : ""].join(" "))}">
           <td>${esc(q.firstName)} ${esc(q.lastName)}</td>
-          <td>${q.action === "add_instance" ? `Service Star (${esc((q.detail || {}).level || "")}) #${(q.detail || {}).ordinal || ""}` : `${esc(q.badgeName || "")} ${q.number != null ? q.number + esc(q.letter || "") : ""}`} <span class="trk-muted">${esc(q.action)}</span></td>
+          <td>${q.action === "bead" ? `Pathfinder: ${esc((q.detail || {}).line || "")}` : q.action === "add_instance" ? `Service Star (${esc((q.detail || {}).level || "")}) #${(q.detail || {}).ordinal || ""}` : `${esc(q.badgeName || "")} ${q.number != null ? q.number + esc(q.letter || "") : ""}`} <span class="trk-muted">${esc(q.action)}</span></td>
           <td class="trk-muted">${q.date ? fmtDate(q.date) : ""}</td>
           <td>${pill(q.status)}${q.lastError ? ` <span class="trk-muted">${esc(q.lastError)}</span>` : ""}${me.role === "admin" && (q.status === "held" || q.status === "failed") ? ` <button class="btn-link" data-requeue="${q.id}" title="Put this row back in the queue for the next push">re-queue</button>` : ""}</td>
         </tr>`).join("")}</tbody></table></div>`
@@ -314,6 +319,12 @@
         if (e.target.checked && !window.confirm("Push requirement completions (with notes) to AHGFamily? Only turn this on after the step-5b verification has been run.")) { e.target.checked = false; return; }
         await api("/admin/push-requirements-enabled", { body: { enabled: e.target.checked } });
         toast(e.target.checked ? "Requirement push enabled" : "Requirement push turned off");
+        queuePanel();
+      }));
+      $("trk-push-pf-flag").addEventListener("change", guard(async (e) => {
+        if (e.target.checked && !window.confirm("Push Pathfinder beads to AHGFamily? Each confirmed bead appends a line to that bead's comment on AHGFamily.")) { e.target.checked = false; return; }
+        await api("/admin/push-pathfinder-enabled", { body: { enabled: e.target.checked } });
+        toast(e.target.checked ? "Pathfinder bead push enabled" : "Pathfinder bead push turned off");
         queuePanel();
       }));
       el.querySelectorAll("[data-requeue]").forEach((b) => b.addEventListener("click", guard(async () => {

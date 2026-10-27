@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon/icon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/apple-touch-icon.png">
+<title>Pathfinder — AHG Troop NY2911 Leaders</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/style.css?v=18">
+<script src="assets/config.js?v=7"></script>
+<script src="assets/config.local.js" onerror=""></script><!-- local dev override; 404 in production is expected and harmless -->
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.20.0/lib/msal-browser.min.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img src="assets/img/ahg-logo-horizontal-blue.jpg" alt="American Heritage Girls — Faith, Service, Fun">
+    <span class="troop-badge">Troop NY2911</span>
+  </a>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="calendar.html">Calendar</a>
+    <a href="leaders.html" class="active">Leaders</a>
+    <a href="giving.html" class="nav-give">Give &amp; Fundraisers</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="ldr-titlebar">
+    <div>
+      <h1 class="page-title">Pathfinder</h1>
+      <hr class="rule">
+    </div>
+    <div class="ldr-account" id="trk-account" hidden>
+      <span id="trk-user"></span>
+      <button class="btn-link" id="trk-signout">Sign out</button>
+    </div>
+  </div>
+
+  <nav class="trk-subnav" aria-label="Leaders area">
+    <a href="leaders.html">Documents</a>
+    <a href="leaders-badges.html">Badges</a>
+    <a href="leaders-planning.html">Planning</a>
+    <a href="leaders-faith.html">Faith</a>
+    <a href="leaders-pathfinder.html" class="active">Pathfinder</a>
+    <a href="leaders-review.html">Review</a>
+    <a href="leaders-progress.html">Progress</a>
+    <a href="https://checkin.ahg2911.org" target="_blank" rel="noopener" title="Meeting check-in — separate site, no Microsoft sign-in needed">Check-in App &#8599;</a>
+    <a href="leaders-admin.html">Admin</a>
+  </nav>
+
+  <!-- Not configured yet -->
+  <div id="trk-unconfigured" class="placeholder-note" hidden>
+    The badge tracker isn't connected yet. Add the tracker's URL and scope to
+    <code>assets/config.js</code> (<code>tracker: { baseUrl, scope }</code>) — the steps are in the
+    badge tracker repo's <code>docs/entra-setup.md</code>.
+  </div>
+
+  <!-- Signed out -->
+  <div class="gate" id="trk-gate" hidden>
+    <img src="assets/img/ahg-logo-vertical.jpg" alt="" style="height:120px;margin-bottom:0.5rem;">
+    <h3 style="color:var(--ahg-blue);">Troop Leaders Only</h3>
+    <p>Pathfinder plans, beads and awards live in the troop's badge tracker. Sign in with your leader Microsoft account to continue.</p>
+    <p style="margin-top:1.25rem;"><button class="btn btn-blue btn-ms" id="trk-signin">
+      <svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+      Sign in with Microsoft
+    </button></p>
+    <p class="error" id="trk-error"></p>
+  </div>
+
+  <!-- Signed in -->
+  <div id="trk-app" hidden>
+    <div id="pg-pathfinder"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>American Heritage Girls Troop NY2911 &middot; Chartered by Harvest Bible Fellowship, Rochester, NY</p>
+</footer>
+
+<script src="assets/tracker.js?v=6"></script>
+<script src="assets/tracker-pathfinder.js?v=2"></script>
+</body>
+</html>
