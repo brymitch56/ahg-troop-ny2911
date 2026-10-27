@@ -550,8 +550,8 @@
     const isAdmin = me && me.role === "admin";
     $("pf-body").innerHTML = `
       <div class="trk-panel"><h3>${ICON.attendance} Which check-ins earn an attendance bead</h3>
-        <label><input type="radio" name="pf-att" value="planned"${prog.attendanceSource === "planned" ? " checked" : ""}${isAdmin ? "" : " disabled"}> Pathfinder meetings only (meetings with a Pathfinder plan)</label><br>
-        <label><input type="radio" name="pf-att" value="all"${prog.attendanceSource === "all" ? " checked" : ""}${isAdmin ? "" : " disabled"}> Every event she's checked in to</label>
+        <label><input type="radio" name="pf-att" value="all"${prog.attendanceSource === "all" ? " checked" : ""}${isAdmin ? "" : " disabled"}> Every event she's checked in to — meetings, service days, outings (the AHG rule)</label><br>
+        <label><input type="radio" name="pf-att" value="planned"${prog.attendanceSource === "planned" ? " checked" : ""}${isAdmin ? "" : " disabled"}> Pathfinder meetings only (meetings with a Pathfinder plan)</label>
         <p class="trk-muted">${isAdmin ? "Changing this re-checks the program year: beads still waiting on you follow the new rule; confirmed beads are never removed." : "Only an admin can change this."}</p>
         ${isAdmin ? '<button class="btn btn-blue btn-sm" id="pf-att-save">Save</button>' : ""}</div>
       <div class="trk-panel"><h3>Re-check attendance</h3>
