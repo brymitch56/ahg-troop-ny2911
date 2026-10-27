@@ -89,6 +89,7 @@
     const tags = [];
     if (plan.kind === "service") tags.push(`${ICON.service} Service project${plan.serviceProject ? ": " + esc(plan.serviceProject) : ""}`);
     for (const n of plan.finishesStones) tags.push(`${ICON.stone} finishes ${esc(stoneLabel(n))}`);
+    for (const v of plan.verses || []) tags.push(`${ICON.verse} ${esc(v.verse)}${v.stone ? ` (SS ${v.stone})` : ""}`);
     return `${tags.length ? `<div class="pf-tags">${tags.map((t) => `<span class="pf-tag">${t}</span>`).join("")}</div>` : ""}
       ${plan.parts.map((p) => `<div class="pf-part-line"><span class="trk-muted">${esc(slotLabel(p.slot))}${p.stone ? " · SS" + p.stone : ""}:</span>
         ${p.what ? esc(p.what) : '<span class="trk-muted">—</span>'}${p.requirement ? ` <span class="trk-pill mut">${reqLabel(p.requirement)}</span>` : ""}</div>`).join("")}
@@ -134,7 +135,7 @@
   }
 
   // ------------------------------------------------ printing ------------
-  const PRINT_ICON = { service: ICON.service.replace('class="pf-ico"', 'style="width:11pt;height:11pt;vertical-align:-2pt"'), stone: '<span style="display:inline-block;width:10pt;height:10pt;border-radius:50%;border:1pt solid #333;vertical-align:-1pt"></span>' };
+  const PRINT_ICON = { service: ICON.service.replace('class="pf-ico"', 'style="width:11pt;height:11pt;vertical-align:-2pt"'), verse: ICON.verse.replace('class="pf-ico"', 'style="width:11pt;height:11pt;vertical-align:-2pt"'), stone: '<span style="display:inline-block;width:10pt;height:10pt;border-radius:50%;border:1pt solid #333;vertical-align:-1pt"></span>' };
   function stoneOutlineHtml(n) {
     const s = stone(n);
     if (!s) return "";
@@ -149,6 +150,7 @@
     if (stonesHere.length) head.push(stonesHere.map((n) => esc(stoneLabel(n))).join(", "));
     if (plan.kind === "service") head.push(`${PRINT_ICON.service} Service project${plan.serviceProject ? ": " + esc(plan.serviceProject) : ""} — every Pathfinder there earns a white star`);
     for (const n of plan.finishesStones) head.push(`${PRINT_ICON.stone} Finishes Stepping Stone ${n} — hand out the logo bead`);
+    if ((plan.verses || []).length) head.push(`${PRINT_ICON.verse} Memory verse${plan.verses.length > 1 ? "s" : ""}: ${plan.verses.map((v) => esc(v.verse)).join("; ")} — every Pathfinder there earns the heart`);
     return `<div class="section">
       <h2>${fmtDate(ev.startAt)} — ${esc(ev.title)}</h2>
       <p class="meta">${fmtTime(ev.startAt)}${ev.endAt ? "–" + fmtTime(ev.endAt) : ""}${ev.location ? " · " + esc(ev.location) : ""}</p>
@@ -174,7 +176,7 @@
     if (!rows.length) { toast("Nothing planned for this program year yet", true); return; }
     const glance = `<table><thead><tr><th style="width:13%">Date</th><th style="width:22%">Stepping stone</th><th>Activities</th><th style="width:22%">Notes</th></tr></thead><tbody>
       ${rows.map((r) => `<tr><td class="num">${fmtDate(r.event.startAt)}<div class="muted" style="font-weight:normal">${esc(r.event.title)}</div></td>
-        <td>${planStones(r.plan).map((n) => `${n} — ${esc((stone(n) || {}).name || "")}`).join("<br>") || '<span class="muted">—</span>'}${r.plan.finishesStones.length ? `<div class="muted">finishes ${r.plan.finishesStones.join(", ")}</div>` : ""}</td>
+        <td>${planStones(r.plan).map((n) => `${n} — ${esc((stone(n) || {}).name || "")}`).join("<br>") || '<span class="muted">—</span>'}${r.plan.finishesStones.length ? `<div class="muted">finishes ${r.plan.finishesStones.join(", ")}</div>` : ""}${(r.plan.verses || []).map((v) => `<div>${PRINT_ICON.verse} ${esc(v.verse)}</div>`).join("")}</td>
         <td>${r.plan.kind === "service" ? `<div>${PRINT_ICON.service} <strong>Service project</strong>${r.plan.serviceProject ? ": " + esc(r.plan.serviceProject) : ""}</div>` : ""}
           ${r.plan.parts.filter((p) => p.what || p.requirement).map((p) => `<div>${esc(slotLabel(p.slot))}: ${esc(p.what || "")}${p.requirement ? ` <em>(${reqLabel(p.requirement)})</em>` : ""}</div>`).join("")}</td>
         <td>${esc(r.plan.notes || "")}</td></tr>`).join("")}</tbody></table>`;
@@ -281,6 +283,8 @@
       kind: plan ? plan.kind : "meeting",
       serviceProject: plan ? plan.serviceProject || "" : "",
       finishes: new Set(plan ? plan.finishesStones : []),
+      verseStones: new Set(plan ? (plan.verses || []).filter((v) => v.stone).map((v) => v.stone) : []),
+      bonusVerses: plan ? (plan.verses || []).filter((v) => !v.stone).map((v) => v.verse).join("; ") : "",
       notes: plan ? plan.notes || "" : "",
       parts: plan ? plan.parts.map((p) => ({ slot: p.slot, stone: p.stone, requirementId: p.requirementId, what: p.what || "", supplies: p.supplies || "", who: p.who || "" })) : [],
     };
@@ -304,6 +308,10 @@
           <div class="trk-row-tools"><span>${ICON.stone} This meeting <strong>finishes</strong>:</span>
             ${prog.stones.map((s) => `<label title="${esc(s.name)}"><input type="checkbox" data-fin="${s.number}"${st.finishes.has(s.number) ? " checked" : ""}> SS ${s.number}</label>`).join("")}
             <span class="trk-muted">— the Pathfinders there earn that stone's logo bead</span></div>
+          <div class="trk-row-tools"><span>${ICON.verse} <strong>Memory verse</strong> covered:</span>
+            ${prog.stones.map((s) => `<label title="${esc(s.verse)}"><input type="checkbox" data-verse="${s.number}"${st.verseStones.has(s.number) ? " checked" : ""}> SS ${s.number}</label>`).join("")}
+            <input type="text" id="pf-bonus" value="${esc(st.bonusVerses)}" placeholder="Bonus verse(s), e.g. Psalm 23:1; John 3:16" style="min-width:16rem"></div>
+          <p class="trk-muted">Every Pathfinder checked in to this meeting earns the heart for each verse covered (once per verse) — you confirm it under Beads &amp; awards.</p>
         </div>
         ${st.parts.length ? "" : `<div class="trk-panel"><p>No parts yet. <button class="btn btn-outline btn-sm" id="pf-template">Start from the guide's layout</button>
           <span class="trk-muted">(introduction, two activities, an optional activity, closing)</span></p></div>`}
@@ -351,6 +359,12 @@
         if (c.checked) st.finishes.add(n); else st.finishes.delete(n);
         mark();
       }));
+      body.querySelectorAll("[data-verse]").forEach((c) => c.addEventListener("change", () => {
+        const n = Number(c.dataset.verse);
+        if (c.checked) st.verseStones.add(n); else st.verseStones.delete(n);
+        mark();
+      }));
+      $("pf-bonus").addEventListener("input", (e) => { st.bonusVerses = e.target.value; mark(); });
       if ($("pf-template")) $("pf-template").addEventListener("click", () => { st.parts = ["intro", "activity", "activity", "optional", "closing"].map(blank); mark(); render(); });
       body.querySelectorAll(".pf-part").forEach((el) => {
         const i = Number(el.dataset.i);
@@ -379,6 +393,7 @@
     async function save(clear) {
       const body = clear ? { parts: [] } : {
         kind: st.kind, serviceProject: st.serviceProject, finishesStones: [...st.finishes], notes: st.notes,
+        verses: [...[...st.verseStones].sort().map((n) => ({ stone: n })), ...st.bonusVerses.split(/[;\n]/).map((v) => v.trim()).filter(Boolean).map((verse) => ({ verse }))],
         parts: st.parts.map((p) => ({ slot: p.slot, stone: p.stone, requirementId: p.requirementId, what: p.what, supplies: p.supplies, who: p.who })),
       };
       try {
@@ -393,8 +408,9 @@
   }
 
   // ------------------------------------------------ memory verses -------
-  // Not planned: a girl says her verse when she's ready. One heart per
-  // stepping-stone verse, plus a heart for each bonus verse.
+  // One heart per stepping-stone verse, plus a heart for each bonus verse.
+  // A verse planned on a meeting is proposed for everyone there; a leader
+  // can also mark one here by hand.
   async function versesView() {
     const t = await api("/pathfinder/tracker");
     let date = prog.defaultVerseDate;
@@ -488,7 +504,7 @@
           <input type="text" id="pf-a-label" placeholder="Service project">
           <input type="date" id="pf-a-date" value="${esc(prog.defaultVerseDate)}">
           <button class="btn btn-outline btn-sm" id="pf-a-add">Add</button>
-        </div><p class="trk-muted">Memory-verse hearts are marked on the Memory verses tab; attendance beads come from check-in.</p></div>`;
+        </div><p class="trk-muted">Memory-verse hearts come from verses planned on a meeting, or are marked on the Memory verses tab; attendance beads come from check-in.</p></div>`;
 
     const render = () => {
       const girls = t.girls.filter((g) => matches(trkQuery, girlName(g)));
