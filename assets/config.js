@@ -65,7 +65,7 @@ window.TROOP_CONFIG = {
     baseUrl: "https://badges.ahg2911.org",
     scope: "api://1bfb9f44-a625-4869-b9ca-49321d8b9ddd/access_as_leader",
     resourceFolder: { library: "Documents", path: "Badge Resources" },
-    faithFolder: { library: "Board", path: "Bible Studies/Bible Studies" }
+    faithFolder: { library: "Documents", path: "Board/Bible studies/Bible studies" }
   },
 
   // -----------------------------------------------------------

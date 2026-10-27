@@ -7,7 +7,7 @@
 //  Where uploads go (config.js → tracker):
 //    resourceFolder { library: "Documents", path: "Badge Resources" }
 //      → <library>/<path>/<badge name>/ — badges, faith badges
-//    faithFolder { library: "Board", path: "Bible Studies/Bible Studies" }
+//    faithFolder { library: "Documents", path: "Board/Bible studies/Bible studies" }
 //      → Bible studies and Faith Award studies
 //  Folders are created on the first upload; the picker opens in
 //  the upload folder when it exists and can browse every library.
@@ -22,7 +22,7 @@
   const ff = trk.faithFolder || {};
   const BADGE_LIBRARY = rf.library || "Documents";
   const BASE_PATH = trimPath(rf.path, "Badge Resources");
-  const STUDY_FOLDER = { library: ff.library || "Board", path: trimPath(ff.path, "Bible Studies/Bible Studies") };
+  const STUDY_FOLDER = { library: ff.library || "Documents", path: trimPath(ff.path, "Board/Bible studies/Bible studies") };
 
   const SIMPLE_UPLOAD_LIMIT = 4 * 1024 * 1024; // Graph's cap for one-request uploads
   const CHUNK_SIZE = 10 * 1024 * 1024;         // a multiple of 320 KiB
