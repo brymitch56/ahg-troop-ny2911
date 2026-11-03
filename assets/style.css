@@ -547,3 +547,11 @@ h1, h2, h3, .nav, .btn, .badge { font-family: "Segoe UI", "Helvetica Neue", Aria
 @media (max-width: 640px) {
   .pf-field-row { grid-template-columns: 1fr; }
 }
+
+/* Awards page */
+.aw-req { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+.aw-req > div:first-child { flex: 1 1 320px; }
+.aw-req.done > div:first-child { color: #33503a; }
+.aw-req ul { margin: 0.2rem 0 0 1.2rem; }
+.aw-rec { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; }
+.aw-rec input[type=text] { width: 11rem; }
