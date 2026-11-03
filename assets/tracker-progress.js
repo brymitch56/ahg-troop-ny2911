@@ -422,7 +422,7 @@
     const priorLevel = (b) => b.eligible === false;
     const badgePanel = (b) => `
       <div class="trk-panel${priorLevel(b) ? " trk-prior" : ""}">
-        <h3>${esc(b.name)} ${statusPill(b.status)} <span class="trk-pill mut">${esc(b.levelGroup)}</span>${priorLevel(b) ? ' <span class="trk-pill warn">earlier level</span>' : ""}</h3>
+        <h3>${esc(b.name)} ${statusPill(b.status)}${b.wholeAward ? ` <span class="trk-muted" style="font-weight:400;font-size:0.85rem">on AHGFamily ${fmtDate(b.wholeAward)}</span>` : ""} <span class="trk-pill mut">${esc(b.levelGroup)}</span>${priorLevel(b) ? ' <span class="trk-pill warn">earlier level</span>' : ""}</h3>
         ${priorLevel(b) ? `<p class="trk-muted trk-prior-note">${esc(b.levelGroup)} badge; ${esc(p.girl.firstName)} is a ${esc(p.girl.ahgLevel || "")} now. Shown for the record — any back-recording of requirements or completion for this badge is done directly in AHGFamily, not here.</p>` : ""}
         ${b.groups.map((g) => `
           ${g.label ? `<p class="trk-muted" style="margin:0.4rem 0 0.2rem"><strong>${esc(g.label)}</strong>${g.ruleType === "n_of" ? ` — complete ${g.ruleN}` : ""}</p>` : ""}
@@ -531,7 +531,7 @@
           <tbody>${shown.length ? shown.map((g) => `
             <tr>
               <td style="white-space:nowrap">${esc(g.lastName)}, ${esc(g.firstName)}<div class="trk-muted">${esc(g.ahgLevel || "")}</div></td>
-              <td>${statusPill(g.status)}</td>
+              <td>${statusPill(g.status)}${g.wholeAward ? `<div class="trk-muted">on AHGFamily ${fmtDate(g.wholeAward)}</div>` : ""}</td>
               ${p.requirements.map((r) => {
                 const st = g.states[r.requirementId];
                 const sp = !st && g.started ? g.started[r.requirementId] : null;

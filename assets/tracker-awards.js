@@ -109,7 +109,7 @@
         <thead><tr><th>Girl</th><th>Level</th><th>Done</th><th>Status</th></tr></thead>
         <tbody>${rows.map(({ g, st }) => `<tr>
           <td><a href="#" data-girl="${g.girlId}"><strong>${esc(girlName(g))}</strong></a>${g.mapped ? "" : '<div class="trk-muted" title="Not matched to AHGFamily yet — nothing can be pushed for her">not on AHGFamily yet</div>'}</td>
-          <td>${esc(g.ahgLevel)}</td><td>${st.done}/${st.total}</td><td>${statusPills(st)}</td></tr>
+          <td>${esc(g.ahgLevel)}</td><td>${st.earnedOn ? "—" : `${st.done}/${st.total}`}</td><td>${statusPills(st)}</td></tr>
           <tr class="pf-detail" data-detail="${g.girlId}"${open.has(g.girlId) ? "" : " hidden"}><td colspan="4">${girlDetail(g, a, st)}</td></tr>`).join("")}</tbody></table></div>`
         : `<p class="trk-muted">${status.girls.length ? "No girl matches." : "No active girls on the roster."}</p>`}`;
 
@@ -141,7 +141,7 @@
     }));
   }
 
-  const statusPills = (st) => (st.complete ? '<span class="trk-pill ok">earned</span>' : [
+  const statusPills = (st) => (st.complete ? `<span class="trk-pill ok">earned${st.earnedOn ? ` ${fmtDate(st.earnedOn)}` : ""}</span>` : [
     st.ready ? `<span class="trk-pill warn">${st.ready} ready</span>` : "",
     st.pending ? `<a class="trk-pill warn" href="leaders-review.html">${st.pending} waiting on Review</a>` : "",
     !st.ready && !st.pending ? (st.done ? '<span class="trk-pill mut">under way</span>' : '<span class="trk-pill mut">not started</span>') : "",
@@ -150,11 +150,12 @@
   function girlDetail(g, a, st) {
     return `<div class="aw-reqs">
       ${st.serviceYears && st.serviceYears.length ? `<p class="trk-muted">Approved service hours: ${st.serviceYears.map((y) => `${y.year}–${String(y.year + 1).slice(2)}: ${y.hours}`).join(" · ")}</p>` : ""}
-      ${a.requirements.map((r) => reqRow(g, r, st.items[r.id])).join("")}
+      ${st.earnedOn ? `<p><strong>Earned ${fmtDate(st.earnedOn)} on AHGFamily.</strong> <span class="trk-muted">AHGFamily has the whole award, so these requirements don't need recording.</span></p>` : ""}
+      ${a.requirements.map((r) => reqRow(g, r, st.items[r.id], !!st.earnedOn)).join("")}
       <div class="trk-row-tools"><button class="btn-link" data-print-girl="${g.girlId}">Print her tracking sheet</button></div></div>`;
   }
 
-  function reqRow(g, r, it) {
+  function reqRow(g, r, it, earned) {
     const text = `<strong>${reqLabel(r)}</strong> ${esc(r.text)}${r.subItems.length ? `<ul>${r.subItems.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : ""}`;
     if (it && it.status === "confirmed") {
       const p = it.push && PUSH[it.push.status];
@@ -164,6 +165,7 @@
     if (it && it.status === "proposed") {
       return `<div class="aw-req"><div>… ${text}<div class="trk-muted">${fmtDate(it.completedOn)}</div></div><div><a class="trk-pill warn" href="leaders-review.html">waiting on Review</a></div></div>`;
     }
+    if (earned) return `<div class="aw-req"><div>${text}</div></div>`;
     return `<div class="aw-req" data-rec-row><div>○ ${text}${it && it.status === "ready" ? `<div class="trk-muted">Ready: ${esc(it.why)}</div>` : ""}</div>
       <div class="aw-rec"><input type="date" value="${esc((it && it.completedOn) || today())}" aria-label="Date"><input type="text" placeholder="Note" value="${esc((it && it.why) || "")}" aria-label="Note">
         <button class="btn btn-outline btn-sm" data-rec="${esc(r.id)}" data-rec-girl="${g.girlId}">Record</button></div></div>`;
@@ -243,7 +245,7 @@
 
   // ------------------------------------------------ printing ------------
   function girlSheet(g, a, st) {
-    return `<h1>${esc(a.name)}</h1><p class="meta">${esc(girlName(g))} · ${esc(g.ahgLevel)} · ${st.done} of ${st.total} done${pagesLabel(a)}</p>
+    return `<h1>${esc(a.name)}</h1><p class="meta">${esc(girlName(g))} · ${esc(g.ahgLevel)} · ${st.earnedOn ? `Earned ${fmtDate(st.earnedOn)} on AHGFamily` : `${st.done} of ${st.total} done`}${pagesLabel(a)}</p>
       <table><thead><tr><th></th><th>Requirement</th><th>Date</th></tr></thead><tbody>
       ${a.requirements.map((r) => { const it = st.items[r.id]; return `<tr><td class="num">${it && it.status === "confirmed" ? "✓" : "☐"} ${reqLabel(r)}</td>
         <td>${esc(r.text)}${r.subItems.length ? `<ul>${r.subItems.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : ""}${it && it.status === "ready" ? `<div class="muted">Ready: ${esc(it.why)}</div>` : ""}</td>
@@ -266,7 +268,7 @@
     window.Tracker.printPage(a.name, `<h1>${esc(a.name)}</h1><p class="meta">${rows.length} girl${rows.length === 1 ? "" : "s"}${pagesLabel(a)}</p>
       <table><thead><tr><th>Girl</th><th>Level</th><th>Done</th><th>Still to do</th></tr></thead><tbody>
       ${rows.map((g) => { const st = g.awards[a.badgeId]; const left = a.requirements.filter((r) => !st.items[r.id] || st.items[r.id].status !== "confirmed");
-        return `<tr><td>${esc(girlName(g))}</td><td>${esc(g.ahgLevel)}</td><td class="num">${st.done}/${st.total}</td><td>${st.complete ? "Earned" : left.map((r) => reqLabel(r)).join(", ")}</td></tr>`; }).join("")}</tbody></table>`);
+        return `<tr><td>${esc(girlName(g))}</td><td>${esc(g.ahgLevel)}</td><td class="num">${st.earnedOn ? "—" : `${st.done}/${st.total}`}</td><td>${st.complete ? `Earned${st.earnedOn ? ` ${fmtDate(st.earnedOn)}` : ""}` : left.map((r) => reqLabel(r)).join(", ")}</td></tr>`; }).join("")}</tbody></table>`);
   }
 
   init(async () => { await reload(); });
